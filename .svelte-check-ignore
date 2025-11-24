@@ -1,0 +1,4 @@
+# Ignorar archivos del design-system en la verificación de tipos
+# Los archivos del design-system deben ser verificados en su propio contexto
+../design-system/**/*
+

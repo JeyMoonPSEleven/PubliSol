@@ -1,0 +1,153 @@
+/* Importar los tokens del design-system */
+@import "atomic-design-svelte/app.css";
+
+/* ======================================================================== */
+/* PERSONALIZACIÓN DE TOKENS PARA PUBLISOL                                  */
+/* Basado en la guía técnica del proyecto                                  */
+/* ======================================================================== */
+
+@theme {
+  /* --- Colores Corporativos de Referencia --- */
+  /* Primario: Azul corporativo (#1E3A8A) - Confianza y profesionalismo */
+  --color-ref-primary-500: #1E3A8A;
+  --color-ref-primary-600: #1E40AF;
+  --color-ref-primary-700: #1D4ED8;
+  --color-ref-primary-800: #1E3A8A;
+  --color-ref-primary-900: #172554;
+  
+  /* Secundario: Verde (#10B981) - Sostenibilidad */
+  --color-ref-secondary-500: #10B981;
+  --color-ref-secondary-600: #059669;
+  --color-ref-secondary-700: #047857;
+  
+  /* Acento: Naranja (#F59E0B) - CTAs y destacados */
+  --color-ref-accent-500: #F59E0B;
+  --color-ref-accent-600: #D97706;
+  --color-ref-accent-700: #B45309;
+  
+  /* Neutros: Grises según la guía */
+  --color-ref-neutral-50: #F9FAFB;
+  --color-ref-neutral-100: #E5E7EB;
+  --color-ref-neutral-200: #E5E7EB;
+  --color-ref-neutral-600: #374151;
+  --color-ref-neutral-700: #1F2937;
+  
+  /* Backgrounds: Blanco + Beige claro */
+  --color-ref-beige-50: #FAF8F5;
+  
+  /* --- Redefinir Tokens Semánticos con Colores Corporativos --- */
+  --color-primary: var(--color-ref-primary-500);
+  --color-primary-hover: var(--color-ref-primary-600);
+  --color-secondary: var(--color-ref-secondary-500);
+  --color-secondary-hover: var(--color-ref-secondary-600);
+  --color-success: var(--color-ref-secondary-500);
+  --color-success-hover: var(--color-ref-secondary-600);
+  --color-warning: var(--color-ref-accent-500);
+  --color-warning-hover: var(--color-ref-accent-600);
+  
+  /* Superficies con beige claro */
+  --color-surface-page: var(--color-ref-white);
+  --color-surface-card: var(--color-ref-white);
+  --color-surface-header: var(--color-ref-white);
+  --color-surface-tertiary: var(--color-ref-beige-50);
+  
+  /* Tipografía según la guía */
+  /* Headings: 700 weight, line-height 1.2 */
+  /* Body: 400 weight, line-height 1.6 */
+  --font-weight-heading: 700;
+  --font-weight-body: 400;
+  --line-height-heading: 1.2;
+  --line-height-body: 1.6;
+  
+  /* Tamaños de fuente según jerarquía de la guía */
+  /* H1 (48px), H2 (36px), H3 (24px), Body (16px) */
+  --font-size-h1: 3rem; /* 48px */
+  --font-size-h2: 2.25rem; /* 36px */
+  --font-size-h3: 1.5rem; /* 24px */
+  --font-size-body: 1rem; /* 16px */
+  
+  /* Espaciado: Sistema de 8px (8, 16, 24, 32, 48, 64, 96px) */
+  --spacing-ref-8: 0.5rem; /* 8px */
+  --spacing-ref-16: 1rem; /* 16px */
+  --spacing-ref-24: 1.5rem; /* 24px */
+  --spacing-ref-32: 2rem; /* 32px */
+  --spacing-ref-48: 3rem; /* 48px */
+  --spacing-ref-64: 4rem; /* 64px */
+  --spacing-ref-96: 6rem; /* 96px */
+  
+  /* Radios según la guía */
+  --radius-button: 0.375rem; /* 6px */
+  --radius-card: 0.75rem; /* 12px */
+  --radius-input: 0.375rem; /* 6px */
+  
+  /* Transiciones */
+  --transition-default: all 0.3s ease;
+}
+
+/* ======================================================================== */
+/* ANIMACIONES PERSONALIZADAS                                               */
+/* ======================================================================== */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out;
+}
+
+/* Mejoras de hover para cards */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Glassmorphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ======================================================================== */
+/* ANIMACIONES MAGIC UI                                                     */
+/* ======================================================================== */
+
+@keyframes shimmer-slide {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(-45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(-45deg);
+  }
+}
+
+@keyframes spin-around {
+  0% {
+    transform: translateX(-50%) translateY(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-50%) rotate(360deg);
+  }
+}
+
+.animate-shimmer-slide {
+  animation: shimmer-slide var(--speed, 3s) linear infinite;
+}
+
+.animate-spin-around {
+  animation: spin-around calc(var(--speed, 3s) * 2) linear infinite;
+}
+
