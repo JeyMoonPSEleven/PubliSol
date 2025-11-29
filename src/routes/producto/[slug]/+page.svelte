@@ -11,6 +11,9 @@
 		Badge,
 	} from "atomic-design-svelte";
 	import { Link } from "atomic-design-svelte";
+	import { onMount } from "svelte";
+	import Lightbox from "$lib/components/magic-ui/Lightbox.svelte";
+	import Seo from "$lib/components/Seo.svelte";
 
 	// Datos del producto (en producción vendría de una API)
 	const product = {
@@ -83,6 +86,8 @@
 	let quantity = $state(100);
 	let selectedOptions = $state(product.options.map((o) => ({ ...o })));
 	let selectedImageIndex = $state(0);
+	let lightboxOpen = $state(false);
+	let summarySticky = $state(false);
 
 	const estimatedPrice = $derived(() => {
 		const basePrice = parseFloat(
@@ -109,24 +114,59 @@
 			name: "Agenda Escolar Básica",
 			image: "https://images.unsplash.com/photo-1503676260728-1c00e094b736?w=400&h=400&fit=crop&q=80",
 			href: "/producto/agenda-escolar-basica",
+			price: "6.50€",
 		},
 		{
 			name: "Agenda Universitaria Premium",
 			image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=400&fit=crop&q=80",
 			href: "/producto/agenda-universitaria-premium",
+			price: "8.90€",
 		},
 		{
 			name: "Libreta Ejecutiva A5",
 			image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=400&fit=crop&q=80",
 			href: "/producto/libreta-ejecutiva",
+			price: "5.20€",
 		},
 		{
 			name: "Cuaderno Personalizado",
 			image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=400&fit=crop&q=80",
 			href: "/producto/cuaderno-personalizado",
+			price: "4.80€",
 		},
 	];
+
+	// Sticky summary para desktop
+	onMount(() => {
+		function handleScroll() {
+			const summaryElement = document.querySelector("[data-summary-card]");
+			if (summaryElement) {
+				const rect = summaryElement.getBoundingClientRect();
+				summarySticky = rect.top <= 100 && window.innerWidth >= 1024;
+			}
+		}
+
+		window.addEventListener("scroll", handleScroll, { passive: true });
+		handleScroll();
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	});
+	
+	// SEO dinámico basado en el producto
+	const seoTitle = $derived(product ? `${product.name} - Publisol` : "Producto - Publisol");
+	const seoDescription = $derived(product ? product.description || `Descubre ${product.name} en Publisol. Personalización de calidad para tu proyecto.` : "Producto personalizado de Publisol");
+	const seoImage = $derived(product?.images?.[0] || "https://images.unsplash.com/photo-1503676260728-1c00e094b736?w=1200&h=630&fit=crop&q=80");
+	const seoUrl = $derived(product ? `/producto/${product.slug}` : "/productos");
 </script>
+
+<Seo
+	title={seoTitle}
+	description={seoDescription}
+	image={seoImage}
+	url={seoUrl}
+/>
 
 <!-- Hero del Producto -->
 <section class="bg-surface-tertiary py-8">
@@ -141,13 +181,24 @@
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 			<!-- Columna Izquierda: Galería -->
 			<div>
-				<div class="mb-3 sm:mb-4">
+				<button
+					type="button"
+					class="mb-3 sm:mb-4 cursor-zoom-in w-full text-left p-0 border-0 bg-transparent relative"
+					onclick={() => { lightboxOpen = true; }}
+					onkeydown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); lightboxOpen = true; } }}
+					aria-label="Abrir galería de imágenes en pantalla completa"
+				>
 					<img
 						src={product.images[selectedImageIndex]}
 						alt={product.name}
-						class="w-full h-auto rounded-lg border border-border-default aspect-square object-cover"
+						class="w-full h-auto rounded-lg border border-border-default aspect-square object-cover hover:opacity-90 transition-opacity"
 					/>
-				</div>
+					<div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
+						<div class="bg-black/50 text-white px-4 py-2 rounded-lg text-sm">
+							Click para ampliar
+						</div>
+					</div>
+				</button>
 				<div class="grid grid-cols-4 gap-2 sm:gap-3">
 					{#each product.images as image, index}
 						<button
@@ -242,35 +293,38 @@
 									class="font-semibold mb-2 sm:mb-3 text-sm sm:text-base"
 									>Formato:</Text
 								>
-								<div class="space-y-2">
+								<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 									{#each product.formats as format}
-										<label
-											class="flex items-center gap-3 p-3 sm:p-4 border-2 rounded-lg cursor-pointer min-h-[60px] {selectedFormat.name ===
+										<button
+											type="button"
+											onclick={() => (selectedFormat = format)}
+											class="relative p-4 border-2 rounded-lg cursor-pointer min-h-[80px] text-left transition-all hover:shadow-md {selectedFormat.name ===
 											format.name
-												? 'border-primary bg-primary/5'
-												: 'border-border-default'} transition-colors"
+												? 'border-primary bg-primary/10 shadow-md ring-2 ring-primary/20'
+												: 'border-border-default hover:border-primary/50'} group"
 										>
-											<input
-												type="radio"
-												name="format"
-												value={format.name}
-												checked={selectedFormat.name ===
-													format.name}
-												onchange={() =>
-													(selectedFormat = format)}
-												class="text-primary w-5 h-5"
-											/>
+											{#if selectedFormat.name === format.name}
+												<div class="absolute top-2 right-2">
+													<svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+														<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+													</svg>
+												</div>
+											{/if}
 											<div class="flex-1">
 												<Text
-													class="font-medium text-sm sm:text-base"
-													>{format.name} ({format.size})</Text
+													class="font-semibold text-sm sm:text-base mb-1"
+													>{format.name}</Text
+												>
+												<Text
+													class="text-xs text-text-muted mb-2"
+													>{format.size}</Text
+												>
+												<Text
+													class="font-bold text-primary text-base"
+													>{format.price}</Text
 												>
 											</div>
-											<Text
-												class="font-semibold text-sm sm:text-base"
-												>{format.price}</Text
-											>
-										</label>
+										</button>
 									{/each}
 								</div>
 							</div>
@@ -283,29 +337,35 @@
 								>
 								<div class="space-y-2">
 									{#each selectedOptions as option, index}
-										<label
-											class="flex items-center justify-between p-3 sm:p-4 border border-border-default rounded-lg cursor-pointer hover:bg-surface-tertiary min-h-[56px] transition-colors"
+										<button
+											type="button"
+											onclick={() => option.checked = !option.checked}
+											class="w-full flex items-center justify-between p-3 sm:p-4 border-2 rounded-lg cursor-pointer min-h-[56px] transition-all hover:shadow-sm {option.checked
+												? 'border-primary bg-primary/5'
+												: 'border-border-default hover:border-primary/50'}"
 										>
 											<div
 												class="flex items-center gap-3 flex-1"
 											>
-												<input
-													type="checkbox"
-													bind:checked={
-														option.checked
-													}
-													class="rounded w-5 h-5"
-												/>
+												<div class="w-5 h-5 border-2 rounded flex items-center justify-center {option.checked
+													? 'border-primary bg-primary'
+													: 'border-border-default'}">
+													{#if option.checked}
+														<svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+															<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+														</svg>
+													{/if}
+												</div>
 												<Text
 													class="text-sm sm:text-base"
 													>{option.name}</Text
 												>
 											</div>
 											<Text
-												class="text-xs sm:text-sm text-text-muted ml-2"
+												class="text-xs sm:text-sm font-semibold text-primary ml-2"
 												>{option.price}</Text
 											>
-										</label>
+										</button>
 									{/each}
 								</div>
 							</div>
@@ -314,7 +374,11 @@
 				</Card>
 
 				<!-- Cantidades y Presupuesto -->
-				<Card padding="md sm:lg" class="mb-4 sm:mb-6">
+				<Card 
+					padding="md sm:lg" 
+					class="mb-4 sm:mb-6 lg:sticky lg:top-24"
+					data-summary-card
+				>
 					{#snippet header()}
 						<Text class="font-semibold text-sm sm:text-base"
 							>Cantidad mínima: {product.minQuantity} unidades</Text
@@ -751,28 +815,55 @@
 			class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
 		>
 			{#each relatedProducts as related}
-				<Card padding="md" class="hover:elevation-2 transition-all">
+				<Card padding="md" class="hover:elevation-2 transition-all group">
 					{#snippet header()}
 						<div
-							class="aspect-square bg-surface-tertiary rounded-lg mb-4 flex items-center justify-center"
+							class="aspect-square bg-surface-tertiary rounded-lg mb-4 overflow-hidden relative"
 						>
-							<Text class="text-text-muted text-sm">Imagen</Text>
+							<img
+								src={related.image}
+								alt={related.name}
+								class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+							/>
 						</div>
-						<Heading level="h4" class="mb-2">{related.name}</Heading
+						<Heading level="h4" class="mb-1">{related.name}</Heading
 						>
+						<Text class="text-sm text-primary font-semibold mb-3">{related.price}</Text>
 					{/snippet}
 					{#snippet children()}
-						<Button
-							intent="secondary"
-							size="sm"
-							class="w-full"
-							href={related.href}
-						>
-							Ver Detalles
-						</Button>
+						<div class="flex gap-2">
+							<Button
+								intent="secondary"
+								size="sm"
+								class="flex-1"
+								href={related.href}
+							>
+								Ver Detalles
+							</Button>
+							<Button
+								intent="primary"
+								size="sm"
+								class="flex-1"
+								onclick={() => {
+									// Simular añadir al presupuesto
+									console.log("Añadido al presupuesto:", related.name);
+									// Aquí se podría abrir un modal o actualizar un estado global
+								}}
+							>
+								+ Presupuesto
+							</Button>
+						</div>
 					{/snippet}
 				</Card>
 			{/each}
 		</div>
 	</div>
 </section>
+
+<!-- Lightbox para galería -->
+<Lightbox 
+	bind:open={lightboxOpen}
+	bind:currentIndex={selectedImageIndex}
+	images={product.images}
+	onNavigate={(index) => selectedImageIndex = index}
+/>

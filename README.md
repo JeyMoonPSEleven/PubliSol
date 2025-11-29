@@ -70,6 +70,7 @@ Puedes personalizar los tokens en `src/app.css`:
 
 - Este proyecto usa la configuración de Vite para resolver los imports `$lib` del design-system
 - Ver `vite.config.ts` para la configuración completa
+- Flowbite Svelte MCP local: consulta `docs/Flowbite-MCP.md` para arrancar el servidor que alimenta los prompts de Cursor / Claude desde `client-example`.
 
 ### Verificación de Tipos
 

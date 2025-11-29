@@ -1,11 +1,18 @@
 <script lang="ts">
 	import { Heading, Text, Breadcrumb } from "atomic-design-svelte";
+	import Seo from "$lib/components/Seo.svelte";
 	
 	const breadcrumbItems = [
 		{ label: "Inicio", href: "/" },
 		{ label: "Términos y Condiciones", href: "/terminos" }
 	];
 </script>
+
+<Seo
+	title="Términos y Condiciones - Publisol"
+	description="Términos y condiciones de uso del sitio web de Publisol. Información sobre pedidos, garantías y condiciones de compra."
+	url="/terminos"
+/>
 
 <section class="py-12 bg-surface-tertiary">
 	<div class="container mx-auto px-4">

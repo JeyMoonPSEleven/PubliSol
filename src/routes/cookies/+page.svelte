@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Heading, Text, Breadcrumb, Card, Button, Checkbox, Modal } from "atomic-design-svelte";
 	import { Link } from "atomic-design-svelte";
+	import Seo from "$lib/components/Seo.svelte";
 	
 	const breadcrumbItems = [
 		{ label: "Inicio", href: "/" },
@@ -44,6 +45,12 @@
 		}
 	}
 </script>
+
+<Seo
+	title="Política de Cookies - Publisol"
+	description="Información sobre el uso de cookies en el sitio web de Publisol. Tipos de cookies, finalidad y cómo gestionarlas."
+	url="/cookies"
+/>
 
 <!-- Banner de Cookies (si no hay preferencias guardadas) -->
 {#if showCookieBanner}
@@ -280,8 +287,8 @@
 				Al pulsar el botón de "Aceptar" en el banner de cookies, el usuario consiente expresamente el uso de cookies según lo descrito en la presente Política. El consentimiento puede retirarse en cualquier momento:
 			</Text>
 			<ul class="list-disc space-y-2 mb-8 ml-6">
-				<li><Text>Configurando el navegador para rechazar o eliminar cookies.</Text></Text>
-				<li><Text>Accediendo a la configuración de cookies desde el banner o esta página.</Text></Text>
+				<li><Text>Configurando el navegador para rechazar o eliminar cookies.</Text></li>
+				<li><Text>Accediendo a la configuración de cookies desde el banner o esta página.</Text></li>
 			</ul>
 			
 			<Heading level="h2" class="mt-12 mb-4">8. Modificaciones</Heading>

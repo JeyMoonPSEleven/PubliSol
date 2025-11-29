@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Heading, Text, Card, Button, Breadcrumb, SearchBar } from "atomic-design-svelte";
 	import { Link } from "atomic-design-svelte";
+	import Seo from "$lib/components/Seo.svelte";
 	
 	const breadcrumbItems = [
 		{ label: "Inicio", href: "/" },
@@ -10,7 +11,7 @@
 	const categories = ["Todos", "Tendencias", "Consejos", "Casos de Éxito", "Sostenibilidad"];
 	let selectedCategory = $state("Todos");
 	
-	const articles = [
+		const articles = [
 		{
 			id: 1,
 			title: "10 ideas creativas para merchandising de empresa en 2025",
@@ -20,7 +21,7 @@
 			author: "Equipo Publisol",
 			date: "15 Nov 2024",
 			readTime: "5 min",
-			href: "/blog/10-ideas-merchandising-2025"
+			href: "/blog"
 		},
 		{
 			id: 2,
@@ -31,7 +32,7 @@
 			author: "María González",
 			date: "10 Nov 2024",
 			readTime: "8 min",
-			href: "/blog/como-elegir-agenda-escolar"
+			href: "/blog"
 		},
 		{
 			id: 3,
@@ -42,7 +43,7 @@
 			author: "Equipo Publisol",
 			date: "5 Nov 2024",
 			readTime: "6 min",
-			href: "/blog/productos-eco-friendly"
+			href: "/blog"
 		},
 		{
 			id: 4,
@@ -53,7 +54,7 @@
 			author: "Juan Pérez",
 			date: "1 Nov 2024",
 			readTime: "10 min",
-			href: "/blog/guia-preparar-archivos"
+			href: "/blog"
 		},
 		{
 			id: 5,
@@ -64,7 +65,7 @@
 			author: "Equipo Publisol",
 			date: "28 Oct 2024",
 			readTime: "7 min",
-			href: "/blog/caso-exito-empresa-x"
+			href: "/blog"
 		}
 	];
 	
@@ -74,6 +75,12 @@
 			: articles.filter(a => a.category === selectedCategory)
 	);
 </script>
+
+<Seo
+	title="Blog y Recursos - Publisol | Consejos y Tendencias"
+	description="Descubre consejos, tendencias y novedades sobre personalización, merchandising empresarial y agendas escolares."
+	url="/blog"
+/>
 
 <!-- Hero -->
 <section class="bg-surface-tertiary py-8 sm:py-12">
@@ -96,16 +103,18 @@
 	<div class="container mx-auto px-4 sm:px-6">
 		<div class="flex flex-wrap gap-2">
 			{#each categories as category}
-				<button
-					onclick={() => selectedCategory = category}
-					class="px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border transition-colors text-sm sm:text-base min-h-[44px] {
-						selectedCategory === category
-							? 'bg-primary text-white border-primary'
-							: 'bg-white border-border-default hover:border-primary'
-					}"
-				>
-					{category}
-				</button>
+			<button
+				type="button"
+				onclick={() => (selectedCategory = category)}
+				class="px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border transition-colors text-sm sm:text-base min-h-[44px] {
+					selectedCategory === category
+						? 'bg-primary text-white border-primary'
+						: 'bg-white border-border-default hover:border-primary'
+				}"
+				aria-pressed={selectedCategory === category}
+			>
+				{category}
+			</button>
 			{/each}
 		</div>
 	</div>

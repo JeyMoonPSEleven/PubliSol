@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	
+
 	interface Props extends Omit<HTMLButtonAttributes, 'class'> {
 		shimmerColor?: string;
 		shimmerSize?: string;
@@ -9,6 +9,7 @@
 		background?: string;
 		class?: string;
 		children?: import('svelte').Snippet;
+		action?: () => void;
 	}
 	
 	let {
@@ -19,8 +20,13 @@
 		background = 'rgba(0, 0, 0, 1)',
 		class: className = '',
 		children,
+		action,
 		...restProps
 	}: Props = $props();
+
+	function handleClick(event: MouseEvent) {
+		action?.();
+	}
 </script>
 
 <button
@@ -33,6 +39,7 @@
 		--bg: {background};
 	"
 	class="group relative z-0 flex cursor-pointer items-center justify-center overflow-hidden border border-white/10 px-6 py-3 whitespace-nowrap text-white transform-gpu transition-transform duration-300 ease-in-out active:translate-y-px {className}"
+	on:click={handleClick}
 	{...restProps}
 >
 	<!-- spark container -->

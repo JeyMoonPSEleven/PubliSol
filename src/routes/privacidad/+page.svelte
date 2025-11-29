@@ -1,12 +1,19 @@
 <script lang="ts">
 	import { Heading, Text, Breadcrumb, Card } from "atomic-design-svelte";
 	import { Link } from "atomic-design-svelte";
+	import Seo from "$lib/components/Seo.svelte";
 	
 	const breadcrumbItems = [
 		{ label: "Inicio", href: "/" },
 		{ label: "Política de Privacidad", href: "/privacidad" }
 	];
 </script>
+
+<Seo
+	title="Política de Privacidad - Publisol | RGPD"
+	description="Política de privacidad de Publisol. Información sobre el tratamiento de datos personales conforme al RGPD y LOPDGDD."
+	url="/privacidad"
+/>
 
 <section class="py-12 bg-surface-tertiary">
 	<div class="container mx-auto px-4">

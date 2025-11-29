@@ -1,11 +1,18 @@
 <script lang="ts">
 	import { Heading, Text, Breadcrumb } from "atomic-design-svelte";
+	import Seo from "$lib/components/Seo.svelte";
 	
 	const breadcrumbItems = [
 		{ label: "Inicio", href: "/" },
 		{ label: "Aviso Legal", href: "/aviso-legal" }
 	];
 </script>
+
+<Seo
+	title="Aviso Legal - Publisol"
+	description="Aviso legal del sitio web de Publisol. Información sobre el titular, condiciones de uso y propiedad intelectual."
+	url="/aviso-legal"
+/>
 
 <section class="py-12 bg-surface-tertiary">
 	<div class="container mx-auto px-4">
