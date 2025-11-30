@@ -1,239 +1,1799 @@
 @import "atomic-design-svelte/app.css";
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 /* ======================================================================== */
-/* PERSONALIZACIÓN DE TOKENS PARA PUBLISOL                                  */
-
-/* Basado en la guía técnica del proyecto                                  */
+/* IDENTIDAD VISUAL PUBLISOL - SISTEMA DE DISEÑO ATOMIC DESIGN              */
 /* ======================================================================== */
+/* Este archivo define la identidad visual completa del proyecto,          */
+/* organizada según la metodología Atomic Design y optimizada para          */
+/* diseño mobile-first responsive.                                         */
+/* ======================================================================== */
+
+/* ======================================================================== */
+/* NIVEL 0: TOKENS DE REFERENCIA (Base)                                    */
+/* ======================================================================== */
+
 :root {
   /* --- Colores Corporativos de Referencia --- */
   /* Primario: Azul corporativo (#1E3A8A) - Confianza y profesionalismo */
+  --color-ref-primary-50: #EFF6FF;
+  --color-ref-primary-100: #DBEAFE;
+  --color-ref-primary-200: #BFDBFE;
+  --color-ref-primary-300: #93C5FD;
+  --color-ref-primary-400: #60A5FA;
   --color-ref-primary-500: #1E3A8A;
   --color-ref-primary-600: #1E40AF;
   --color-ref-primary-700: #1D4ED8;
   --color-ref-primary-800: #1E3A8A;
   --color-ref-primary-900: #172554;
+  --color-ref-primary-950: #0F1B3D;
 
   /* Secundario: Verde (#10B981) - Sostenibilidad */
+  --color-ref-secondary-50: #F0FDF4;
+  --color-ref-secondary-100: #DCFCE7;
+  --color-ref-secondary-200: #BBF7D0;
+  --color-ref-secondary-300: #86EFAC;
+  --color-ref-secondary-400: #4ADE80;
   --color-ref-secondary-500: #10B981;
   --color-ref-secondary-600: #059669;
   --color-ref-secondary-700: #047857;
+  --color-ref-secondary-800: #065F46;
+  --color-ref-secondary-900: #064E3B;
+  --color-ref-secondary-950: #022C22;
 
   /* Acento: Naranja (#F59E0B) - CTAs y destacados */
+  --color-ref-accent-50: #FFFBEB;
+  --color-ref-accent-100: #FEF3C7;
+  --color-ref-accent-200: #FDE68A;
+  --color-ref-accent-300: #FCD34D;
+  --color-ref-accent-400: #FBBF24;
   --color-ref-accent-500: #F59E0B;
   --color-ref-accent-600: #D97706;
   --color-ref-accent-700: #B45309;
+  --color-ref-accent-800: #92400E;
+  --color-ref-accent-900: #78350F;
+  --color-ref-accent-950: #451A03;
 
   /* Neutros: Grises según la guía */
   --color-ref-neutral-50: #F9FAFB;
   --color-ref-neutral-100: #E5E7EB;
   --color-ref-neutral-200: #E5E7EB;
+  --color-ref-neutral-300: #D1D5DB;
+  --color-ref-neutral-400: #9CA3AF;
+  --color-ref-neutral-500: #6B7280;
   --color-ref-neutral-600: #374151;
   --color-ref-neutral-700: #1F2937;
+  --color-ref-neutral-800: #111827;
+  --color-ref-neutral-900: #0F172A;
+  --color-ref-neutral-950: #030712;
 
   /* Backgrounds: Blanco + Beige claro */
+  --color-ref-white: #FFFFFF;
+  --color-ref-black: #000000;
   --color-ref-beige-50: #FAF8F5;
+  --color-ref-beige-100: #F5F1E8;
+  --color-ref-beige-200: #E8E0D1;
 
-  /* --- Redefinir Tokens Semánticos con Colores Corporativos --- */
+  /* --- Paleta Salem (Integrada) --- */
+  /* Verde esmeralda premium para uso específico */
+  --color-ref-salem-50: #c3ffd2;
+  --color-ref-salem-100: #1dfb81;
+  --color-ref-salem-200: #17d76d;
+  --color-ref-salem-300: #12b75c;
+  --color-ref-salem-400: #0d9a4c;
+  --color-ref-salem-500: #097f3e;
+  /* Base */
+  --color-ref-salem-600: #08783a;
+  --color-ref-salem-700: #076d35;
+  --color-ref-salem-800: #05622e;
+  --color-ref-salem-900: #045628;
+  --color-ref-salem-1000: #035024;
+  --color-ref-salem-1100: #034921;
+  --color-ref-salem-1200: #02431e;
+  --color-ref-salem-1300: #023c1a;
+  --color-ref-salem-1400: #023617;
+  --color-ref-salem-1500: #013013;
+  --color-ref-salem-1600: #012910;
+  --color-ref-salem-1700: #01230c;
+  --color-ref-salem-1800: #011c09;
+  --color-ref-salem-1900: #001506;
+
+  /* ======================================================================== */
+  /* NIVEL 1: TOKENS SEMÁNTICOS (Atomic Design - Atoms)                      */
+  /* ======================================================================== */
+
+  /* --- Colores Semánticos de Interacción (Botones) --- */
   --color-primary: var(--color-ref-primary-500);
   --color-primary-hover: var(--color-ref-primary-600);
+  --color-primary-active: var(--color-ref-primary-700);
+  --color-primary-light: var(--color-ref-primary-100);
+  --color-primary-dark: var(--color-ref-primary-900);
+
   --color-secondary: var(--color-ref-secondary-500);
   --color-secondary-hover: var(--color-ref-secondary-600);
+  --color-secondary-active: var(--color-ref-secondary-700);
+  --color-secondary-light: var(--color-ref-secondary-100);
+  --color-secondary-dark: var(--color-ref-secondary-900);
+
+  --color-accent: var(--color-ref-accent-500);
+  --color-accent-hover: var(--color-ref-accent-600);
+  --color-accent-active: var(--color-ref-accent-700);
+  --color-accent-light: var(--color-ref-accent-100);
+  --color-accent-dark: var(--color-ref-accent-900);
+
   --color-success: var(--color-ref-secondary-500);
   --color-success-hover: var(--color-ref-secondary-600);
   --color-warning: var(--color-ref-accent-500);
   --color-warning-hover: var(--color-ref-accent-600);
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+  --color-neutral: var(--color-ref-neutral-500);
+  --color-neutral-hover: var(--color-ref-neutral-600);
 
-  /* Superficies con beige claro */
+  /* --- Colores Semánticos de Superficie --- */
   --color-surface-page: var(--color-ref-white);
   --color-surface-card: var(--color-ref-white);
   --color-surface-header: var(--color-ref-white);
+  --color-surface-input: var(--color-ref-white);
   --color-surface-tertiary: var(--color-ref-beige-50);
+  --color-surface-overlay: rgba(0, 0, 0, 0.5);
+  --color-surface-glass: rgba(255, 255, 255, 0.1);
 
-  /* Tipografía mejorada */
+  /* --- Colores Semánticos de Texto --- */
+  --color-text-default: var(--color-ref-neutral-800);
+  --color-text-muted: var(--color-ref-neutral-600);
+  --color-text-light: var(--color-ref-neutral-400);
+  --color-text-on-primary: var(--color-ref-white);
+  --color-text-on-secondary: var(--color-ref-white);
+  --color-text-on-accent: var(--color-ref-white);
+  --color-text-on-success: var(--color-ref-white);
+  --color-text-on-warning: var(--color-ref-neutral-900);
+  --color-text-on-danger: var(--color-ref-white);
+  --color-text-on-neutral: var(--color-ref-white);
+  --color-text-danger: #ef4444;
+  --color-text-success: var(--color-ref-secondary-600);
+  --color-text-warning: var(--color-ref-accent-700);
+
+  /* --- Colores Semánticos de Borde --- */
+  --color-border-default: var(--color-ref-neutral-300);
+  --color-border-muted: var(--color-ref-neutral-100);
+  --color-border-focus: var(--color-primary);
+  --color-border-error: #ef4444;
+  --color-border-success: var(--color-ref-secondary-500);
+
+  /* --- Tipografía (Atoms) --- */
   /* Headings: Serif moderna (Playfair Display) */
   /* Body: Sans geométrica (Plus Jakarta Sans) */
   --font-family-heading: 'Playfair Display', serif;
   --font-family-body: 'Plus Jakarta Sans', sans-serif;
+  --font-family-mono: 'Fira Code', 'Courier New', monospace;
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
   --font-weight-heading: 700;
   --font-weight-body: 400;
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+  --line-height-loose: 1.8;
   --line-height-heading: 1.2;
   --line-height-body: 1.6;
+
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
   --letter-spacing-heading: -0.02em;
 
-  /* Tamaños de fuente según jerarquía de la guía */
-  /* H1 (48px), H2 (36px), H3 (24px), Body (16px) */
-  --font-size-h1: 3rem;
-  /* 48px */
-  --font-size-h2: 2.25rem;
+  /* Tamaños de fuente según jerarquía de la guía (Mobile-First) */
+  --font-size-xs: 0.75rem;
+  /* 12px */
+  --font-size-sm: 0.875rem;
+  /* 14px */
+  --font-size-base: 1rem;
+  /* 16px */
+  --font-size-lg: 1.125rem;
+  /* 18px */
+  --font-size-xl: 1.25rem;
+  /* 20px */
+  --font-size-2xl: 1.5rem;
+  /* 24px */
+  --font-size-3xl: 1.875rem;
+  /* 30px */
+  --font-size-4xl: 2.25rem;
   /* 36px */
-  --font-size-h3: 1.5rem;
-  /* 24px */
-  --font-size-body: 1rem;
-  /* 16px */
-
-  /* Espaciado: Sistema de 8px (8, 16, 24, 32, 48, 64, 96px) */
-  --spacing-ref-8: 0.5rem;
-  /* 8px */
-  --spacing-ref-16: 1rem;
-  /* 16px */
-  --spacing-ref-24: 1.5rem;
-  /* 24px */
-  --spacing-ref-32: 2rem;
-  /* 32px */
-  --spacing-ref-48: 3rem;
+  --font-size-5xl: 3rem;
   /* 48px */
-  --spacing-ref-64: 4rem;
-  /* 64px */
-  --spacing-ref-96: 6rem;
+  --font-size-6xl: 3.75rem;
+  /* 60px */
+  --font-size-7xl: 4.5rem;
+  /* 72px */
+  --font-size-8xl: 6rem;
   /* 96px */
 
-  /* Radios según la guía */
-  --radius-button: 0.375rem;
-  /* 6px */
-  --radius-card: 0.75rem;
+  /* Tamaños semánticos para jerarquía */
+  --font-size-h1: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+  /* 32px - 48px responsive */
+  --font-size-h2: clamp(1.5rem, 1.25rem + 1.25vw, 2.25rem);
+  /* 24px - 36px responsive */
+  --font-size-h3: clamp(1.25rem, 1.125rem + 0.625vw, 1.5rem);
+  /* 20px - 24px responsive */
+  --font-size-h4: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  /* 18px - 20px responsive */
+  --font-size-h5: 1.125rem;
+  /* 18px */
+  --font-size-h6: 1rem;
+  /* 16px */
+  --font-size-body: 1rem;
+  /* 16px */
+  --font-size-small: 0.875rem;
+  /* 14px */
+  --font-size-caption: 0.75rem;
   /* 12px */
-  --radius-input: 0.375rem;
+
+  /* --- Espaciado (Sistema de 8px - Mobile-First) --- */
+  --spacing-ref-0: 0;
+  --spacing-ref-1: 0.25rem;
+  /* 4px */
+  --spacing-ref-2: 0.5rem;
+  /* 8px */
+  --spacing-ref-3: 0.75rem;
+  /* 12px */
+  --spacing-ref-4: 1rem;
+  /* 16px */
+  --spacing-ref-5: 1.25rem;
+  /* 20px */
+  --spacing-ref-6: 1.5rem;
+  /* 24px */
+  --spacing-ref-8: 2rem;
+  /* 32px */
+  --spacing-ref-10: 2.5rem;
+  /* 40px */
+  --spacing-ref-12: 3rem;
+  /* 48px */
+  --spacing-ref-16: 4rem;
+  /* 64px */
+  --spacing-ref-20: 5rem;
+  /* 80px */
+  --spacing-ref-24: 6rem;
+  /* 96px */
+
+  /* Espaciado semántico */
+  --spacing-component-xs: var(--spacing-ref-2);
+  /* 8px */
+  --spacing-component-sm: var(--spacing-ref-3);
+  /* 12px */
+  --spacing-component-md: var(--spacing-ref-4);
+  /* 16px */
+  --spacing-component-lg: var(--spacing-ref-6);
+  /* 24px */
+  --spacing-component-xl: var(--spacing-ref-8);
+  /* 32px */
+
+  --spacing-section-sm: var(--spacing-ref-8);
+  /* 32px */
+  --spacing-section-md: var(--spacing-ref-12);
+  /* 48px */
+  --spacing-section-lg: var(--spacing-ref-16);
+  /* 64px */
+  --spacing-section-xl: var(--spacing-ref-24);
+  /* 96px */
+
+  /* --- Radios (Border Radius) --- */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;
+  /* 4px */
+  --radius-md: 0.375rem;
   /* 6px */
+  --radius-lg: 0.5rem;
+  /* 8px */
+  --radius-xl: 0.75rem;
+  /* 12px */
+  --radius-2xl: 1rem;
+  /* 16px */
+  --radius-3xl: 1.5rem;
+  /* 24px */
+  --radius-full: 9999px;
 
-  /* Transiciones */
-  --transition-default: all 0.3s ease;
+  /* Radios semánticos */
+  --radius-button: var(--radius-md);
+  /* 6px */
+  --radius-button-lg: var(--radius-xl);
+  /* 12px */
+  --radius-card: var(--radius-xl);
+  /* 12px */
+  --radius-card-lg: var(--radius-2xl);
+  /* 16px */
+  --radius-input: var(--radius-md);
+  /* 6px */
+  --radius-badge: var(--radius-full);
+  /* pill */
+  --radius-image: var(--radius-lg);
+  /* 8px */
 
-  /* Sombras coloreadas */
+  /* --- Sombras (Elevation) --- */
+  --shadow-none: none;
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+
+  /* Sombras coloreadas (Brand Identity) */
   --shadow-primary: 0 10px 25px -5px rgba(30, 58, 138, 0.2), 0 10px 10px -5px rgba(30, 58, 138, 0.1);
   --shadow-secondary: 0 10px 25px -5px rgba(16, 185, 129, 0.2), 0 10px 10px -5px rgba(16, 185, 129, 0.1);
   --shadow-accent: 0 10px 25px -5px rgba(245, 158, 11, 0.2), 0 10px 10px -5px rgba(245, 158, 11, 0.1);
+  --shadow-salem: 0 10px 25px -5px rgba(9, 127, 62, 0.2), 0 10px 10px -5px rgba(9, 127, 62, 0.1);
+
+  /* Elevación semántica */
+  --elevation-0: var(--shadow-none);
+  --elevation-1: var(--shadow-sm);
+  --elevation-2: var(--shadow-md);
+  --elevation-3: var(--shadow-lg);
+  --elevation-4: var(--shadow-xl);
+  --elevation-5: var(--shadow-2xl);
+
+  /* --- Transiciones --- */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+  --transition-slower: 500ms ease;
+  --transition-default: all 300ms ease;
+  --transition-colors: color 200ms ease, background-color 200ms ease, border-color 200ms ease;
+  --transition-transform: transform 300ms ease;
+  --transition-opacity: opacity 200ms ease;
+  --transition-shadow: box-shadow 300ms ease;
+
+  /* --- Z-Index Scale (Atomic Design Layers) --- */
+  --z-base: 0;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
 }
 
 /* ======================================================================== */
-/* ANIMACIONES PERSONALIZADAS                                               */
+/* NIVEL 2: TOKENS DE COMPONENTE (Molecules & Organisms)                    */
 /* ======================================================================== */
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+:root {
+  /* --- Tokens de Button (Atom) --- */
+  --button-height-xs: 2rem;
+  /* 32px */
+  --button-height-sm: 2.5rem;
+  /* 40px */
+  --button-height-md: 3rem;
+  /* 48px */
+  --button-height-lg: 3.5rem;
+  /* 56px - Touch Target WCAG 2.2 */
+  --button-height-xl: 4rem;
+  /* 64px */
+
+  --button-padding-x-xs: 0.75rem;
+  /* 12px */
+  --button-padding-x-sm: 1rem;
+  /* 16px */
+  --button-padding-x-md: 1.5rem;
+  /* 24px */
+  --button-padding-x-lg: 2rem;
+  /* 32px */
+  --button-padding-x-xl: 2.5rem;
+  /* 40px */
+
+  --button-padding-y-xs: 0.375rem;
+  /* 6px */
+  --button-padding-y-sm: 0.5rem;
+  /* 8px */
+  --button-padding-y-md: 0.75rem;
+  /* 12px */
+  --button-padding-y-lg: 1rem;
+  /* 16px */
+  --button-padding-y-xl: 1.25rem;
+  /* 20px */
+
+  --button-font-size-xs: var(--font-size-xs);
+  --button-font-size-sm: var(--font-size-sm);
+  --button-font-size-md: var(--font-size-base);
+  --button-font-size-lg: var(--font-size-lg);
+  --button-font-size-xl: var(--font-size-xl);
+
+  --button-radius: var(--radius-button);
+  --button-radius-lg: var(--radius-button-lg);
+
+  /* --- Tokens de Input (Atom) --- */
+  --input-height-sm: 2.5rem;
+  /* 40px */
+  --input-height-md: 3rem;
+  /* 48px */
+  --input-height-lg: 3.5rem;
+  /* 56px - Touch Target WCAG 2.2 */
+
+  --input-padding-x-sm: 0.75rem;
+  /* 12px */
+  --input-padding-x-md: 1rem;
+  /* 16px */
+  --input-padding-x-lg: 1.25rem;
+  /* 20px */
+
+  --input-padding-y-sm: 0.5rem;
+  /* 8px */
+  --input-padding-y-md: 0.75rem;
+  /* 12px */
+  --input-padding-y-lg: 1rem;
+  /* 16px */
+
+  --input-font-size-sm: var(--font-size-sm);
+  --input-font-size-md: var(--font-size-base);
+  --input-font-size-lg: var(--font-size-lg);
+
+  --input-border-width: 1px;
+  --input-border-width-focus: 2px;
+  --input-radius: var(--radius-input);
+
+  /* --- Tokens de Card (Molecule) --- */
+  --card-padding-sm: var(--spacing-ref-3);
+  /* 12px */
+  --card-padding-md: var(--spacing-ref-4);
+  /* 16px */
+  --card-padding-lg: var(--spacing-ref-6);
+  /* 24px */
+  --card-padding-xl: var(--spacing-ref-8);
+  /* 32px */
+
+  --card-radius: var(--radius-card);
+  --card-radius-lg: var(--radius-card-lg);
+  --card-gap: var(--spacing-ref-4);
+  /* 16px */
+
+  /* --- Tokens de Badge/Tag (Atom) --- */
+  --badge-height-sm: 1.25rem;
+  /* 20px */
+  --badge-height-md: 1.5rem;
+  /* 24px */
+  --badge-height-lg: 1.75rem;
+  /* 28px */
+
+  --badge-padding-x-sm: 0.5rem;
+  /* 8px */
+  --badge-padding-x-md: 0.75rem;
+  /* 12px */
+  --badge-padding-x-lg: 1rem;
+  /* 16px */
+
+  --badge-font-size-sm: 0.625rem;
+  /* 10px */
+  --badge-font-size-md: 0.75rem;
+  /* 12px */
+  --badge-font-size-lg: 0.875rem;
+  /* 14px */
+
+  --badge-radius: var(--radius-badge);
+
+  /* --- Tokens de Container (Organism) --- */
+  --container-padding-x-sm: var(--spacing-ref-4);
+  /* 16px mobile */
+  --container-padding-x-md: var(--spacing-ref-6);
+  /* 24px tablet */
+  --container-padding-x-lg: var(--spacing-ref-8);
+  /* 32px desktop */
+  --container-max-width-sm: 640px;
+  --container-max-width-md: 768px;
+  --container-max-width-lg: 1024px;
+  --container-max-width-xl: 1280px;
+  --container-max-width-2xl: 1536px;
+}
+
+/* ======================================================================== */
+/* TAILWIND V4 - INTEGRACIÓN DE TOKENS EN @theme                           */
+/* ======================================================================== */
+
+@theme {
+  /* Paleta Salem integrada en Tailwind */
+  --color-salem-50: #c3ffd2;
+  --color-salem-100: #1dfb81;
+  --color-salem-200: #17d76d;
+  --color-salem-300: #12b75c;
+  --color-salem-400: #0d9a4c;
+  --color-salem-500: #097f3e;
+  --color-salem-600: #08783a;
+  --color-salem-700: #076d35;
+  --color-salem-800: #05622e;
+  --color-salem-900: #045628;
+  --color-salem-1000: #035024;
+  --color-salem-1100: #034921;
+  --color-salem-1200: #02431e;
+  --color-salem-1300: #023c1a;
+  --color-salem-1400: #023617;
+  --color-salem-1500: #013013;
+  --color-salem-1600: #012910;
+  --color-salem-1700: #01230c;
+  --color-salem-1800: #011c09;
+  --color-salem-1900: #001506;
+
+  /* Fuentes para Tailwind */
+  --font-family-sans: var(--font-family-body);
+  --font-family-serif: var(--font-family-heading);
+  --font-family-mono: var(--font-family-mono);
+
+  /* Breakpoints personalizados (Mobile-First) */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
+
+/* ======================================================================== */
+/* ESTILOS BASE GLOBALES (Atomic Design - Base Layer)                      */
+/* ======================================================================== */
+
+@layer base {
+  * {
+    border-color: var(--color-border-default);
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  html {
+    font-family: var(--font-family-body);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-surface-page);
+    color: var(--color-text-default);
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    font-weight: var(--font-weight-body);
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Tipografía semántica */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .heading {
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-heading);
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--letter-spacing-heading);
+    color: var(--color-text-default);
+  }
+
+  h1,
+  .h1 {
+    font-size: var(--font-size-h1);
+  }
+
+  h2,
+  .h2 {
+    font-size: var(--font-size-h2);
+  }
+
+  h3,
+  .h3 {
+    font-size: var(--font-size-h3);
+  }
+
+  h4,
+  .h4 {
+    font-size: var(--font-size-h4);
+  }
+
+  h5,
+  .h5 {
+    font-size: var(--font-size-h5);
+  }
+
+  h6,
+  .h6 {
+    font-size: var(--font-size-h6);
+  }
+
+  p {
+    margin-bottom: var(--spacing-ref-4);
+    line-height: var(--line-height-relaxed);
+  }
+
+  a {
+    color: var(--color-primary);
+    transition: color var(--transition-base);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-primary-hover);
+  }
+
+  /* Focus visible para accesibilidad */
+  :focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
   }
 }
 
-.animate-fade-in {
-  animation: fade-in 0.8s ease-out;
-}
-
-/* Mejoras de hover para cards */
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-/* Glassmorphism effect */
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
 /* ======================================================================== */
-/* ANIMACIONES MAGIC UI                                                     */
+/* COMPONENTES ATOMIC DESIGN - ATOMS                                       */
 /* ======================================================================== */
 
-@keyframes shimmer-slide {
-  0% {
-    transform: translateX(-100%) translateY(-100%) rotate(-45deg);
+@layer components {
+
+  /* --- Buttons (Atom) --- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-semibold);
+    transition: all var(--transition-slow);
+    outline: none;
+    border: none;
+    cursor: pointer;
+    min-height: var(--button-height-lg);
+    /* WCAG 2.2 - 44px mínimo */
+    border-radius: var(--button-radius);
   }
 
-  100% {
-    transform: translateX(100%) translateY(100%) rotate(-45deg);
+  .btn:focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Button Sizes */
+  .btn-xs {
+    min-height: var(--button-height-xs);
+    padding: var(--button-padding-y-xs) var(--button-padding-x-xs);
+    font-size: var(--button-font-size-xs);
+  }
+
+  .btn-sm {
+    min-height: var(--button-height-sm);
+    padding: var(--button-padding-y-sm) var(--button-padding-x-sm);
+    font-size: var(--button-font-size-sm);
+  }
+
+  .btn-md {
+    min-height: var(--button-height-md);
+    padding: var(--button-padding-y-md) var(--button-padding-x-md);
+    font-size: var(--button-font-size-md);
+  }
+
+  .btn-lg {
+    min-height: var(--button-height-lg);
+    padding: var(--button-padding-y-lg) var(--button-padding-x-lg);
+    font-size: var(--button-font-size-lg);
+    border-radius: var(--button-radius-lg);
+  }
+
+  .btn-xl {
+    min-height: var(--button-height-xl);
+    padding: var(--button-padding-y-xl) var(--button-padding-x-xl);
+    font-size: var(--button-font-size-xl);
+  }
+
+  /* Button Variants */
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-primary:active {
+    background-color: var(--color-primary-active);
+  }
+
+  .btn-primary:focus-visible {
+    outline-color: var(--color-primary);
+  }
+
+  .btn-secondary {
+    border: 2px solid var(--color-primary);
+    background-color: var(--color-ref-white);
+    color: var(--color-primary);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-on-primary);
+  }
+
+  .btn-secondary:active {
+    background-color: var(--color-primary-active);
+  }
+
+  .btn-secondary:focus-visible {
+    outline-color: var(--color-primary);
+  }
+
+  .btn-accent {
+    background-color: var(--color-accent);
+    color: var(--color-text-on-accent);
+  }
+
+  .btn-accent:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-accent:active {
+    background-color: var(--color-accent-active);
+  }
+
+  .btn-accent:focus-visible {
+    outline-color: var(--color-accent);
+  }
+
+  .btn-success {
+    background-color: var(--color-success);
+    color: var(--color-text-on-success);
+  }
+
+  .btn-success:hover {
+    background-color: var(--color-success-hover);
+  }
+
+  .btn-success:focus-visible {
+    outline-color: var(--color-success);
+  }
+
+  .btn-danger {
+    background-color: var(--color-danger);
+    color: var(--color-text-on-danger);
+  }
+
+  .btn-danger:hover {
+    background-color: var(--color-danger-hover);
+  }
+
+  .btn-danger:focus-visible {
+    outline-color: var(--color-danger);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--color-primary);
+  }
+
+  .btn-ghost:hover {
+    background-color: var(--color-primary-light);
+  }
+
+  .btn-ghost:focus-visible {
+    outline-color: var(--color-primary);
+  }
+
+  .btn-outline {
+    border: 2px solid currentColor;
+    background-color: transparent;
+  }
+
+  .btn-outline:hover {
+    background-color: currentColor;
+    color: var(--color-ref-white);
+  }
+
+  /* Button Effects */
+  .btn-ripple {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-gradient {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+    color: var(--color-text-on-primary);
+  }
+
+  /* --- Inputs (Atom) --- */
+  .input {
+    width: 100%;
+    border: var(--input-border-width) solid var(--color-border-default);
+    background-color: var(--color-surface-input);
+    color: var(--color-text-default);
+    transition: all var(--transition-base);
+    border-radius: var(--input-radius);
+    font-family: var(--font-family-body);
+  }
+
+  .input:focus {
+    outline: none;
+    border-width: var(--input-border-width-focus);
+    border-color: var(--color-border-focus);
+    box-shadow: 0 0 0 2px var(--color-primary-light);
+  }
+
+  .input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .input::placeholder {
+    color: var(--color-text-light);
+  }
+
+  /* Input Sizes */
+  .input-sm {
+    min-height: var(--input-height-sm);
+    padding: var(--input-padding-y-sm) var(--input-padding-x-sm);
+    font-size: var(--input-font-size-sm);
+  }
+
+  .input-md {
+    min-height: var(--input-height-md);
+    padding: var(--input-padding-y-md) var(--input-padding-x-md);
+    font-size: var(--input-font-size-md);
+  }
+
+  .input-lg {
+    min-height: var(--input-height-lg);
+    padding: var(--input-padding-y-lg) var(--input-padding-x-lg);
+    font-size: var(--input-font-size-lg);
+  }
+
+  /* Input States */
+  .input-error {
+    border-color: var(--color-border-error);
+  }
+
+  .input-error:focus {
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+  }
+
+  .input-success {
+    border-color: var(--color-border-success);
+  }
+
+  .input-success:focus {
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  }
+
+  /* Input Types - Se aplican automáticamente las clases .input .input-md */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="password"],
+  input[type="search"],
+  textarea,
+  select {
+    /* Estilos aplicados mediante clases utilitarias .input .input-md */
+    box-sizing: border-box;
+  }
+
+  /* Checkbox & Radio */
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 1px solid var(--color-border-default);
+    color: var(--color-primary);
+    cursor: pointer;
+    accent-color: var(--color-primary);
+  }
+
+  input[type="checkbox"]:focus-visible,
+  input[type="radio"]:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* --- Badges/Tags (Atom) --- */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-medium);
+    border-radius: var(--badge-radius);
+  }
+
+  .badge-sm {
+    min-height: var(--badge-height-sm);
+    padding: 0 var(--badge-padding-x-sm);
+    font-size: var(--badge-font-size-sm);
+  }
+
+  .badge-md {
+    min-height: var(--badge-height-md);
+    padding: 0 var(--badge-padding-x-md);
+    font-size: var(--badge-font-size-md);
+  }
+
+  .badge-lg {
+    min-height: var(--badge-height-lg);
+    padding: 0 var(--badge-padding-x-lg);
+    font-size: var(--badge-font-size-lg);
+  }
+
+  .badge-primary {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .badge-secondary {
+    background-color: var(--color-secondary-light);
+    color: var(--color-secondary);
+  }
+
+  .badge-accent {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent);
+  }
+
+  .badge-neutral {
+    background-color: var(--color-ref-neutral-100);
+    color: var(--color-ref-neutral-700);
+  }
+
+  /* --- Cards (Molecule) --- */
+  .card {
+    background-color: var(--color-surface-card);
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-slow);
+    overflow: hidden;
+    padding: var(--card-padding-md);
+  }
+
+  .card-sm {
+    padding: var(--card-padding-sm);
+  }
+
+  .card-lg {
+    padding: var(--card-padding-lg);
+    border-radius: var(--card-radius-lg);
+  }
+
+  .card-xl {
+    padding: var(--card-padding-xl);
+    border-radius: var(--card-radius-lg);
+  }
+
+  .card-hover:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  .card-glass {
+    background-color: var(--color-surface-glass);
+    backdrop-filter: blur(2rem);
+    -webkit-backdrop-filter: blur(2rem);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 30px 80px rgba(2, 6, 23, 0.75);
+  }
+
+  .card-bordered {
+    border: 1px solid var(--color-border-default);
+  }
+
+  /* --- Images (Atom) --- */
+  .image-responsive {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: var(--radius-image);
+  }
+
+  .image-rounded {
+    border-radius: var(--radius-full);
+  }
+
+  /* --- Icons (Atom) --- */
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .icon-sm {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .icon-md {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .icon-lg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .icon-xl {
+    width: 2rem;
+    height: 2rem;
   }
 }
 
-@keyframes spin-around {
-  0% {
-    transform: translateX(-50%) translateY(-50%) rotate(0deg);
+/* ======================================================================== */
+/* COMPONENTES ATOMIC DESIGN - MOLECULES                                    */
+/* ======================================================================== */
+
+@layer components {
+
+  /* --- Form Groups (Molecule) --- */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-ref-2);
   }
 
-  100% {
-    transform: translateX(-50%) translateY(-50%) rotate(360deg);
+  .form-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-default);
+  }
+
+  .form-error {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-danger);
+  }
+
+  .form-help {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* --- Navigation Items (Molecule) --- */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-ref-2);
+    padding: var(--spacing-ref-2) var(--spacing-ref-4);
+    color: var(--color-text-default);
+    transition: color var(--transition-base), background-color var(--transition-base);
+    border-radius: var(--radius-lg);
+    min-height: 44px;
+    /* Touch target */
+  }
+
+  .nav-item:hover {
+    background-color: var(--color-surface-tertiary);
+  }
+
+  .nav-item-active {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* --- Product Card (Molecule) --- */
+  .product-card {
+    /* Extiende .card y .card-hover - usar clases: card card-hover */
+    /* Esta clase es un alias semántico para facilitar el uso */
+    display: block;
+  }
+
+  .product-card-image {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+  }
+
+  .product-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slower);
+  }
+
+  .product-card:hover .product-card-image img {
+    transform: scale(1.05);
+  }
+
+  .product-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-ref-2);
+    padding: var(--card-padding-sm);
+  }
+
+  /* --- Feature List (Molecule) --- */
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-ref-4);
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-ref-3);
+  }
+
+  .feature-icon {
+    /* Extiende .icon .icon-md */
+    color: var(--color-primary);
+    flex-shrink: 0;
+    margin-top: 0.125rem;
   }
 }
 
-.animate-shimmer-slide {
-  animation: shimmer-slide var(--speed, 3s) linear infinite;
-}
+/* ======================================================================== */
+/* COMPONENTES ATOMIC DESIGN - ORGANISMS                                    */
+/* ======================================================================== */
 
-.animate-spin-around {
-  animation: spin-around calc(var(--speed, 3s) * 2) linear infinite;
+@layer components {
+
+  /* --- Header (Organism) --- */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-fixed);
+    background-color: var(--color-surface-header);
+    backdrop-filter: blur(1rem);
+    -webkit-backdrop-filter: blur(1rem);
+    border-bottom: 1px solid var(--color-border-muted);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* --- Footer (Organism) --- */
+  .footer {
+    background-color: var(--color-surface-tertiary);
+    border-top: 1px solid var(--color-border-muted);
+    padding-top: var(--spacing-section-md);
+    padding-bottom: var(--spacing-section-md);
+  }
+
+  /* --- Container (Organism) --- */
+  .container-responsive {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-padding-x-sm);
+    padding-right: var(--container-padding-x-sm);
+  }
+
+  @media (min-width: 640px) {
+    .container-responsive {
+      padding-left: var(--container-padding-x-md);
+      padding-right: var(--container-padding-x-md);
+      max-width: var(--container-max-width-sm);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .container-responsive {
+      max-width: var(--container-max-width-md);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-responsive {
+      padding-left: var(--container-padding-x-lg);
+      padding-right: var(--container-padding-x-lg);
+      max-width: var(--container-max-width-lg);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .container-responsive {
+      max-width: var(--container-max-width-xl);
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .container-responsive {
+      max-width: var(--container-max-width-2xl);
+    }
+  }
+
+  /* --- Grid Systems (Organism) --- */
+  .grid-responsive {
+    display: grid;
+    gap: var(--spacing-ref-4);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  @media (min-width: 640px) {
+    .grid-responsive {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-responsive {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .grid-responsive {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* --- Hero Section (Organism) --- */
+  .hero-section {
+    position: relative;
+    overflow: hidden;
+    padding-top: var(--spacing-section-lg);
+    padding-bottom: var(--spacing-section-lg);
+    background: linear-gradient(to bottom right, var(--color-surface-page), var(--color-surface-tertiary), var(--color-surface-page));
+  }
+
+  .hero-content {
+    /* Extiende .container-responsive */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-ref-6);
+  }
+
+  .hero-title {
+    /* Extiende .h1 */
+    max-width: 48rem;
+    /* 3xl */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-description {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 42rem;
+    /* 2xl */
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 /* ======================================================================== */
-/* TIPOGRAFÍA MEJORADA                                                      */
+/* ANIMACIONES Y EFECTOS                                                   */
 /* ======================================================================== */
 
-body {
-  font-family: var(--font-family-body);
-}
+@layer utilities {
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.heading {
-  font-family: var(--font-family-heading);
-  letter-spacing: var(--letter-spacing-heading);
+  /* --- Animaciones Base --- */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes slide-in {
+    from {
+      transform: translateX(20px);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-out {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-down {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scale-out {
+    from {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    to {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+  }
+
+  /* --- Animaciones Magic UI --- */
+  @keyframes shimmer-slide {
+    0% {
+      transform: translateX(-100%) translateY(-100%) rotate(-45deg);
+    }
+
+    100% {
+      transform: translateX(100%) translateY(100%) rotate(-45deg);
+    }
+  }
+
+  @keyframes spin-around {
+    0% {
+      transform: translateX(-50%) translateY(-50%) rotate(0deg);
+    }
+
+    100% {
+      transform: translateX(-50%) translateY(-50%) rotate(360deg);
+    }
+  }
+
+  @keyframes rippling {
+    0% {
+      opacity: 1;
+      transform: scale(0);
+    }
+
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(calc(-100% - var(--gap, 1rem)));
+    }
+  }
+
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+
+    to {
+      transform: translateY(calc(-100% - var(--gap, 1rem)));
+    }
+  }
+
+  @keyframes orbit {
+    from {
+      transform: rotate(0deg) translateX(var(--radius, 160px)) rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg) translateX(var(--radius, 160px)) rotate(-360deg);
+    }
+  }
+
+  /* --- Utility Classes para Animaciones --- */
+  .animate-fade-in {
+    animation: fade-in 0.8s ease-out;
+  }
+
+  .animate-fade-out {
+    animation: fade-out 0.3s ease-in;
+  }
+
+  .animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+  }
+
+  .animate-slide-out {
+    animation: slide-out 0.3s ease-in;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
+  }
+
+  .animate-slide-down {
+    animation: slide-down 0.3s ease-in;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.2s ease-out;
+  }
+
+  .animate-scale-out {
+    animation: scale-out 0.2s ease-in;
+  }
+
+  .animate-rippling {
+    animation: rippling var(--duration, 600ms) ease-out;
+  }
+
+  .animate-shimmer-slide {
+    animation: shimmer-slide var(--speed, 3s) linear infinite;
+  }
+
+  .animate-spin-around {
+    animation: spin-around calc(var(--speed, 3s) * 2) linear infinite;
+  }
+
+  .animate-marquee {
+    animation: marquee var(--duration, 40s) linear infinite;
+  }
+
+  .animate-marquee-vertical {
+    animation: marquee-vertical var(--duration, 40s) linear infinite;
+  }
+
+  .animate-orbit {
+    animation: orbit var(--duration, 20s) linear infinite;
+    transform-origin: center;
+  }
+
+  /* --- Efectos de Hover --- */
+  .hover-lift {
+    transition: transform var(--transition-slow), box-shadow var(--transition-slow);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .hover-lift-lg:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .hover-scale {
+    transition: transform var(--transition-slow);
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+
+  .hover-glow {
+    transition: box-shadow var(--transition-slow);
+  }
+
+  .hover-glow:hover {
+    box-shadow: var(--shadow-primary);
+  }
+
+  /* --- Glassmorphism --- */
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  /* --- Gradientes --- */
+  .gradient-primary {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+  }
+
+  .gradient-secondary {
+    background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-hover) 100%);
+  }
+
+  .gradient-accent {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  }
+
+  .gradient-salem {
+    background: linear-gradient(135deg, var(--color-ref-salem-500) 0%, var(--color-ref-salem-700) 100%);
+  }
+
+  /* --- Sombras Coloreadas --- */
+  .shadow-colored-primary {
+    box-shadow: var(--shadow-primary);
+  }
+
+  .shadow-colored-secondary {
+    box-shadow: var(--shadow-secondary);
+  }
+
+  .shadow-colored-accent {
+    box-shadow: var(--shadow-accent);
+  }
+
+  .shadow-colored-salem {
+    box-shadow: var(--shadow-salem);
+  }
+
+  .hover-shadow-primary:hover {
+    box-shadow: var(--shadow-primary);
+    transform: translateY(-2px);
+    transition: all var(--transition-slow);
+  }
+
+  .hover-shadow-secondary:hover {
+    box-shadow: var(--shadow-secondary);
+    transform: translateY(-2px);
+    transition: all var(--transition-slow);
+  }
+
+  .hover-shadow-salem:hover {
+    box-shadow: var(--shadow-salem);
+    transform: translateY(-2px);
+    transition: all var(--transition-slow);
+  }
 }
 
 /* ======================================================================== */
-/* GRADIENTES Y SOMBRAS COLOREADAS                                          */
+/* UTILIDADES RESPONSIVE (Mobile-First)                                     */
 /* ======================================================================== */
 
-.gradient-primary {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
-}
+@layer utilities {
 
-.gradient-secondary {
-  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-hover) 100%);
-}
+  /* --- Safe Area Utilities (Mobile Design 2025) --- */
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
 
-.gradient-accent {
-  background: linear-gradient(135deg, var(--color-warning) 0%, var(--color-warning-hover) 100%);
-}
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 
-.shadow-colored-primary {
-  box-shadow: var(--shadow-primary);
-}
+  .pl-safe {
+    padding-left: env(safe-area-inset-left);
+  }
 
-.shadow-colored-secondary {
-  box-shadow: var(--shadow-secondary);
-}
+  .pr-safe {
+    padding-right: env(safe-area-inset-right);
+  }
 
-.shadow-colored-accent {
-  box-shadow: var(--shadow-accent);
-}
+  .px-safe {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
 
-/* Hover effects con sombras coloreadas */
-.hover-shadow-primary:hover {
-  box-shadow: var(--shadow-primary);
-  transform: translateY(-2px);
-  transition: all 0.3s ease;
-}
+  .py-safe {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 
-.hover-shadow-secondary:hover {
-  box-shadow: var(--shadow-secondary);
-  transform: translateY(-2px);
-  transition: all 0.3s ease;
+  .p-safe {
+    padding-top: env(safe-area-inset-top);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .mt-safe {
+    margin-top: env(safe-area-inset-top);
+  }
+
+  .mb-safe {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+
+  .ml-safe {
+    margin-left: env(safe-area-inset-left);
+  }
+
+  .mr-safe {
+    margin-right: env(safe-area-inset-right);
+  }
+
+  .inset-safe {
+    top: env(safe-area-inset-top);
+    right: env(safe-area-inset-right);
+    bottom: env(safe-area-inset-bottom);
+    left: env(safe-area-inset-left);
+  }
+
+  .bottom-safe {
+    bottom: env(safe-area-inset-bottom);
+  }
+
+  .top-safe {
+    top: env(safe-area-inset-top);
+  }
+
+  /* --- Touch Target Sizes (WCAG 2.2 - Minimum 44x44px) --- */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .touch-target-icon {
+    padding: 0.5rem;
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* --- Fluid Typography (Mobile Design 2025) --- */
+  .text-fluid-xs {
+    font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  }
+
+  .text-fluid-sm {
+    font-size: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  }
+
+  .text-fluid-base {
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  }
+
+  .text-fluid-lg {
+    font-size: clamp(1.125rem, 1rem + 0.625vw, 1.5rem);
+  }
+
+  .text-fluid-xl {
+    font-size: clamp(1.25rem, 1.1rem + 0.75vw, 1.875rem);
+  }
+
+  .text-fluid-2xl {
+    font-size: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);
+  }
+
+  .text-fluid-3xl {
+    font-size: clamp(1.875rem, 1.5rem + 1.875vw, 3rem);
+  }
+
+  .text-fluid-4xl {
+    font-size: clamp(2.25rem, 1.8rem + 2.25vw, 4rem);
+  }
+
+  .text-fluid-5xl {
+    font-size: clamp(3rem, 2.4rem + 3vw, 5rem);
+  }
+
+  /* --- Scroll Optimizations --- */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* --- Snap Scrolling --- */
+  .snap-x {
+    scroll-snap-type: x mandatory;
+  }
+
+  .snap-center {
+    scroll-snap-align: center;
+  }
+
+  .snap-start {
+    scroll-snap-align: start;
+  }
+
+  .snap-mandatory {
+    scroll-snap-type: x mandatory;
+  }
+
+  /* --- Line Clamp Utilities --- */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* --- Container Queries Support (Tailwind v4) --- */
+  /* Nota: Las clases con @ son sintaxis de Tailwind v4 para container queries */
+  /* Se aplican automáticamente cuando se usan en componentes con @container */
+  @container (min-width: 384px) {
+    /* Container query para breakpoint sm */
+  }
+
+  @container (min-width: 640px) {
+    /* Container query para breakpoint md */
+  }
 }
 
 /* ======================================================================== */
@@ -253,263 +1813,28 @@ h6,
   animation-name: fade-in, slide-in;
 }
 
-@keyframes fade-out {
-  from {
-    opacity: 1;
-  }
+/* ======================================================================== */
+/* DARK MODE (Opcional - Preparado para futuro)                            */
+/* ======================================================================== */
 
-  to {
-    opacity: 0;
-  }
-}
+@layer base {
+  .dark {
+    /* Redefinir tokens semánticos para dark mode */
+    --color-surface-page: var(--color-ref-neutral-900);
+    --color-surface-card: var(--color-ref-neutral-800);
+    --color-surface-header: var(--color-ref-neutral-900);
+    --color-surface-input: var(--color-ref-neutral-800);
+    --color-surface-tertiary: var(--color-ref-neutral-700);
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
+    --color-text-default: var(--color-ref-neutral-100);
+    --color-text-muted: var(--color-ref-neutral-300);
+    --color-text-light: var(--color-ref-neutral-500);
 
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slide-out {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-20px);
-  }
-}
-
-@keyframes slide-in {
-  from {
-    transform: translateX(20px);
-  }
-
-  to {
-    transform: translateX(0);
+    --color-border-default: var(--color-ref-neutral-700);
+    --color-border-muted: var(--color-ref-neutral-800);
   }
 }
 
 /* ======================================================================== */
-/* SAFE AREA UTILITIES (Mobile Design 2025)                                */
+/* FIN DEL SISTEMA DE DISEÑO                                                */
 /* ======================================================================== */
-
-/* Safe area padding utilities para notches y home indicators */
-.pt-safe {
-  padding-top: env(safe-area-inset-top);
-}
-
-.pb-safe {
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.pl-safe {
-  padding-left: env(safe-area-inset-left);
-}
-
-.pr-safe {
-  padding-right: env(safe-area-inset-right);
-}
-
-.px-safe {
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-}
-
-.py-safe {
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.p-safe {
-  padding-top: env(safe-area-inset-top);
-  padding-right: env(safe-area-inset-right);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-}
-
-/* Safe area margins */
-.mt-safe {
-  margin-top: env(safe-area-inset-top);
-}
-
-.mb-safe {
-  margin-bottom: env(safe-area-inset-bottom);
-}
-
-.ml-safe {
-  margin-left: env(safe-area-inset-left);
-}
-
-.mr-safe {
-  margin-right: env(safe-area-inset-right);
-}
-
-/* Safe area insets para posicionamiento */
-.inset-safe {
-  top: env(safe-area-inset-top);
-  right: env(safe-area-inset-right);
-  bottom: env(safe-area-inset-bottom);
-  left: env(safe-area-inset-left);
-}
-
-.bottom-safe {
-  bottom: env(safe-area-inset-bottom);
-}
-
-.top-safe {
-  top: env(safe-area-inset-top);
-}
-
-/* ======================================================================== */
-/* FLUID TYPOGRAPHY (Mobile Design 2025)                                   */
-/* ======================================================================== */
-
-/* Tipografía fluida usando clamp() para mejor legibilidad en móvil */
-.text-fluid-xs {
-  font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-}
-
-.text-fluid-sm {
-  font-size: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
-}
-
-.text-fluid-base {
-  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-}
-
-.text-fluid-lg {
-  font-size: clamp(1.125rem, 1rem + 0.625vw, 1.5rem);
-}
-
-.text-fluid-xl {
-  font-size: clamp(1.25rem, 1.1rem + 0.75vw, 1.875rem);
-}
-
-.text-fluid-2xl {
-  font-size: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);
-}
-
-.text-fluid-3xl {
-  font-size: clamp(1.875rem, 1.5rem + 1.875vw, 3rem);
-}
-
-.text-fluid-4xl {
-  font-size: clamp(2.25rem, 1.8rem + 2.25vw, 4rem);
-}
-
-.text-fluid-5xl {
-  font-size: clamp(3rem, 2.4rem + 3vw, 5rem);
-}
-
-/* ======================================================================== */
-/* TOUCH TARGET SIZES (WCAG 2.2 - Minimum 44x44px)                         */
-/* ======================================================================== */
-
-/* Clase base para asegurar target size mínimo */
-.touch-target {
-  min-height: 44px;
-  min-width: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Para iconos pequeños, añadir padding transparente */
-.touch-target-icon {
-  padding: 0.5rem;
-  min-height: 44px;
-  min-width: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ======================================================================== */
-/* CONTAINER QUERIES SUPPORT (Tailwind v4)                                  */
-/* ======================================================================== */
-
-/* Container queries para componentes responsivos */
-@container (min-width: 384px) {
-  .@sm\:text-base {
-    font-size: 1rem;
-  }
-
-  .@sm\:p-4 {
-    padding: 1rem;
-  }
-}
-
-@container (min-width: 640px) {
-  .@md\:flex-row {
-    flex-direction: row;
-  }
-}
-
-/* ======================================================================== */
-/* MOBILE OPTIMIZATIONS                                                    */
-/* ======================================================================== */
-
-/* Prevenir rebote elástico en iOS */
-body {
-  overscroll-behavior-y: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Mejorar rendimiento de scroll en móvil */
-.scroll-smooth {
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Snap scrolling para carruseles horizontales */
-.snap-x {
-  scroll-snap-type: x mandatory;
-}
-
-.snap-center {
-  scroll-snap-align: center;
-}
-
-.snap-start {
-  scroll-snap-align: start;
-}
-
-.snap-mandatory {
-  scroll-snap-type: x mandatory;
-}
-
-/* Ocultar scrollbar pero mantener funcionalidad */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Line clamp utilities */
-.line-clamp-1 {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}

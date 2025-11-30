@@ -5,7 +5,10 @@
 	import CTAButtons from "$lib/components/molecules/CTAButtons.svelte";
 	import Ratings from "$lib/components/molecules/Ratings.svelte";
 	import Certifications from "$lib/components/molecules/Certifications.svelte";
-	import ProductGrid from "$lib/components/organisms/ProductGrid.svelte";
+	import TypewriterText from "$lib/components/atoms/TypewriterText.svelte";
+	import VerticalMarquee, {
+		type VerticalMarqueeItem,
+	} from "$lib/components/molecules/VerticalMarquee.svelte";
 
 	// Datos del hero según el informe de Monday Merch
 	const heroData = {
@@ -22,79 +25,90 @@
 		},
 	};
 
-	// Productos para el grid (usando los showcaseItems existentes adaptados)
-	const products = [
+	// Productos para el VerticalMarquee (dos columnas con sentido inverso)
+	const marqueeProducts: VerticalMarqueeItem[] = [
 		{
 			id: "product-01",
 			title: "Agendas premium",
-			subtitle: "Publisol",
-			image: "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?w=900&h=600&fit=crop&q=80",
-			tags: ["Agendas", "Premium"],
+			description: "Personalización total",
+			image: "/images/products/agenda-premium.png",
+			tag: "Premium",
 		},
 		{
 			id: "product-02",
 			title: "Kits de bienvenida",
-			subtitle: "Publisol",
-			image: "https://images.unsplash.com/photo-1503602642458-232111445657?w=900&h=600&fit=crop&q=80",
-			tags: ["Kits", "Empresarial"],
+			description: "Kits corporativos",
+			image: "/images/products/kit-bienvenida.png",
+			tag: "Empresarial",
 		},
 		{
 			id: "product-03",
 			title: "Merchandising táctil",
-			subtitle: "Publisol",
-			image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&h=600&fit=crop&q=80",
-			tags: ["Merchandising", "Táctil"],
+			description: "Productos personalizados",
+			image: "/images/products/camiseta-corporativa.png",
+			tag: "Textil",
 		},
 		{
 			id: "product-04",
 			title: "Papelería boutique",
-			subtitle: "Publisol",
-			image: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?w=900&h=600&fit=crop&q=80",
-			tags: ["Papelería", "Boutique"],
+			description: "Material de oficina",
+			image: "/images/products/libreta-ejecutiva.png",
+			tag: "Papelería",
 		},
 		{
 			id: "product-05",
 			title: "Colecciones sostenibles",
-			subtitle: "Publisol",
-			image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=900&h=600&fit=crop&q=80",
-			tags: ["Sostenible", "Eco"],
+			description: "Productos eco-friendly",
+			image: "/images/products/agenda-sostenible.png",
+			tag: "Eco",
 		},
 		{
 			id: "product-06",
 			title: "Packaging artesanal",
-			subtitle: "Publisol",
-			image: "https://images.unsplash.com/photo-1503602642458-232111445657?w=900&h=800&fit=crop&q=80",
-			tags: ["Packaging", "Artesanal"],
+			description: "Diseño exclusivo",
+			image: "/images/products/botella-termica.png",
+			tag: "Packaging",
 		},
 	];
 </script>
 
 <section
-	class="relative overflow-hidden bg-white px-4 py-8 sm:py-12 md:py-16 lg:py-20"
+	class="relative overflow-hidden min-h-[90vh] flex items-center px-4 py-8 sm:py-12 md:py-16 lg:py-20"
 >
+	<!-- Imagen de fondo -->
+	<div class="absolute inset-0 z-0">
+		<img
+			src="/images/hero/main-hero-bg.jpg"
+			alt="Fondo Hero Publisol"
+			class="w-full h-full object-cover"
+			loading="eager"
+		/>
+		<!-- Overlay sutil para legibilidad -->
+		<div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20"></div>
+	</div>
 	<div class="relative z-10 mx-auto max-w-[1400px]">
 		<div
 			class="grid gap-6 sm:gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12"
 		>
 			<!-- Columna Izquierda: Contenido Principal -->
-			<div class="space-y-4 sm:space-y-6 lg:space-y-8">
+			<div class="space-y-4 sm:space-y-6 lg:space-y-8 relative z-10">
 				<!-- Banner de Navidad -->
 				<div in:fade={{ duration: 600, delay: 0 }}>
 					<ChristmasBanner />
 				</div>
 
-				<!-- Título Principal - Fluid Typography -->
-				<h1
-					class="font-bold leading-tight text-black text-fluid-3xl sm:text-fluid-4xl lg:text-fluid-5xl"
-					style="font-size: clamp(1.875rem, 1.5rem + 1.875vw, 3.5rem);"
-					in:fade={{ duration: 600, delay: 200 }}
-				>
-					{heroData.title}
-				</h1>
+				<!-- Título Principal - Typewriter Animation -->
+				<div in:fade={{ duration: 600, delay: 200 }}>
+					<TypewriterText
+						text={heroData.title}
+						speed={50}
+						className="text-fluid-3xl sm:text-fluid-4xl lg:text-fluid-5xl drop-shadow-lg"
+					/>
+				</div>
 
 				<!-- Descripción - Fluid Typography -->
 				<p
-					class="leading-relaxed text-black/80 text-fluid-base sm:text-fluid-lg"
+					class="leading-relaxed text-white/90 text-fluid-base sm:text-fluid-lg drop-shadow-md"
 					style="font-size: clamp(1rem, 0.95rem + 0.25vw, 1.25rem);"
 					in:fade={{ duration: 600, delay: 400 }}
 				>
@@ -125,15 +139,32 @@
 				</div>
 			</div>
 
-			<!-- Columna Derecha: Grid de Productos -->
-			<div class="hidden lg:block">
-				<ProductGrid {products} />
+			<!-- Columna Derecha: VerticalMarquee con dos columnas (sentido inverso) -->
+			<div class="hidden lg:block relative z-10">
+				<div class="grid grid-cols-2 gap-4" style="height: 600px;">
+					<!-- Columna izquierda: scroll hacia arriba -->
+					<div class="h-full">
+						<VerticalMarquee
+							items={marqueeProducts.slice(0, 3)}
+							direction="up"
+							speed={25}
+						/>
+					</div>
+					<!-- Columna derecha: scroll hacia abajo -->
+					<div class="h-full">
+						<VerticalMarquee
+							items={marqueeProducts.slice(3, 6)}
+							direction="down"
+							speed={25}
+						/>
+					</div>
+				</div>
 			</div>
 
 			<!-- Versión móvil: Grid horizontal -->
 			<div class="lg:hidden">
 				<div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-					{#each products as product}
+					{#each marqueeProducts as product}
 						<div class="min-w-[220px] flex-shrink-0">
 							<div
 								class="group relative overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 hover:shadow-md"
@@ -151,28 +182,17 @@
 									/>
 								</div>
 								<div class="p-4">
-									{#if product.subtitle}
-										<p
-											class="mb-1 text-xs font-medium uppercase tracking-wide text-gray-500"
-										>
-											{product.subtitle}
-										</p>
-									{/if}
 									<h3
 										class="mb-2 text-sm font-semibold text-black"
 									>
 										{product.title}
 									</h3>
-									{#if product.tags && product.tags.length > 0}
-										<div class="flex flex-wrap gap-1">
-											{#each product.tags as tag}
-												<span
-													class="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-600"
-												>
-													{tag}
-												</span>
-											{/each}
-										</div>
+									{#if product.tag}
+										<span
+											class="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-600"
+										>
+											{product.tag}
+										</span>
 									{/if}
 								</div>
 							</div>

@@ -31,7 +31,7 @@
 		},
 	];
 
-	$: currentPath = $page.url.pathname;
+	let currentPath = $derived($page.url.pathname);
 
 	function isActive(href: string): boolean {
 		if (href === "/") {

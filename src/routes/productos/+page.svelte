@@ -6,8 +6,10 @@
 		Button,
 		Breadcrumb,
 		Badge,
+		Pagination,
 	} from "atomic-design-svelte";
 	import { Link } from "atomic-design-svelte";
+	import { page } from "$app/stores";
 	import Drawer from "$lib/components/magic-ui/Drawer.svelte";
 	import QuickView from "$lib/components/magic-ui/QuickView.svelte";
 	import Seo from "$lib/components/Seo.svelte";
@@ -51,11 +53,27 @@
 			.map((m) => m.label);
 
 		if (selectedCategories.length === 0 && selectedMaterials.length === 0) {
-			filteredProducts = products;
+			// Si hay búsqueda, mantener el filtro de búsqueda
+			if (searchQuery) {
+				filteredProducts = products.filter((product) =>
+					product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+					product.category.toLowerCase().includes(searchQuery.toLowerCase())
+				);
+			} else {
+				filteredProducts = products;
+			}
+			currentPage = 1;
 			return;
 		}
 
-		filteredProducts = products.filter((product) => {
+		let baseProducts = searchQuery
+			? products.filter((product) =>
+					product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+					product.category.toLowerCase().includes(searchQuery.toLowerCase())
+				)
+			: products;
+
+		filteredProducts = baseProducts.filter((product) => {
 			const matchesCategory =
 				selectedCategories.length === 0 ||
 				selectedCategories.some((cat) =>
@@ -63,12 +81,21 @@
 				);
 			return matchesCategory;
 		});
+		currentPage = 1;
 	}
 
 	function clearFilters() {
 		categories = categories.map((c) => ({ ...c, checked: false }));
 		materials = materials.map((m) => ({ ...m, checked: false }));
-		filteredProducts = products;
+		if (searchQuery) {
+			filteredProducts = products.filter((product) =>
+				product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				product.category.toLowerCase().includes(searchQuery.toLowerCase())
+			);
+		} else {
+			filteredProducts = products;
+		}
+		currentPage = 1;
 	}
 
 	// Ejemplo de productos
@@ -131,6 +158,38 @@
 
 	let quickViewProduct = $state<(typeof products)[0] | undefined>(undefined);
 	let filteredProducts = $state(products);
+	
+	// Búsqueda desde query param
+	let searchQuery = $derived($page.url.searchParams.get('q') || '');
+	
+	// Paginación
+	let currentPage = $state(1);
+	const itemsPerPage = 9;
+	let totalPages = $derived(Math.ceil(filteredProducts.length / itemsPerPage));
+	let paginatedProducts = $derived(
+		filteredProducts.slice(
+			(currentPage - 1) * itemsPerPage,
+			currentPage * itemsPerPage
+		)
+	);
+	
+	function handlePageChange(page: number) {
+		currentPage = page;
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
+	
+	// Filtrar productos según búsqueda
+	$effect(() => {
+		if (searchQuery) {
+			filteredProducts = products.filter((product) =>
+				product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				product.category.toLowerCase().includes(searchQuery.toLowerCase())
+			);
+			currentPage = 1; // Reset a página 1 cuando hay búsqueda
+		} else {
+			filteredProducts = products;
+		}
+	});
 
 	// SEO
 	const seoTitle =
@@ -311,8 +370,11 @@
 					class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6"
 				>
 					<Text class="text-text-muted">
-						Mostrando {filteredProducts.length} de {products.length}
-						productos
+						{#if searchQuery}
+							Mostrando {filteredProducts.length} resultado{filteredProducts.length !== 1 ? 's' : ''} para "{searchQuery}"
+						{:else}
+							Mostrando {paginatedProducts.length} de {filteredProducts.length} productos
+						{/if}
 					</Text>
 					<div class="flex items-center gap-4">
 						<select
@@ -326,7 +388,7 @@
 				</div>
 
 				<!-- Grid de Productos -->
-				{#if filteredProducts.length === 0}
+				{#if paginatedProducts.length === 0}
 					<!-- Empty State -->
 					<div class="text-center py-16 px-4">
 						<svg
@@ -356,7 +418,7 @@
 					<div
 						class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
 					>
-						{#each filteredProducts as product}
+						{#each paginatedProducts as product}
 							<div class="group relative">
 								<Card
 									padding="none"
@@ -434,41 +496,15 @@
 				{/if}
 
 				<!-- Paginación -->
-				<div
-					class="flex justify-center items-center gap-1 sm:gap-2 mt-8 sm:mt-12 flex-wrap"
-				>
-					<Button
-						intent="ghost"
-						size="sm"
-						class="min-h-[44px] min-w-[44px]">«</Button
-					>
-					<Button
-						intent="primary"
-						size="sm"
-						class="min-h-[44px] min-w-[44px]">1</Button
-					>
-					<Button
-						intent="ghost"
-						size="sm"
-						class="min-h-[44px] min-w-[44px]">2</Button
-					>
-					<Button
-						intent="ghost"
-						size="sm"
-						class="min-h-[44px] min-w-[44px]">3</Button
-					>
-					<Text class="text-text-muted px-2">...</Text>
-					<Button
-						intent="ghost"
-						size="sm"
-						class="min-h-[44px] min-w-[44px]">8</Button
-					>
-					<Button
-						intent="ghost"
-						size="sm"
-						class="min-h-[44px] min-w-[44px]">»</Button
-					>
-				</div>
+				{#if totalPages > 1}
+					<div class="flex justify-center items-center mt-8 sm:mt-12">
+						<Pagination
+							currentPage={currentPage}
+							totalPages={totalPages}
+							onpagechange={handlePageChange}
+						/>
+					</div>
+				{/if}
 			</div>
 		</div>
 	</div>

@@ -12,10 +12,22 @@
 		Link,
 	} from "atomic-design-svelte";
 	import { Breadcrumb } from "atomic-design-svelte";
+	import { page } from "$app/stores";
+	import { onMount } from "svelte";
 	import ShimmerButton from "$lib/components/magic-ui/ShimmerButton.svelte";
 	import AnimatedGridPattern from "$lib/components/magic-ui/AnimatedGridPattern.svelte";
 	import FormWizard from "$lib/components/magic-ui/FormWizard.svelte";
 	import Seo from "$lib/components/Seo.svelte";
+	import {
+		MapPin,
+		Phone,
+		Mail,
+		Clock,
+		Truck,
+		Globe,
+		Package,
+		Zap,
+	} from "lucide-svelte";
 
 	let currentStep = $state(0);
 
@@ -41,6 +53,16 @@
 	let errors = $state<Record<string, string>>({});
 	let isSubmitting = $state(false);
 	let submitSuccess = $state(false);
+	
+	// Pre-llenar formulario desde query param
+	let productoParam = $derived($page.url.searchParams.get('producto') || '');
+	
+	$effect(() => {
+		if (productoParam) {
+			formData.tipoProyecto = productoParam;
+			formData.mensaje = `Hola, estoy interesado en ${productoParam}. Me gustaría recibir más información y un presupuesto personalizado.`;
+		}
+	});
 
 	const tiposProyecto = [
 		"Agendas escolares",
@@ -222,9 +244,7 @@
 </section>
 
 <!-- Layout Dos Columnas -->
-<section class="py-8 sm:py-12 md:py-16 relative overflow-hidden">
-	<AnimatedGridPattern class="opacity-30" numSquares={30}
-	></AnimatedGridPattern>
+<section class="py-8 sm:py-12 md:py-16 relative overflow-hidden bg-surface-page">
 	<div class="container mx-auto px-4 sm:px-6 relative z-10">
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 			<!-- Columna Izquierda: Formulario -->
@@ -623,9 +643,10 @@
 					{#snippet children()}
 						<div class="space-y-6">
 							<div>
-								<Text class="font-semibold mb-2"
-									>📍 Dirección:</Text
-								>
+								<div class="flex items-center gap-2 mb-2">
+									<MapPin class="w-5 h-5 text-primary" />
+									<Text class="font-semibold">Dirección:</Text>
+								</div>
 								<Text class="text-text-muted">
 									Calle Ejemplo, 123<br />
 									28001 Madrid, España
@@ -633,9 +654,10 @@
 							</div>
 
 							<div>
-								<Text class="font-semibold mb-2"
-									>📞 Teléfono:</Text
-								>
+								<div class="flex items-center gap-2 mb-2">
+									<Phone class="w-5 h-5 text-primary" />
+									<Text class="font-semibold">Teléfono:</Text>
+								</div>
 								<Text class="text-text-muted">
 									+34 XXX XXX XXX<br />
 									(Lun-Vie 9:00-18:00)
@@ -643,8 +665,10 @@
 							</div>
 
 							<div>
-								<Text class="font-semibold mb-2">✉️ Email:</Text
-								>
+								<div class="flex items-center gap-2 mb-2">
+									<Mail class="w-5 h-5 text-primary" />
+									<Text class="font-semibold">Email:</Text>
+								</div>
 								<Text class="text-text-muted">
 									info@publisol.com<br />
 									comercial@publisol.com
@@ -652,9 +676,10 @@
 							</div>
 
 							<div>
-								<Text class="font-semibold mb-2"
-									>🕐 Horario:</Text
-								>
+								<div class="flex items-center gap-2 mb-2">
+									<Clock class="w-5 h-5 text-primary" />
+									<Text class="font-semibold">Horario:</Text>
+								</div>
 								<Text class="text-text-muted">
 									Lunes a Viernes: 9:00 - 18:00<br />
 									Sábados: 10:00 - 14:00
@@ -770,7 +795,7 @@
 				>
 					{#snippet header()}
 						<div class="flex items-center gap-4 mb-4">
-							<div class="text-4xl">🚚</div>
+							<Truck class="w-10 h-10 text-primary" />
 							<Heading level="h3">España Peninsular</Heading>
 						</div>
 					{/snippet}
@@ -797,7 +822,7 @@
 				>
 					{#snippet header()}
 						<div class="flex items-center gap-4 mb-4">
-							<div class="text-4xl">🏝️</div>
+							<Globe class="w-10 h-10 text-primary" />
 							<Heading level="h3"
 								>Islas Baleares y Canarias</Heading
 							>
@@ -824,7 +849,7 @@
 				>
 					{#snippet header()}
 						<div class="flex items-center gap-4 mb-4">
-							<div class="text-4xl">📦</div>
+							<Package class="w-10 h-10 text-primary" />
 							<Heading level="h3"
 								>Producción Personalizada</Heading
 							>
@@ -852,7 +877,7 @@
 				>
 					{#snippet header()}
 						<div class="flex items-center gap-4 mb-4">
-							<div class="text-4xl">⚡</div>
+							<Zap class="w-10 h-10 text-primary" />
 							<Heading level="h3">Pedidos Urgentes</Heading>
 						</div>
 					{/snippet}

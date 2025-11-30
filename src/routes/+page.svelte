@@ -8,9 +8,25 @@
 	import ScrollProgress from "$lib/components/magic-ui/ScrollProgress.svelte";
 	import QuickView from "$lib/components/magic-ui/QuickView.svelte";
 	import ShimmerButton from "$lib/components/magic-ui/ShimmerButton.svelte";
+	import ScrollBasedVelocity from "$lib/components/magic-ui/ScrollBasedVelocity.svelte";
+	import LineShadowText from "$lib/components/magic-ui/LineShadowText.svelte";
+	import BentoGrid from "$lib/components/magic-ui/BentoGrid.svelte";
+	import BentoCard from "$lib/components/magic-ui/BentoCard.svelte";
 	import Seo from "$lib/components/Seo.svelte";
 	import HeroSection from "$lib/components/organisms/HeroSection.svelte";
 	import ScrollReveal from "$lib/components/atoms/ScrollReveal.svelte";
+	import {
+		Palette,
+		CheckCircle2,
+		Package,
+		Hash,
+		Truck,
+		Sprout,
+		MessageCircle,
+		Pencil,
+		Factory,
+		Box,
+	} from "lucide-svelte";
 
 	let statsVisible = $state(false);
 	let statsObserver: IntersectionObserver | null = null;
@@ -18,42 +34,42 @@
 	// Sección 2: Propuesta de Valor
 	const services = [
 		{
-			icon: "🎨",
+			icon: Palette,
 			title: "Personalización Total",
 			description:
 				"Diseñamos agendas y productos 100% adaptados a tu imagen corporativa o centro educativo.",
 			link: "/nosotros#personalizacion",
 		},
 		{
-			icon: "✓",
+			icon: CheckCircle2,
 			title: "Calidad Garantizada",
 			description:
 				"Materiales premium y procesos de fabricación certificados. Garantía en todos nuestros productos.",
 			link: "/nosotros#calidad",
 		},
 		{
-			icon: "📦",
+			icon: Package,
 			title: "Servicio Integral",
 			description:
 				"Desde el diseño hasta la entrega. Nos encargamos de todo para que no te preocupes de nada.",
 			link: "/nosotros#servicio",
 		},
 		{
-			icon: "🔢",
+			icon: Hash,
 			title: "Sin Mínimos",
 			description:
 				"Adaptamos cantidades a tus necesidades. Proyectos grandes o pequeños, todos son importantes.",
 			link: "/contacto",
 		},
 		{
-			icon: "🚚",
+			icon: Truck,
 			title: "Entrega Rápida",
 			description:
 				"Plazos ajustados y cumplidos. Envíos a toda España en 24-48h para productos en stock.",
 			link: "/contacto#envios",
 		},
 		{
-			icon: "🌱",
+			icon: Sprout,
 			title: "Sostenibilidad",
 			description:
 				"Productos eco-friendly y compromiso con el medio ambiente en cada proceso.",
@@ -188,14 +204,14 @@
 	const processSteps = [
 		{
 			number: "1",
-			icon: "💬",
+			icon: MessageCircle,
 			title: "Contacto",
 			description: "Nos cuentas tu proyecto y necesidades específicas.",
 			time: "24-48h",
 		},
 		{
 			number: "2",
-			icon: "✏️",
+			icon: Pencil,
 			title: "Diseño",
 			description:
 				"Creamos propuesta visual personalizada adaptada a tu marca.",
@@ -203,7 +219,7 @@
 		},
 		{
 			number: "3",
-			icon: "🏭",
+			icon: Factory,
 			title: "Producción",
 			description:
 				"Fabricamos con los mejores materiales y procesos certificados.",
@@ -211,7 +227,7 @@
 		},
 		{
 			number: "4",
-			icon: "📦",
+			icon: Box,
 			title: "Entrega",
 			description: "Recibe tu pedido en tiempo y forma, listo para usar.",
 			time: "24-48h",
@@ -298,74 +314,50 @@
 <!-- SECCIÓN 1: HERO PRINCIPAL -->
 <HeroSection />
 
-<!-- SECCIÓN 2: PROPUESTA DE VALOR -->
+<!-- SECCIÓN 2: Scroll Based Velocity -->
+<section class="py-8 sm:py-12 bg-surface-page overflow-hidden">
+	<ScrollBasedVelocity baseVelocity={5} direction={1}>
+		{#snippet children()}
+			<span class="text-2xl sm:text-3xl md:text-4xl font-bold text-primary/80 whitespace-nowrap px-8">
+				PERSONALIZACIÓN • CALIDAD • RAPIDEZ • EXPERIENCIA • SOSTENIBILIDAD •
+			</span>
+		{/snippet}
+	</ScrollBasedVelocity>
+</section>
+
+<!-- SECCIÓN 3: PROPUESTA DE VALOR (Bento Grid) -->
 <section class="py-12 sm:py-16 md:py-24 bg-surface-page">
 	<div class="container mx-auto px-4 sm:px-6">
 		<ScrollReveal animation="fly" direction="up" delay={0}>
 			{#snippet children()}
 				<Heading
 					level="h2"
-					class="text-center mb-4 text-2xl sm:text-3xl md:text-4xl"
+					class="text-center mb-8 sm:mb-12 text-2xl sm:text-3xl md:text-4xl"
 					>¿Por qué elegirnos?</Heading
 				>
 			{/snippet}
 		</ScrollReveal>
-		<div
-			class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-8 sm:mt-12"
-		>
-			{#each services as service, index}
-				<ScrollReveal
-					animation="fly"
-					direction="up"
-					delay={index * 100}
-				>
-					{#snippet children()}
-						<Card
-							padding="lg"
-							elevation={1}
-							class="group hover:elevation-2 transition-all duration-300 hover:-translate-y-2 hover-lift hover-shadow-primary relative overflow-hidden"
-						>
-							{#snippet header()}
-								<div
-									class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300"
-								>
-									{service.icon}
-								</div>
-								<Heading
-									level="h3"
-									class="mb-2 group-hover:text-primary transition-colors"
-									>{service.title}</Heading
-								>
-							{/snippet}
-							{#snippet children()}
-								<Text class="mb-4 text-text-muted"
-									>{service.description}</Text
-								>
-								<Link
-									href={service.link}
-									class="text-primary hover:underline font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all"
-								>
-									Saber más
-									<svg
-										class="w-4 h-4 transition-transform group-hover:translate-x-1"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M9 5l7 7-7 7"
-										/>
-									</svg>
-								</Link>
-							{/snippet}
-						</Card>
-					{/snippet}
-				</ScrollReveal>
-			{/each}
-		</div>
+		<BentoGrid class="auto-rows-[18rem] sm:auto-rows-[20rem] lg:auto-rows-[22rem]">
+			{#snippet children()}
+				{#each services as service, index}
+					<BentoCard
+						name={service.title}
+						description={service.description}
+						href={service.link}
+						cta="Saber más"
+						class="col-span-1 sm:col-span-3 lg:col-span-1"
+					>
+						{#snippet icon()}
+							{@const IconComponent = service.icon}
+							<IconComponent class="w-full h-full" />
+						{/snippet}
+						{#snippet background()}
+							<div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5"></div>
+						{/snippet}
+					</BentoCard>
+				{/each}
+			{/snippet}
+		</BentoGrid>
 	</div>
 </section>
 
@@ -687,17 +679,18 @@
 							elevation={1}
 							class="text-center relative group hover:elevation-2 transition-all duration-300 hover:-translate-y-2"
 						>
-							{#snippet header()}
-								<div
-									class="text-5xl sm:text-6xl font-bold text-primary/20 mb-3 sm:mb-4 transition-all duration-300 group-hover:text-primary/30"
-								>
-									{step.number}
-								</div>
-								<div
-									class="text-3xl sm:text-4xl mb-3 sm:mb-4 transition-transform duration-300 group-hover:scale-110"
-								>
-									{step.icon}
-								</div>
+						{#snippet header()}
+							{@const StepIcon = step.icon}
+							<div
+								class="text-5xl sm:text-6xl font-bold text-primary/20 mb-3 sm:mb-4 transition-all duration-300 group-hover:text-primary/30"
+							>
+								{step.number}
+							</div>
+							<div
+								class="mb-3 sm:mb-4 transition-transform duration-300 group-hover:scale-110"
+							>
+								<StepIcon class="w-12 h-12 sm:w-16 sm:h-16 text-primary" />
+							</div>
 								<Heading
 									level="h3"
 									class="mb-2 text-lg sm:text-xl group-hover:text-primary transition-colors"
@@ -797,8 +790,9 @@
 				<Heading
 					level="h2"
 					class="mb-4 text-white text-2xl sm:text-3xl md:text-4xl"
-					>¿Listo para tu próximo proyecto?</Heading
 				>
+					¿Listo para tu próximo proyecto?
+				</Heading>
 				<Text
 					class="mb-6 sm:mb-8 text-white/90 max-w-2xl mx-auto px-4 text-base sm:text-lg"
 				>

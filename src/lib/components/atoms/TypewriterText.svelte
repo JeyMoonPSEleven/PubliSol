@@ -1,14 +1,22 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 
-	export let text = "";
-	export let speed = 70;
-	export let className = "";
+	interface TypewriterTextProps {
+		text?: string;
+		speed?: number;
+		className?: string;
+	}
 
-	let displayText = "";
-	let charIndex = 0;
-	let typingInterval: ReturnType<typeof setInterval> | null = null;
-	let previousText = "";
+	let {
+		text = "",
+		speed = 70,
+		className = "",
+	}: TypewriterTextProps = $props();
+
+	let displayText = $state("");
+	let charIndex = $state(0);
+	let typingInterval: ReturnType<typeof setInterval> | null = $state(null);
+	let previousText = $state("");
 
 	const clearTyping = () => {
 		if (typingInterval) {
@@ -47,10 +55,12 @@
 		};
 	});
 
-	$: if (text !== previousText) {
-		previousText = text;
-		startTyping();
-	}
+	$effect(() => {
+		if (text !== previousText) {
+			previousText = text;
+			startTyping();
+		}
+	});
 </script>
 
 <div

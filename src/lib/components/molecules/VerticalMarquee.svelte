@@ -1,6 +1,4 @@
-<script lang="ts">
-	import GlassCard from "$lib/components/atoms/GlassCard.svelte";
-
+<script context="module" lang="ts">
 	export type VerticalMarqueeItem = {
 		id: string;
 		title: string;
@@ -8,28 +6,41 @@
 		image: string;
 		tag?: string;
 	};
+</script>
 
-	export let items: VerticalMarqueeItem[] = [];
-	export let direction: "up" | "down" = "up";
-	export let speed = 22;
+<script lang="ts">
+	import GlassCard from "$lib/components/atoms/GlassCard.svelte";
 
-	$: repeatedItems = [...items, ...items];
+	interface VerticalMarqueeProps {
+		items?: VerticalMarqueeItem[];
+		direction?: "up" | "down";
+		speed?: number;
+	}
 
-	const animationName = direction === "up" ? "scroll-up" : "scroll-down";
-	$: trackStyle = `animation: ${animationName} ${Math.max(speed, 12)}s linear infinite;`;
+	let {
+		items = [],
+		direction = "up",
+		speed = 22,
+	}: VerticalMarqueeProps = $props();
+
+	// Duplicar items para scroll infinito (necesitamos suficientes copias)
+	let repeatedItems = $derived(items.length > 0 ? [...items, ...items, ...items] : []);
+
+	const animationName = $derived(direction === "up" ? "scroll-up" : "scroll-down");
+	let animationDuration = $derived(`${Math.max(speed, 12)}s`);
 </script>
 
 <div
-	class="relative overflow-hidden rounded-[32px] border border-white/10 bg-transparent shadow-[0_20px_50px_rgba(2,6,23,0.55)]"
-	style="mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
-	-webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);"
+	class="relative h-full overflow-hidden rounded-[32px] border border-white/10 bg-transparent shadow-[0_20px_50px_rgba(2,6,23,0.55)]"
+	style="mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent);
+	-webkit-mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent);"
 >
 	<div
-		class="marquee-track flex flex-col gap-5 p-4"
-		style={trackStyle}
+		class="marquee-track flex flex-col gap-5 p-4 will-change-transform"
+		style="animation: {animationName} {animationDuration} linear infinite;"
 	>
 		{#each repeatedItems as item, idx (item.id + '-' + idx)}
-			<div class="h-56">
+			<div class="flex-shrink-0 h-56">
 				<GlassCard
 					title={item.title}
 					description={item.description}
@@ -44,7 +55,9 @@
 
 <style>
 	.marquee-track {
-		min-height: 100%;
+		display: flex;
+		flex-direction: column;
+		will-change: transform;
 	}
 
 	@keyframes scroll-up {
@@ -52,13 +65,13 @@
 			transform: translateY(0);
 		}
 		100% {
-			transform: translateY(-50%);
+			transform: translateY(calc(-100% / 3));
 		}
 	}
 
 	@keyframes scroll-down {
 		0% {
-			transform: translateY(-50%);
+			transform: translateY(calc(-100% / 3));
 		}
 		100% {
 			transform: translateY(0);

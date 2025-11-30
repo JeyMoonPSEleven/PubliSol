@@ -7,11 +7,13 @@
 		className?: string;
 	}
 
-	export let title = "";
-	export let description = "";
-	export let image = "";
-	export let tag = "";
-	export let className = "";
+	let {
+		title = "",
+		description = "",
+		image = "",
+		tag = "",
+		className = "",
+	}: GlassCardProps = $props();
 </script>
 
 <article

@@ -3,11 +3,24 @@
 	import { Link } from "atomic-design-svelte";
 	import { onMount } from "svelte";
 	import { fly, fade } from "svelte/transition";
+	import {
+		BookOpen,
+		GraduationCap,
+		Pencil,
+		Gift,
+		Shirt,
+		Pen,
+		Briefcase,
+		Recycle,
+		Calendar,
+		Notebook,
+		ClipboardList,
+		Palette,
+	} from "lucide-svelte";
 
 	let isSearchOpen = $state(false);
+	let searchQuery = $state("");
 	let isProductsMenuOpen = $state(false);
-	let isHeaderVisible = $state(true);
-	let lastScrollY = $state(0);
 	let mobileMenuOpenCategories = $state<Record<string, boolean>>({});
 	let productsMenuTimeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -25,22 +38,22 @@
 				{
 					label: "Agendas Educación Primaria",
 					href: "/productos/agendas-escolares",
-					icon: "📚",
+					icon: BookOpen,
 				},
 				{
 					label: "Agendas EducaciónSecundaria",
 					href: "/productos/agendas-escolares",
-					icon: "📖",
+					icon: BookOpen,
 				},
 				{
 					label: "Agendas Universitarias",
 					href: "/productos/agendas-escolares",
-					icon: "🎓",
+					icon: GraduationCap,
 				},
 				{
 					label: "Agendas Personalizadas",
 					href: "/productos/agendas-escolares",
-					icon: "✏️",
+					icon: Pencil,
 				},
 			],
 			featuredImage:
@@ -54,27 +67,27 @@
 				{
 					label: "Kits Corporativos",
 					href: "/productos/merchandising",
-					icon: "🎁",
+					icon: Gift,
 				},
 				{
 					label: "Textil Corporativo",
 					href: "/productos/textil",
-					icon: "👕",
+					icon: Shirt,
 				},
 				{
 					label: "Material de Oficina",
 					href: "/productos/papeleria",
-					icon: "🖊️",
+					icon: Pen,
 				},
 				{
 					label: "Regalos Empresariales",
 					href: "/productos/merchandising",
-					icon: "💼",
+					icon: Briefcase,
 				},
 				{
 					label: "Productos Sostenibles",
 					href: "/productos/sostenibles",
-					icon: "♻️",
+					icon: Recycle,
 				},
 			],
 			featuredImage:
@@ -88,22 +101,22 @@
 				{
 					label: "Agendas Anuales",
 					href: "/productos/agendas-escolares",
-					icon: "📅",
+					icon: Calendar,
 				},
 				{
 					label: "Cuadernos y Libretas",
 					href: "/productos/papeleria",
-					icon: "📔",
+					icon: Notebook,
 				},
 				{
 					label: "Planificadores",
 					href: "/productos/papeleria",
-					icon: "📋",
+					icon: ClipboardList,
 				},
 				{
 					label: "Papelería Premium",
 					href: "/productos/papeleria",
-					icon: "🎨",
+					icon: Palette,
 				},
 			],
 			featuredImage:
@@ -113,38 +126,20 @@
 		},
 	];
 
-	// Smart Sticky Header: ocultarse al hacer scroll hacia abajo, aparecer al hacer scroll hacia arriba
+	// Header siempre visible: transparente en top, sticky blanco al scroll
+	let scrollY = $state(0);
+	// Inicializar como transparente (true) para que el color blanco se aplique desde el inicio
+	let isTransparent = $derived(scrollY < 50);
+
 	onMount(() => {
-		let ticking = false;
-
+		// Inicializar scrollY con el valor actual
+		scrollY = window.scrollY;
+		
 		function handleScroll() {
-			if (!ticking) {
-				window.requestAnimationFrame(() => {
-					const currentScrollY = window.scrollY;
-
-					// Solo ocultar/mostrar después de cierto scroll (ej: 100px)
-					if (currentScrollY > 100) {
-						// Si el scroll es hacia abajo, ocultar header
-						if (currentScrollY > lastScrollY) {
-							isHeaderVisible = false;
-						} else {
-							// Si el scroll es hacia arriba, mostrar header
-							isHeaderVisible = true;
-						}
-					} else {
-						// Cerca del top, siempre mostrar
-						isHeaderVisible = true;
-					}
-
-					lastScrollY = currentScrollY;
-					ticking = false;
-				});
-				ticking = true;
-			}
+			scrollY = window.scrollY;
 		}
 
 		window.addEventListener("scroll", handleScroll, { passive: true });
-
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
 		};
@@ -182,13 +177,26 @@
 
 	function closeSearchOverlay() {
 		isSearchOpen = false;
+		searchQuery = "";
+	}
+
+	function handleSearchSubmit() {
+		if (searchQuery.trim()) {
+			window.location.href = `/productos?q=${encodeURIComponent(searchQuery.trim())}`;
+		}
+	}
+
+	function handleSearchKeydown(event: KeyboardEvent) {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			handleSearchSubmit();
+		} else if (event.key === "Escape") {
+			closeSearchOverlay();
+		}
 	}
 
 	function handleSearchBackdropKeydown(event: KeyboardEvent) {
 		if (event.key === "Escape") {
-			closeSearchOverlay();
-		} else if (event.key === "Enter" || event.key === " ") {
-			event.preventDefault();
 			closeSearchOverlay();
 		}
 	}
@@ -196,16 +204,23 @@
 
 {#snippet logo()}
 	<Link href="/" class="flex items-center">
-		<span class="text-xl sm:text-2xl font-bold text-primary">Publisol</span>
+		<span
+			class="text-xl sm:text-2xl font-bold {isTransparent
+				? 'text-white'
+				: 'text-primary'} transition-colors"
+			>Publisol</span
+		>
 	</Link>
 {/snippet}
 
 {#snippet navigation()}
-	<nav class="hidden lg:flex items-center gap-4 xl:gap-6">
+	<nav class="hidden lg:flex items-center justify-center gap-4 xl:gap-6 absolute left-1/2 -translate-x-1/2">
 		{#each menuItems as item}
 			<Link
 				href={item.href}
-				class="text-sm xl:text-base text-text-default hover:text-primary font-medium transition-colors whitespace-nowrap"
+				class="text-sm xl:text-base {isTransparent
+					? 'text-white/90 hover:text-white'
+					: 'text-text-default hover:text-primary'} font-medium transition-colors whitespace-nowrap"
 			>
 				{item.label}
 			</Link>
@@ -220,7 +235,9 @@
 			onmouseleave={closeProductsMenu}
 		>
 			<button
-				class="text-sm xl:text-base text-text-default hover:text-primary font-medium transition-colors flex items-center gap-1 whitespace-nowrap"
+				class="text-sm xl:text-base {isTransparent
+					? 'text-white/90 hover:text-white'
+					: 'text-text-default hover:text-primary'} font-medium transition-colors flex items-center gap-1 whitespace-nowrap"
 				onclick={toggleProductsMenu}
 				onkeydown={(e) => {
 					if (e.key === "Enter" || e.key === " ") {
@@ -273,10 +290,10 @@
 												href={subItem.href}
 												class="flex items-center gap-3 text-sm text-text-muted hover:text-primary transition-colors py-2 group"
 											>
-												<span
-													class="text-xl group-hover:scale-110 transition-transform"
-													>{subItem.icon}</span
-												>
+												<svelte:component
+													this={subItem.icon}
+													class="w-5 h-5 group-hover:scale-110 transition-transform"
+												/>
 												<span class="flex-1"
 													>{subItem.label}</span
 												>
@@ -347,7 +364,17 @@
 {/snippet}
 
 {#snippet mobileMenuButton()}
-	<Button intent="ghost" size="sm" class="md:hidden">
+	<Button
+		intent="ghost"
+		size="sm"
+		class="md:hidden {isTransparent
+			? 'text-white hover:bg-white/10'
+			: ''}"
+		onclick={() => {
+			// El Header component maneja el Drawer internamente
+			// Solo necesitamos asegurar que el botón sea visible
+		}}
+	>
 		<svg
 			class="w-6 h-6"
 			fill="none"
@@ -415,9 +442,10 @@
 											href={subItem.href}
 											class="flex items-center gap-3 text-sm text-text-muted hover:text-primary hover:bg-surface-tertiary py-2.5 px-2 min-h-[44px] rounded-lg transition-colors"
 										>
-											<span class="text-lg flex-shrink-0"
-												>{subItem.icon}</span
-											>
+											<svelte:component
+												this={subItem.icon}
+												class="w-5 h-5 flex-shrink-0"
+											/>
 											<span class="flex-1"
 												>{subItem.label}</span
 											>
@@ -527,52 +555,61 @@
 	</div>
 {/snippet}
 
+{#snippet actions()}
+	<button
+		onclick={() => (isSearchOpen = !isSearchOpen)}
+		class="p-2 {isTransparent
+			? 'text-white hover:text-white/80'
+			: 'text-text-muted hover:text-primary'} transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+		aria-label="Buscar"
+	>
+		<svg
+			class="w-5 h-5"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+		>
+			<path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+			/>
+		</svg>
+	</button>
+
+	<Button
+		intent="primary"
+		size="sm"
+		href="/contacto"
+		class="whitespace-nowrap text-sm xl:text-base {isTransparent
+			? 'bg-white/20 hover:bg-white/30 text-white border-white/30'
+			: ''}"
+	>
+		Solicitar Presupuesto
+	</Button>
+{/snippet}
+
 <div class="relative">
 	<div
-		class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border-muted shadow-sm transition-transform duration-300 {isHeaderVisible
-			? 'translate-y-0'
-			: '-translate-y-full'}"
+		class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 {isTransparent
+			? 'bg-transparent text-white shadow-none'
+			: 'bg-white/95 backdrop-blur-md text-primary shadow-md'}"
 	>
+		<style>
+			:global(header) {
+				background: transparent !important;
+				border: none !important;
+				backdrop-filter: none !important;
+			}
+		</style>
 		<Header
 			{logo}
 			{navigation}
 			{mobileMenuButton}
 			{mobileNavigationPanel}
+			{actions}
 		/>
-	</div>
-
-	<!-- Search and CTA buttons (Desktop) -->
-	<div
-		class="hidden lg:flex items-center gap-3 xl:gap-4 absolute right-4 top-1/2 -translate-y-1/2 z-10"
-	>
-		<button
-			onclick={() => (isSearchOpen = !isSearchOpen)}
-			class="p-2 text-text-muted hover:text-primary transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-			aria-label="Buscar"
-		>
-			<svg
-				class="w-5 h-5"
-				fill="none"
-				stroke="currentColor"
-				viewBox="0 0 24 24"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-				/>
-			</svg>
-		</button>
-
-		<Button
-			intent="primary"
-			size="sm"
-			href="/contacto"
-			class="whitespace-nowrap text-sm xl:text-base"
-		>
-			Solicitar Presupuesto
-		</Button>
 	</div>
 </div>
 
@@ -616,7 +653,23 @@
 					</svg>
 				</button>
 			</div>
-			<SearchBar placeholder="Buscar productos..." class="w-full" />
+			<div class="flex gap-2">
+				<input
+					type="text"
+					bind:value={searchQuery}
+					onkeydown={handleSearchKeydown}
+					placeholder="Buscar productos..."
+					class="flex-1 px-4 py-3 border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-base"
+					autofocus
+				/>
+				<Button
+					intent="primary"
+					onclick={handleSearchSubmit}
+					class="px-6"
+				>
+					Buscar
+				</Button>
+			</div>
 		</div>
 	</div>
 {/if}

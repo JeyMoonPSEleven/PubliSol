@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fly } from "svelte/transition";
+	import { fly, fade } from "svelte/transition";
 	import { onMount } from "svelte";
 	import { browser } from "$app/environment";
 	import type { Snippet } from "svelte";
