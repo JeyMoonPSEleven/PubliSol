@@ -648,8 +648,8 @@
 									<Text class="font-semibold">Dirección:</Text>
 								</div>
 								<Text class="text-text-muted">
-									Calle Ejemplo, 123<br />
-									28001 Madrid, España
+									Carretera de Coin Nº 56 - 4º A<br />
+									2970 Cártama, Málaga, España
 								</Text>
 							</div>
 
@@ -659,8 +659,9 @@
 									<Text class="font-semibold">Teléfono:</Text>
 								</div>
 								<Text class="text-text-muted">
-									+34 XXX XXX XXX<br />
-									(Lun-Vie 9:00-18:00)
+									<Link href="tel:+34653189599" class="hover:text-primary">+34 653 18 95 99</Link><br />
+									<Text class="text-sm">95-287-52-56 (Comercial)</Text><br />
+									<Text class="text-sm">95-287-50-13 (Atención Cliente)</Text>
 								</Text>
 							</div>
 
@@ -670,8 +671,7 @@
 									<Text class="font-semibold">Email:</Text>
 								</div>
 								<Text class="text-text-muted">
-									info@publisol.com<br />
-									comercial@publisol.com
+									<Link href="mailto:publisolronda@gmail.com" class="hover:text-primary">publisolronda@gmail.com</Link>
 								</Text>
 							</div>
 
@@ -682,7 +682,8 @@
 								</div>
 								<Text class="text-text-muted">
 									Lunes a Viernes: 9:00 - 18:00<br />
-									Sábados: 10:00 - 14:00
+									Sábados: 10:00 - 14:00<br />
+									Domingos: Cerrado
 								</Text>
 							</div>
 						</div>
@@ -698,14 +699,14 @@
 							class="aspect-video bg-surface-tertiary rounded-lg overflow-hidden"
 						>
 							<iframe
-								src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3037.475317378123!2d-3.7037902!3d40.4167754!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42287e23931a55%3A0x5c356d416de8879!2sPuerta%20del%20Sol%2C%20Madrid%2C%20Espa%C3%B1a!5e0!3m2!1ses!2ses!4v1234567890123!5m2!1ses!2ses"
+								src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3190.1234567890123!2d-4.6300000!3d36.7100000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzYuNzEwMDAwMCwtNC42MzAwMDAwMDA!5e0!3m2!1ses!2ses!4v1234567890123!5m2!1ses!2ses"
 								width="100%"
 								height="100%"
 								style="border:0; filter: grayscale(0.3);"
 								allowfullscreen
 								loading="lazy"
 								referrerpolicy="no-referrer-when-downgrade"
-								title="Ubicación Publisol"
+								title="Ubicación Publisol - Carretera de Coin Nº 56, Cártama, Málaga"
 							></iframe>
 						</div>
 					{/snippet}

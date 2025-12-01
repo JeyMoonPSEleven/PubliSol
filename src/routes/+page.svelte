@@ -31,87 +31,92 @@
 	let statsVisible = $state(false);
 	let statsObserver: IntersectionObserver | null = null;
 
-	// Sección 2: Propuesta de Valor
+	// Sección 2: Propuesta de Valor (Enfoque B2B - Socio Estratégico Escolar)
 	const services = [
 		{
 			icon: Palette,
-			title: "Personalización Total",
+			title: "Consultoría Especializada",
 			description:
-				"Diseñamos agendas y productos 100% adaptados a tu imagen corporativa o centro educativo.",
+				"No vendemos productos; ofrecemos soluciones. Asesoramos a directores en organización y a AMPAs en financiación.",
 			link: "/nosotros#personalizacion",
 		},
 		{
 			icon: CheckCircle2,
-			title: "Calidad Garantizada",
+			title: "Calidad Certificada",
 			description:
-				"Materiales premium y procesos de fabricación certificados. Garantía en todos nuestros productos.",
+				"Materiales FSC/PEFC, textiles Oeko-Tex, cumplimiento UNE-EN 14682. Calidad pedagógica certificada para tu centro.",
 			link: "/nosotros#calidad",
 		},
 		{
 			icon: Package,
-			title: "Servicio Integral",
+			title: "Gestión Integral",
 			description:
-				"Desde el diseño hasta la entrega. Nos encargamos de todo para que no te preocupes de nada.",
+				"Desde la primera consulta hasta la entrega final. Diseño, producción, empaquetado y logística. El cliente solo disfruta del resultado.",
 			link: "/nosotros#servicio",
 		},
 		{
 			icon: Hash,
-			title: "Sin Mínimos",
+			title: "Precios Dinámicos",
 			description:
-				"Adaptamos cantidades a tus necesidades. Proyectos grandes o pequeños, todos son importantes.",
+				"Precios adaptados según volumen. A partir de 300 unidades activamos 'Tarifa Gold' con descuentos significativos.",
 			link: "/contacto",
 		},
 		{
 			icon: Truck,
-			title: "Entrega Rápida",
+			title: "Garantía de Entrega",
 			description:
-				"Plazos ajustados y cumplidos. Envíos a toda España en 24-48h para productos en stock.",
+				"El 'pánico de septiembre' no existe con nosotros. Compromiso firme con plazos: 10-15 días producción personalizada.",
 			link: "/contacto#envios",
 		},
 		{
 			icon: Sprout,
-			title: "Sostenibilidad",
+			title: "Compromiso Sostenible",
 			description:
-				"Productos eco-friendly y compromiso con el medio ambiente en cada proceso.",
+				"Educar en valores empieza por el material que usamos. Papel FSC, textiles Oeko-Tex, procesos responsables.",
 			link: "/productos",
 		},
 	];
 
-	// Sección 3: Categorías Principales
+	// Sección 3: Categorías Principales (según formulario)
 	const categories = [
 		{
 			name: "Agendas Escolares",
 			image: "https://images.unsplash.com/photo-1503676260728-1c00e094b736?w=800&h=600&fit=crop&q=80",
-			productCount: "45+",
+			productCount: "[CONFIRMAR]",
+			description: "Agendas personalizadas por etapa educativa (Infantil, Primaria, Secundaria/Bachillerato) y formato (Semana Vista, Día Página). Papel premium certificado FSC.",
 			href: "/productos/agendas-escolares",
 			size: "large",
 		},
 		{
-			name: "Merchandising Empresarial",
-			image: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=800&h=600&fit=crop&q=80",
-			productCount: "60+",
-			href: "/productos/merchandising",
-			size: "medium",
-		},
-		{
-			name: "Textil Personalizado",
+			name: "Textil y Uniformidad",
 			image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop&q=80",
-			productCount: "35+",
+			productCount: "[CONFIRMAR]",
+			description: "Uniformes escolares, equipaciones deportivas, ropa laboral. Certificación Oeko-Tex, cumplimiento normativa seguridad UNE-EN 14682.",
 			href: "/productos/textil",
 			size: "medium",
 		},
 		{
-			name: "Papelería y Libretas",
-			image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&h=600&fit=crop&q=80",
-			productCount: "50+",
-			href: "/productos/papeleria",
+			name: "Merchandising y Viajes Fin de Curso",
+			image: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=800&h=600&fit=crop&q=80",
+			productCount: "[CONFIRMAR]",
+			description: "Sudaderas, camisetas, polares para financiar viajes. Soluciones llave en mano con calculadora de rentabilidad para AMPAs.",
+			href: "/productos/merchandising",
 			size: "medium",
 		},
 		{
-			name: "Productos Sostenibles",
+			name: "Packs Erasmus",
+			image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&h=600&fit=crop&q=80",
+			productCount: "[CONFIRMAR]",
+			description: "Mochila + Powerbank + Botella + Agenda de Viaje. Solución integral para coordinadores de programas internacionales.",
+			href: "/productos",
+			size: "medium",
+		},
+		{
+			name: "Regalos Institucionales",
 			image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&h=600&fit=crop&q=80",
-			productCount: "25+",
-			href: "/productos/sostenibles",
+			productCount: "[CONFIRMAR]",
+			description: "Bolígrafos premium, tote bags ecológicos, libretas ejecutivas, material de oficina personalizado.",
+			href: "/productos/papeleria",
 			size: "large",
 		},
 	];

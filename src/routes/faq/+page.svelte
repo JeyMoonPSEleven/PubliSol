@@ -32,19 +32,19 @@
 			items: [
 				{
 					question: "¿Cuál es el pedido mínimo?",
-					answer: "Depende del producto. Generalmente desde 25-50 unidades para agendas y 10-25 para textil. Consúltanos para tu caso específico y te ofreceremos la mejor solución adaptada a tus necesidades.",
+					answer: "Depende del producto. Generalmente desde 25-50 unidades para agendas y 10-25 para textil. Sin embargo, adaptamos cantidades a tus necesidades. Proyectos grandes o pequeños, todos son importantes. Consúltanos para tu caso específico y te ofreceremos la mejor solución adaptada.",
 				},
 				{
-					question: "¿Cómo solicito un presupuesto?",
-					answer: "Puedes solicitar un presupuesto de varias formas: 1) Rellenando el formulario de contacto en nuestra web, 2) Llamándonos al +34 XXX XXX XXX, 3) Enviándonos un email a comercial@publisol.com. Te responderemos en menos de 24 horas laborables con un presupuesto personalizado.",
+					question: "¿Cómo puedo solicitar un presupuesto?",
+					answer: "Puedes hacerlo de tres formas: 1) Rellenando el formulario de contacto en nuestra web, 2) Llamándonos al +34 653 18 95 99, 3) Enviándonos un email a publisolronda@gmail.com. Te responderemos en menos de 24 horas laborables con un presupuesto personalizado que incluye precios dinámicos según tu volumen.",
 				},
 				{
-					question: "¿Cuánto tarda en llegar mi pedido?",
-					answer: "Los plazos varían según el tipo de producto: Productos en stock: 24-48h (España peninsular). Producción personalizada: 10-15 días laborables. Textil con bordado: 15-20 días laborables. Para pedidos urgentes, consulta disponibilidad con nuestro equipo comercial.",
+					question: "¿Cuáles son los plazos de entrega?",
+					answer: "Los plazos varían según el tipo de producto: Productos en stock: 24-48h (España peninsular). Producción personalizada: 10-15 días laborables. Textil con bordado: 15-20 días laborables. Para pedidos urgentes o el 'pánico de septiembre', consulta disponibilidad con nuestro equipo comercial. Garantizamos cumplimiento de plazos.",
 				},
 				{
-					question: "¿Puedo ver una muestra antes de producir?",
-					answer: "Sí, ofrecemos muestras digitales (mockups) gratuitas antes de la producción. Para pedidos de gran volumen, podemos proporcionar una muestra física previa bajo consulta.",
+					question: "¿Puedo ver una muestra física antes de decidir?",
+					answer: "¡Por supuesto! El envío de muestras físicas es uno de nuestros servicios estrella. Puedes solicitar un pack de muestras gratuitas desde nuestra web. Para pedidos de más de 300 unidades, enviamos una caja premium con agenda, bolígrafo y carta personalizada.",
 				},
 			],
 		},
@@ -57,15 +57,15 @@
 				},
 				{
 					question: "¿Ofrecen servicio de diseño?",
-					answer: "Sí, nuestro equipo de diseño puede ayudarte a crear o adaptar tu logo y diseño para que quede perfecto en nuestros productos. Este servicio tiene un coste adicional que se incluirá en el presupuesto.",
+					answer: "Sí, nuestro equipo de diseño puede ayudarte a crear o adaptar tu logo y diseño para que quede perfecto en nuestros productos. Este servicio incluye mockups digitales gratuitos para que visualices el resultado antes de producir. El coste se incluirá en el presupuesto personalizado.",
 				},
 				{
 					question: "¿Puedo personalizar cualquier producto?",
-					answer: "La mayoría de nuestros productos son personalizables. Algunos tienen limitaciones técnicas que te explicaremos en el presupuesto. Consulta opciones específicas con nuestro equipo comercial.",
+					answer: "La mayoría de nuestros productos son personalizables. Algunos tienen limitaciones técnicas que te explicaremos en el presupuesto. Ofrecemos desde personalización básica (logo en portada) hasta personalización total (cubiertas, interiores, encartes, colores). Consulta opciones específicas con nuestro equipo comercial.",
 				},
 				{
-					question: "¿Cuántos colores puedo usar en mi diseño?",
-					answer: "Depende del método de impresión. Impresión digital: Sin límite de colores (CMYK). Serigrafía: Hasta 4-6 colores según el producto. Bordado: Hasta 8-10 hilos de color. Te asesoraremos sobre la mejor opción para tu diseño.",
+					question: "¿Qué métodos de personalización ofrecen?",
+					answer: "Depende del producto. Impresión digital: Sin límite de colores (CMYK). Serigrafía: Hasta 4-6 colores según el producto. Bordado: Hasta 8-10 hilos de color. Te asesoraremos sobre la mejor opción para tu diseño y presupuesto.",
 				},
 			],
 		},
@@ -74,7 +74,7 @@
 			items: [
 				{
 					question: "¿Qué formas de pago aceptan?",
-					answer: "Aceptamos transferencia bancaria, cheque y, para pedidos recurrentes, podemos establecer condiciones de pago a 30, 60 o 90 días según el volumen y antigüedad del cliente.",
+					answer: "Aceptamos transferencia bancaria (Principal para B2B), tarjeta de crédito/débito, pago aplazado para empresas (consultar condiciones) y facturación con plazo de pago negociable (30/60 días según volumen).",
 				},
 				{
 					question: "¿Emiten factura?",
@@ -82,7 +82,11 @@
 				},
 				{
 					question: "¿Los precios incluyen IVA?",
-					answer: "Los precios mostrados en la web son orientativos y no incluyen IVA salvo indicación expresa. El presupuesto final incluirá el desglose completo con IVA aplicable.",
+					answer: "Los precios mostrados en la web son orientativos y no incluyen IVA salvo indicación expresa. El presupuesto final incluirá el desglose completo con IVA aplicable. Nuestros precios son dinámicos según volumen.",
+				},
+				{
+					question: "¿Ofrecen descuentos por volumen?",
+					answer: "Sí, precios dinámicos según cantidad. A partir de 300 unidades se activa 'Tarifa Gold' con descuentos significativos. Bonificación en personalización para pedidos grandes. Descuentos especiales para pedidos recurrentes (colegios que repiten año tras año).",
 				},
 			],
 		},
@@ -91,7 +95,7 @@
 			items: [
 				{
 					question: "¿Envían a toda España?",
-					answer: "Sí, realizamos envíos a toda España peninsular, Islas Baleares, Islas Canarias, Ceuta y Melilla. Los costes y plazos varían según la zona. Consulta en nuestro formulario de contacto.",
+					answer: "Sí, realizamos envíos a toda España peninsular, Islas Baleares, Islas Canarias, Ceuta y Melilla. Los costes y plazos varían según la zona. Para pedidos superiores a 500€, el envío a España peninsular es gratuito. En el presupuesto se incluirá el coste detallado del envío.",
 				},
 				{
 					question: "¿Cuál es el coste de envío?",
@@ -99,7 +103,7 @@
 				},
 				{
 					question: "¿Puedo devolver un producto personalizado?",
-					answer: "Los productos personalizados no admiten devolución salvo defecto de fabricación o error imputable a Publisol. En caso de defecto, procederemos a la reposición inmediata o reembolso según corresponda.",
+					answer: "Los productos personalizados no son devolubles salvo defecto de fabricación. Sin embargo, ofrecemos muestras físicas gratuitas precisamente para que puedas evaluar la calidad antes de confirmar el pedido. Si hay defectos, reposición inmediata garantizada.",
 				},
 				{
 					question: "¿Qué pasa si hay un error en mi pedido?",
@@ -108,19 +112,32 @@
 			],
 		},
 		{
-			title: "Sostenibilidad",
+			title: "Sostenibilidad y Certificaciones",
 			items: [
 				{
-					question: "¿Qué productos eco-friendly ofrecen?",
-					answer: "Ofrecemos una amplia gama de productos sostenibles: agendas en papel reciclado FSC, botellas de acero inoxidable, bolsas de algodón orgánico, libretas de papel piedra, bolígrafos de bambú y material de oficina reciclado.",
+					question: "¿Qué certificaciones tienen sus productos?",
+					answer: "Trabajamos con materiales certificados FSC/PEFC (papel sostenible) y textiles Oeko-Tex (libres de sustancias nocivas). Cumplimos estrictamente la normativa UNE-EN 14682 de seguridad en ropa infantil. Esto no es solo cumplimiento; es un argumento de venta para que el director presuma ante los padres de la calidad y seguridad del material.",
 				},
 				{
-					question: "¿Tienen certificaciones ambientales?",
-					answer: "Sí, contamos con certificación FSC (Forest Stewardship Council) para nuestros productos de papel, y estamos en proceso de obtener certificación ISO 14001. Muchos de nuestros productos textiles están certificados GOTS (Global Organic Textile Standard).",
+					question: "¿Qué productos eco-friendly ofrecen?",
+					answer: "Ofrecemos una amplia gama de productos sostenibles: agendas en papel certificado FSC/PEFC, botellas de acero inoxidable, bolsas de algodón orgánico, libretas de papel piedra, bolígrafos de bambú y material de oficina reciclado.",
 				},
 				{
 					question: "¿Los materiales son reciclados?",
 					answer: "Ofrecemos opciones tanto en materiales reciclados como en materiales convencionales. Todos nuestros productos de papel pueden fabricarse con papel 100% reciclado certificado FSC. Consulta las opciones disponibles en cada producto.",
+				},
+			],
+		},
+		{
+			title: "Financiación y AMPAs",
+			items: [
+				{
+					question: "¿Cómo funciona la financiación para viajes de fin de curso?",
+					answer: "Ofrecemos soluciones llave en mano para que las AMPAs financien sus proyectos. Proporcionamos calculadoras de rentabilidad, recomendaciones de precios de reventa, y productos seguros y éticos. No vendemos sudaderas; vendemos 'cuánto dinero ganará el curso vendiendo esta sudadera'. Consulta nuestra sección de Merchandising y Viajes.",
+				},
+				{
+					question: "¿Qué diferencia a Publisol de otros proveedores?",
+					answer: "No somos solo un proveedor; somos tu socio estratégico escolar. Combinamos calidad premium certificada con consultoría especializada. Entendemos el ciclo de vida escolar y las necesidades tanto de directores (organización) como de AMPAs (financiación). Garantía de entrega, materiales sostenibles y servicio integral desde el diseño hasta la entrega.",
 				},
 			],
 		},
@@ -225,9 +242,9 @@
 					</Button>
 					<Text class="self-center text-text-muted">
 						o llámanos: <Link
-							href="tel:+34XXXXXXXXX"
+							href="tel:+34653189599"
 							class="text-primary hover:underline font-semibold"
-							>+34 XXX XXX XXX</Link
+							>+34 653 18 95 99</Link
 						>
 					</Text>
 				</div>

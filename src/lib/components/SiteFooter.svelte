@@ -59,7 +59,7 @@
 						<span class="text-2xl font-bold text-primary">Publisol</span>
 					</Link>
 					<Text class="text-sm text-text-muted mb-4 leading-relaxed">
-						Tu socio en personalización desde 1995. Agendas y merchandising de calidad para colegios y empresas.
+						Tu Socio Estratégico Escolar. Especialistas en personalización de agendas escolares, textil corporativo y merchandising educativo. No vendemos papel ni tela; ofrecemos orden académico para directores y soluciones de financiación para AMPAs.
 					</Text>
 					<div class="flex flex-wrap gap-2 mb-4">
 						<span class="inline-flex items-center gap-1 text-xs bg-success/10 text-success px-3 py-1.5 rounded-full font-medium border border-success/20">
@@ -182,7 +182,9 @@
 							</svg>
 							<div>
 								<Text class="font-semibold text-text-default">Teléfono</Text>
-								<Link href="tel:+34XXXXXXXXX" class="text-text-muted hover:text-primary transition-colors block">+34 XXX XXX XXX</Link>
+								<Link href="tel:+34653189599" class="text-text-muted hover:text-primary transition-colors block">+34 653 18 95 99</Link>
+								<Text class="text-xs text-text-muted mt-1">95-287-52-56 (Comercial)</Text>
+								<Text class="text-xs text-text-muted">95-287-50-13 (Atención Cliente)</Text>
 							</div>
 						</div>
 						<div class="flex items-start gap-3">
@@ -191,7 +193,17 @@
 							</svg>
 							<div>
 								<Text class="font-semibold text-text-default">Email</Text>
-								<Link href="mailto:info@publisol.com" class="text-text-muted hover:text-primary transition-colors block">info@publisol.com</Link>
+								<Link href="mailto:publisolronda@gmail.com" class="text-text-muted hover:text-primary transition-colors block">publisolronda@gmail.com</Link>
+							</div>
+						</div>
+						<div class="flex items-start gap-3">
+							<svg class="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+							</svg>
+							<div>
+								<Text class="font-semibold text-text-default">Dirección</Text>
+								<Text class="text-text-muted text-sm">Carretera de Coin Nº 56 - 4º A<br />2970 Cártama, Málaga</Text>
 							</div>
 						</div>
 						<div class="flex items-start gap-3">
@@ -200,7 +212,7 @@
 							</svg>
 							<div>
 								<Text class="font-semibold text-text-default">Horario</Text>
-								<Text class="text-text-muted">Lun-Vie: 9:00 - 18:00<br />Sáb: 10:00 - 14:00</Text>
+								<Text class="text-text-muted text-sm">Lun-Vie: 9:00 - 18:00<br />Sáb: 10:00 - 14:00</Text>
 							</div>
 						</div>
 						<Button intent="primary" class="w-full mt-4 min-h-[48px]" href="/contacto">Solicitar Presupuesto</Button>

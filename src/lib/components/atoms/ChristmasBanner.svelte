@@ -13,7 +13,7 @@
 
 <a
 	href={href}
-	class="inline-flex items-center gap-2 rounded-full border border-black/20 bg-white px-4 py-2 text-xs font-medium text-black transition-all hover:border-black/40 hover:bg-gray-50 {className}"
+	class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm px-4 py-2 text-xs font-medium text-primary transition-all hover:border-primary/50 hover:bg-primary/20 {className}"
 	{...rest}
 	in:fade={{ duration: 400, delay: 0 }}
 >

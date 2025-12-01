@@ -46,7 +46,13 @@
 		<div
 			class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
 			onclick={(e) => e.stopPropagation()}
+			onkeydown={(e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					e.stopPropagation();
+				}
+			}}
 			role="document"
+			tabindex="0"
 			transition:fly={{ y: 20, duration: 300 }}
 		>
 			<div class="p-6">

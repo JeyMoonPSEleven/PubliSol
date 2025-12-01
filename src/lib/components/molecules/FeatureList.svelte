@@ -26,18 +26,18 @@
 					viewBox="0 0 16 16"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
-					class="text-green-500"
+					class="text-green-600"
 				>
 					<path
 						d="M13.3333 4L6 11.3333L2.66667 8"
-						stroke="rgb(34, 197, 94)"
+						stroke="rgb(22, 163, 74)"
 						stroke-width="2"
 						stroke-linecap="round"
 						stroke-linejoin="round"
 					/>
 				</svg>
 			</div>
-			<span class="text-xs font-medium text-black/80">{feature.text}</span>
+			<span class="text-xs font-medium text-gray-700">{feature.text}</span>
 		</div>
 	{/each}
 </div>

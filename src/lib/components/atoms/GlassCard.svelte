@@ -17,30 +17,29 @@
 </script>
 
 <article
-	class={`relative overflow-hidden rounded-[32px] border border-white/25 bg-white/5 shadow-[0_30px_80px_rgba(2,6,23,0.75)] backdrop-blur-2xl ${className}`}
+	class={`relative overflow-hidden rounded-2xl border border-gray-200/60 bg-white/80 backdrop-blur-sm ${className}`}
 >
 	<div class="absolute inset-0">
 		<img
 			src={image}
 			alt={title}
-			class="absolute inset-0 h-full w-full object-cover opacity-90"
+			class="absolute inset-0 h-full w-full object-cover opacity-70"
 			loading="lazy"
 		/>
-		<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-		<div class="absolute inset-0 bg-gradient-to-tr from-white/40 via-transparent to-white/10 blur-3xl opacity-70"></div>
+		<div class="absolute inset-0 bg-gradient-to-t from-gray-900/40 via-gray-900/10 to-transparent"></div>
 	</div>
 
-	<div class="relative z-10 flex h-full flex-col justify-end gap-2 p-6">
+	<div class="relative z-10 flex h-full flex-col justify-end gap-1.5 p-4">
 		{#if tag}
-			<span class="text-[10px] font-semibold uppercase tracking-[0.4em] text-white/70">
+			<span class="text-[9px] font-semibold uppercase tracking-wider text-white/80">
 				{tag}
 			</span>
 		{/if}
-		<h3 class="text-xl sm:text-2xl font-semibold text-white leading-tight">
+		<h3 class="text-base font-semibold text-white leading-tight">
 			{title}
 		</h3>
 		{#if description}
-			<p class="text-sm text-white/80 leading-relaxed">{description}</p>
+			<p class="text-xs text-white/90 leading-snug line-clamp-2">{description}</p>
 		{/if}
 	</div>
 </article>

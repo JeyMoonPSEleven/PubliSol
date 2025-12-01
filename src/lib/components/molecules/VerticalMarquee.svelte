@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	export type VerticalMarqueeItem = {
 		id: string;
 		title: string;
@@ -23,24 +23,24 @@
 		speed = 22,
 	}: VerticalMarqueeProps = $props();
 
-	// Duplicar items para scroll infinito (necesitamos suficientes copias)
-	let repeatedItems = $derived(items.length > 0 ? [...items, ...items, ...items] : []);
+	// Duplicar items para scroll infinito (necesitamos suficientes copias para un loop suave)
+	let repeatedItems = $derived(items.length > 0 ? [...items, ...items, ...items, ...items] : []);
 
 	const animationName = $derived(direction === "up" ? "scroll-up" : "scroll-down");
-	let animationDuration = $derived(`${Math.max(speed, 12)}s`);
+	let animationDuration = $derived(`${Math.max(speed, 15)}s`);
 </script>
 
 <div
-	class="relative h-full overflow-hidden rounded-[32px] border border-white/10 bg-transparent shadow-[0_20px_50px_rgba(2,6,23,0.55)]"
+	class="relative h-full overflow-hidden rounded-2xl border border-gray-200/50 bg-transparent"
 	style="mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent);
 	-webkit-mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent);"
 >
 	<div
 		class="marquee-track flex flex-col gap-5 p-4 will-change-transform"
-		style="animation: {animationName} {animationDuration} linear infinite;"
+		style="animation: {animationName} {animationDuration} linear infinite; transform: translateZ(0);"
 	>
 		{#each repeatedItems as item, idx (item.id + '-' + idx)}
-			<div class="flex-shrink-0 h-56">
+			<div class="flex-shrink-0 h-40">
 				<GlassCard
 					title={item.title}
 					description={item.description}
@@ -65,13 +65,13 @@
 			transform: translateY(0);
 		}
 		100% {
-			transform: translateY(calc(-100% / 3));
+			transform: translateY(calc(-100% / 4));
 		}
 	}
 
 	@keyframes scroll-down {
 		0% {
-			transform: translateY(calc(-100% / 3));
+			transform: translateY(calc(-100% / 4));
 		}
 		100% {
 			transform: translateY(0);

@@ -21,16 +21,16 @@
 <div class="flex flex-wrap items-center gap-3 {className}" in:fade={{ duration: 500, delay: 400 }}>
 	<!-- Trustpilot Widget Placeholder -->
 	<div class="flex items-center gap-2">
-		<span class="text-xs font-medium text-black/80">{trustpilotRating}</span>
-		<span class="text-xs text-black/40">Trustpilot</span>
+		<span class="text-xs font-medium text-gray-700">{trustpilotRating}</span>
+		<span class="text-xs text-gray-500">Trustpilot</span>
 	</div>
 
-	<span class="text-black/20">|</span>
+	<span class="text-gray-300">|</span>
 
 	<!-- Google Rating -->
 	<a
 		href={googleUrl}
-		class="flex items-center gap-2 text-xs font-medium text-black/80 transition-colors hover:text-black"
+		class="flex items-center gap-2 text-xs font-medium text-gray-700 transition-colors hover:text-gray-900"
 	>
 		<span>{googleRating}</span>
 		<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

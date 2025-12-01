@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Header, Button, SearchBar, Heading } from "atomic-design-svelte";
+	import { Header, Button, SearchBar, Heading, Text } from "atomic-design-svelte";
 	import { Link } from "atomic-design-svelte";
 	import { onMount } from "svelte";
 	import { fly, fade } from "svelte/transition";
@@ -23,11 +23,34 @@
 	let isProductsMenuOpen = $state(false);
 	let mobileMenuOpenCategories = $state<Record<string, boolean>>({});
 	let productsMenuTimeout: ReturnType<typeof setTimeout> | null = null;
+	let searchInputElement: HTMLInputElement | null = $state(null);
+	
+	// Productos sugeridos para el buscador
+	const suggestedProducts = [
+		{ name: "Agenda Escolar Premium A4", href: "/producto/agenda-escolar-premium", category: "Agendas Escolares" },
+		{ name: "Kit Corporativo Bienvenida", href: "/producto/kit-corporativo-bienvenida", category: "Merchandising" },
+		{ name: "Camiseta Corporativa Premium", href: "/producto/camiseta-corporativa", category: "Textil" },
+		{ name: "Libreta Ejecutiva A5", href: "/producto/libreta-ejecutiva", category: "Papelería" },
+		{ name: "Agenda Sostenible Reciclada", href: "/producto/agenda-sostenible", category: "Sostenibles" },
+		{ name: "Botella Térmica Personalizada", href: "/producto/botella-termica", category: "Merchandising" },
+		{ name: "Uniformes Escolares", href: "/productos/textil", category: "Textil" },
+		{ name: "Packs Erasmus", href: "/productos", category: "Merchandising" },
+	];
+	
+	let filteredSuggestions = $derived(
+		searchQuery.trim() === ""
+			? suggestedProducts.slice(0, 6) // Mostrar 6 sugerencias cuando está vacío
+			: suggestedProducts.filter(
+					(product) =>
+						product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+						product.category.toLowerCase().includes(searchQuery.toLowerCase())
+				)
+	);
 
 	const menuItems = [
-		{ label: "Inicio", href: "/" },
-		{ label: "Sobre Nosotros", href: "/nosotros" },
 		{ label: "Catálogos", href: "/catalogos" },
+		{ label: "Blog", href: "/blog" },
+		{ label: "Sobre Nosotros", href: "/nosotros" },
 		{ label: "Contacto", href: "/contacto" },
 	];
 
@@ -200,12 +223,22 @@
 			closeSearchOverlay();
 		}
 	}
+
+	// Focus programático cuando se abre el modal de búsqueda
+	$effect(() => {
+		if (isSearchOpen && searchInputElement) {
+			// Pequeño delay para asegurar que el DOM esté listo
+			setTimeout(() => {
+				searchInputElement?.focus();
+			}, 100);
+		}
+	});
 </script>
 
 {#snippet logo()}
-	<Link href="/" class="flex items-center">
+	<Link href="/" class="flex items-center h-full">
 		<span
-			class="text-xl sm:text-2xl font-bold {isTransparent
+			class="text-2xl sm:text-3xl xl:text-4xl font-bold leading-none {isTransparent
 				? 'text-white'
 				: 'text-primary'} transition-colors"
 			>Publisol</span
@@ -215,30 +248,19 @@
 
 {#snippet navigation()}
 	<nav class="hidden lg:flex items-center justify-center gap-4 xl:gap-6 absolute left-1/2 -translate-x-1/2">
-		{#each menuItems as item}
-			<Link
-				href={item.href}
-				class="text-sm xl:text-base {isTransparent
-					? 'text-white/90 hover:text-white'
-					: 'text-text-default hover:text-primary'} font-medium transition-colors whitespace-nowrap"
-			>
-				{item.label}
-			</Link>
-		{/each}
-
 		<!-- Dropdown de Productos -->
 		<div
-			class="relative"
+			class="relative h-full flex items-center"
 			role="menu"
 			tabindex="0"
 			onmouseenter={openProductsMenu}
 			onmouseleave={closeProductsMenu}
 		>
-			<button
-				class="text-sm xl:text-base {isTransparent
-					? 'text-white/90 hover:text-white'
-					: 'text-text-default hover:text-primary'} font-medium transition-colors flex items-center gap-1 whitespace-nowrap"
-				onclick={toggleProductsMenu}
+		<button
+			class="text-sm xl:text-base h-full flex items-center {isTransparent
+				? 'text-white/90 hover:text-white'
+				: 'text-text-default hover:text-primary'} font-medium transition-colors gap-1 whitespace-nowrap px-2"
+			onclick={toggleProductsMenu}
 				onkeydown={(e) => {
 					if (e.key === "Enter" || e.key === " ") {
 						e.preventDefault();
@@ -285,13 +307,13 @@
 								</h3>
 								<ul class="space-y-2">
 									{#each column.items as subItem}
+										{@const Icon = subItem.icon}
 										<li>
 											<Link
 												href={subItem.href}
 												class="flex items-center gap-3 text-sm text-text-muted hover:text-primary transition-colors py-2 group"
 											>
-												<svelte:component
-													this={subItem.icon}
+												<Icon
 													class="w-5 h-5 group-hover:scale-110 transition-transform"
 												/>
 												<span class="flex-1"
@@ -360,6 +382,17 @@
 				</div>
 			{/if}
 		</div>
+		
+		{#each menuItems as item}
+			<Link
+				href={item.href}
+				class="text-sm xl:text-base h-full flex items-center justify-center {isTransparent
+					? 'text-white/90 hover:text-white'
+					: 'text-text-default hover:text-primary'} font-medium transition-colors whitespace-nowrap px-2"
+			>
+				{item.label}
+			</Link>
+		{/each}
 	</nav>
 {/snippet}
 
@@ -395,15 +428,7 @@
 	<div
 		class="p-4 sm:p-6 space-y-4 bg-white max-h-[calc(100dvh-64px)] overflow-y-auto"
 	>
-		{#each menuItems as item}
-			<Link
-				href={item.href}
-				class="block py-3 px-2 text-base text-text-default hover:text-primary hover:bg-surface-tertiary font-medium min-h-[48px] flex items-center rounded-lg transition-colors"
-			>
-				{item.label}
-			</Link>
-		{/each}
-
+		<!-- Productos en móvil -->
 		<div class="pt-2 border-t border-border-default">
 			<div class="space-y-2">
 				{#each productsMenuItems as column}
@@ -437,13 +462,13 @@
 								transition:fade={{ duration: 200 }}
 							>
 								{#each column.items as subItem}
+									{@const Icon = subItem.icon}
 									<li>
 										<Link
 											href={subItem.href}
 											class="flex items-center gap-3 text-sm text-text-muted hover:text-primary hover:bg-surface-tertiary py-2.5 px-2 min-h-[44px] rounded-lg transition-colors"
 										>
-											<svelte:component
-												this={subItem.icon}
+											<Icon
 												class="w-5 h-5 flex-shrink-0"
 											/>
 											<span class="flex-1"
@@ -458,6 +483,15 @@
 				{/each}
 			</div>
 		</div>
+		
+		{#each menuItems as item}
+			<Link
+				href={item.href}
+				class="block py-3 px-2 text-base text-text-default hover:text-primary hover:bg-surface-tertiary font-medium min-h-[48px] flex items-center rounded-lg transition-colors"
+			>
+				{item.label}
+			</Link>
+		{/each}
 
 		<!-- Redes Sociales -->
 		<div class="pt-4 border-t border-border-default">
@@ -556,38 +590,40 @@
 {/snippet}
 
 {#snippet actions()}
-	<button
-		onclick={() => (isSearchOpen = !isSearchOpen)}
-		class="p-2 {isTransparent
-			? 'text-white hover:text-white/80'
-			: 'text-text-muted hover:text-primary'} transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-		aria-label="Buscar"
-	>
-		<svg
-			class="w-5 h-5"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
+	<div class="flex items-center gap-2 h-full">
+		<button
+			onclick={() => (isSearchOpen = !isSearchOpen)}
+			class="p-2 h-full flex items-center justify-center {isTransparent
+				? 'text-white hover:text-white/80'
+				: 'text-text-muted hover:text-primary'} transition-colors min-w-[44px]"
+			aria-label="Buscar"
 		>
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-			/>
-		</svg>
-	</button>
+			<svg
+				class="w-5 h-5"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+				/>
+			</svg>
+		</button>
 
-	<Button
-		intent="primary"
-		size="sm"
-		href="/contacto"
-		class="whitespace-nowrap text-sm xl:text-base {isTransparent
-			? 'bg-white/20 hover:bg-white/30 text-white border-white/30'
-			: ''}"
-	>
-		Solicitar Presupuesto
-	</Button>
+		<Button
+			intent="primary"
+			size="sm"
+			href="/contacto"
+			class="whitespace-nowrap text-sm xl:text-base h-full flex items-center justify-center {isTransparent
+				? 'bg-white/20 hover:bg-white/30 text-white border-white/30'
+				: ''}"
+		>
+			Solicitar Presupuesto
+		</Button>
+	</div>
 {/snippet}
 
 <div class="relative">
@@ -601,6 +637,28 @@
 				background: transparent !important;
 				border: none !important;
 				backdrop-filter: none !important;
+			}
+			:global(header nav) {
+				min-height: 64px !important;
+				height: 64px !important;
+				display: flex !important;
+				align-items: center !important;
+			}
+			:global(header nav > div) {
+				height: 100% !important;
+				display: flex !important;
+				align-items: center !important;
+			}
+			:global(header nav > div > div) {
+				display: flex !important;
+				align-items: center !important;
+				height: 100% !important;
+			}
+			:global(header nav a),
+			:global(header nav button) {
+				display: flex !important;
+				align-items: center !important;
+				height: 100% !important;
 			}
 		</style>
 		<Header
@@ -653,23 +711,67 @@
 					</svg>
 				</button>
 			</div>
-			<div class="flex gap-2">
+			<div class="flex gap-2 mb-4">
 				<input
 					type="text"
 					bind:value={searchQuery}
+					bind:this={searchInputElement}
 					onkeydown={handleSearchKeydown}
 					placeholder="Buscar productos..."
-					class="flex-1 px-4 py-3 border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-base"
-					autofocus
+					class="flex-1 px-4 py-3 border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-base min-h-[48px]"
 				/>
 				<Button
 					intent="primary"
 					onclick={handleSearchSubmit}
-					class="px-6"
+					class="px-6 min-h-[48px]"
 				>
 					Buscar
 				</Button>
 			</div>
+			
+			<!-- Sugerencias de productos -->
+			{#if filteredSuggestions.length > 0}
+				<div class="border-t border-border-default pt-4">
+					<Text class="text-sm font-semibold text-text-default mb-3 block">
+						{#if searchQuery.trim() === ""}
+							Productos destacados
+						{:else}
+							Sugerencias
+						{/if}
+					</Text>
+					<div class="space-y-2 max-h-[400px] overflow-y-auto">
+						{#each filteredSuggestions as product}
+							<Link
+								href={product.href}
+								onclick={() => (isSearchOpen = false)}
+								class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-tertiary transition-colors group min-h-[48px]"
+							>
+								<div class="flex-1">
+									<Text class="font-medium text-text-default group-hover:text-primary transition-colors">
+										{product.name}
+									</Text>
+									<Text class="text-xs text-text-muted mt-0.5">
+										{product.category}
+									</Text>
+								</div>
+								<svg
+									class="w-5 h-5 text-text-muted group-hover:text-primary transition-colors flex-shrink-0"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M9 5l7 7-7 7"
+									/>
+								</svg>
+							</Link>
+						{/each}
+					</div>
+				</div>
+			{/if}
 		</div>
 	</div>
 {/if}

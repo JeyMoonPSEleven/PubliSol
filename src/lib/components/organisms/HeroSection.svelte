@@ -73,19 +73,10 @@
 </script>
 
 <section
-	class="relative overflow-hidden min-h-[90vh] flex items-center px-4 py-8 sm:py-12 md:py-16 lg:py-20"
+	class="relative overflow-hidden min-h-[90vh] flex items-center px-4 py-8 sm:py-12 md:py-16 lg:py-20 bg-gradient-to-br from-gray-50/95 via-white/90 to-gray-100/95 backdrop-blur-sm"
 >
-	<!-- Imagen de fondo -->
-	<div class="absolute inset-0 z-0">
-		<img
-			src="/images/hero/main-hero-bg.jpg"
-			alt="Fondo Hero Publisol"
-			class="w-full h-full object-cover"
-			loading="eager"
-		/>
-		<!-- Overlay sutil para legibilidad -->
-		<div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20"></div>
-	</div>
+	<!-- Fondo sólido con transparencia -->
+	<div class="absolute inset-0 z-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5"></div>
 	<div class="relative z-10 mx-auto max-w-[1400px]">
 		<div
 			class="grid gap-6 sm:gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12"
@@ -101,14 +92,14 @@
 				<div in:fade={{ duration: 600, delay: 200 }}>
 					<TypewriterText
 						text={heroData.title}
-						speed={50}
-						className="text-fluid-3xl sm:text-fluid-4xl lg:text-fluid-5xl drop-shadow-lg"
+						speed={40}
+						className="text-fluid-3xl sm:text-fluid-4xl lg:text-fluid-5xl font-bold leading-tight text-gray-900"
 					/>
 				</div>
 
 				<!-- Descripción - Fluid Typography -->
 				<p
-					class="leading-relaxed text-white/90 text-fluid-base sm:text-fluid-lg drop-shadow-md"
+					class="leading-relaxed text-gray-700 text-fluid-base sm:text-fluid-lg max-w-2xl"
 					style="font-size: clamp(1rem, 0.95rem + 0.25vw, 1.25rem);"
 					in:fade={{ duration: 600, delay: 400 }}
 				>
@@ -140,8 +131,8 @@
 			</div>
 
 			<!-- Columna Derecha: VerticalMarquee con dos columnas (sentido inverso) -->
-			<div class="hidden lg:block relative z-10">
-				<div class="grid grid-cols-2 gap-4" style="height: 600px;">
+			<div class="hidden lg:block relative z-10" in:fade={{ duration: 800, delay: 300 }}>
+				<div class="grid grid-cols-2 gap-3" style="height: 500px;">
 					<!-- Columna izquierda: scroll hacia arriba -->
 					<div class="h-full">
 						<VerticalMarquee

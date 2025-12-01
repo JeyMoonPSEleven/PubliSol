@@ -44,7 +44,6 @@
 <!-- Bottom Navigation - Solo visible en móvil (Thumb Zone) -->
 <nav
 	class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-border-default shadow-lg lg:hidden pb-safe"
-	role="navigation"
 	aria-label="Navegación principal móvil"
 >
 	<div class="flex items-center justify-around px-2 py-2">
