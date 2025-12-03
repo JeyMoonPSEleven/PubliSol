@@ -4,6 +4,10 @@ import tailwindcss from '@tailwindcss/vite';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { existsSync } from 'fs';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { compression } from 'vite-plugin-compression2';
+import { SvelteKitPWA } from '@vite-pwa/sveltekit';
+import { imagetools } from 'vite-imagetools';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const designSystemLibPath = path.resolve(__dirname, '../design-system/src/lib');
@@ -103,8 +107,105 @@ export default defineConfig({
 				return null;
 			}
 		},
+		imagetools({
+			defaultDirectives: (url) => {
+				if (url.searchParams.has('format')) {
+					return new URLSearchParams();
+				}
+				return new URLSearchParams('format=webp;avif');
+			}
+		}),
+		compression({
+			algorithms: ['gzip'],
+			exclude: [/\.(br)$/, /\.(gz)$/, /\.(webp)$/, /\.(avif)$/]
+		}),
+		compression({
+			algorithms: ['brotliCompress'],
+			exclude: [/\.(br)$/, /\.(gz)$/, /\.(webp)$/, /\.(avif)$/],
+			filename: '[path][base].br'
+		}),
 		sveltekit(),
-		tailwindcss()
+		tailwindcss(),
+		// @ts-expect-error - visualizer plugin types incompatibility with SvelteKit
+		visualizer({
+			open: false,
+			filename: 'dist/stats.html',
+			gzipSize: true,
+			brotliSize: true
+		}),
+		SvelteKitPWA({
+			strategies: 'generateSW',
+			registerType: 'autoUpdate',
+			manifest: {
+				name: 'Publisol - Agendas y Merchandising Personalizado',
+				short_name: 'Publisol',
+				description: 'Desde 1995 creando productos únicos para colegios, empresas y asociaciones',
+				theme_color: '#1E3A8A',
+				background_color: '#FFFFFF',
+				display: 'standalone',
+				orientation: 'portrait',
+				scope: '/',
+				start_url: '/',
+				icons: [
+					{
+						src: '/pwa-192x192.png',
+						sizes: '192x192',
+						type: 'image/png',
+						purpose: 'any maskable'
+					},
+					{
+						src: '/pwa-512x512.png',
+						sizes: '512x512',
+						type: 'image/png',
+						purpose: 'any maskable'
+					}
+				]
+			},
+			workbox: {
+				globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,avif,woff2}'],
+				runtimeCaching: [
+					{
+						urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+						handler: 'CacheFirst',
+						options: {
+							cacheName: 'google-fonts-cache',
+							expiration: {
+								maxEntries: 10,
+								maxAgeSeconds: 60 * 60 * 24 * 365 // 1 año
+							},
+							cacheableResponse: {
+								statuses: [0, 200]
+							}
+						}
+					},
+					{
+						urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+						handler: 'CacheFirst',
+						options: {
+							cacheName: 'gstatic-fonts-cache',
+							expiration: {
+								maxEntries: 10,
+								maxAgeSeconds: 60 * 60 * 24 * 365 // 1 año
+							},
+							cacheableResponse: {
+								statuses: [0, 200]
+							}
+						}
+					},
+					{
+						urlPattern: /^https:\/\/images\.unsplash\.com\/.*/i,
+						handler: 'CacheFirst',
+						options: {
+							cacheName: 'unsplash-images-cache',
+							expiration: {
+								maxEntries: 50,
+								maxAgeSeconds: 60 * 60 * 24 * 30 // 30 días
+							}
+						}
+					}
+				]
+			}
+		})
 	],
 	// Configurar resolve para manejar $lib del design-system
 	resolve: {

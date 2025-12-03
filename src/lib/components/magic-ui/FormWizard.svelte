@@ -59,9 +59,9 @@
 					disabled={index > currentStep}
 				>
 					<div class="flex items-center w-full">
-						<div class="flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all {index <= currentStep
+						<div class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 transition-all {index <= currentStep
 							? 'bg-primary border-primary text-white'
-							: 'bg-white border-border-default text-text-muted'} min-w-[40px] min-h-[40px]">
+							: 'bg-white border-border-default text-text-muted'} min-w-[40px] min-h-[40px] sm:min-w-[48px] sm:min-h-[48px]">
 							{#if index < currentStep}
 								<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
 									<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />

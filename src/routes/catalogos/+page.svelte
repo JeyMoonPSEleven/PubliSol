@@ -2,6 +2,7 @@
 	import { Heading, Text, Card, Button, Modal } from "atomic-design-svelte";
 	import { Breadcrumb } from "atomic-design-svelte";
 	import Seo from "$lib/components/Seo.svelte";
+	import SizeGuideModal from "$lib/components/molecules/SizeGuideModal.svelte";
 
 	const breadcrumbItems = [
 		{ label: "Inicio", href: "/" },
@@ -12,43 +13,51 @@
 		{
 			name: "Agendas Escolares 2025-2026",
 			pages: 24,
-			image: "https://images.unsplash.com/photo-1503676260728-1c00e094b736?w=600&h=800&fit=crop&q=80",
+			image: "/images/categories/categoria-agendas-escolares.jpg",
 			pdf: "/catalogos/agendas-escolares-2025.pdf",
 		},
 		{
 			name: "Merchandising Empresarial",
 			pages: 36,
-			image: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=600&h=800&fit=crop&q=80",
+			image: "/images/categories/categoria-merchandising-empresarial.jpg",
 			pdf: "/catalogos/merchandising-empresarial.pdf",
 		},
 		{
 			name: "Textil Corporativo",
 			pages: 28,
-			image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=800&fit=crop&q=80",
+			image: "/images/categories/categoria-textil-personalizado.jpg",
 			pdf: "/catalogos/textil-corporativo.pdf",
 		},
 		{
 			name: "Productos Sostenibles",
 			pages: 20,
-			image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=600&h=800&fit=crop&q=80",
+			image: "/images/categories/categoria-productos-sostenibles.jpg",
 			pdf: "/catalogos/productos-sostenibles.pdf",
 		},
 		{
 			name: "Papelería y Libretas",
 			pages: 32,
-			image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&h=800&fit=crop&q=80",
+			image: "/images/categories/categoria-papeleria-libretas.jpg",
 			pdf: "/catalogos/papeleria-libretas.pdf",
 		},
 		{
 			name: "Catálogo General Completo",
 			pages: 120,
-			image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=600&h=800&fit=crop&q=80",
+			image: "/images/products/agenda-premium.png",
 			pdf: "/catalogos/catalogo-general.pdf",
 		},
 	];
 
 	let showDownloadModal = $state(false);
 	let selectedCatalogo: (typeof catalogos)[0] | null = $state(null);
+	let showSizeGuide = $state(false);
+	
+	type ColorItem = {
+		name: string;
+		code: string;
+		hex: string;
+	};
+	let selectedColor = $state<ColorItem | null>(null);
 
 	function openDownloadModal(catalogo: (typeof catalogos)[0]) {
 		selectedCatalogo = catalogo;
@@ -65,7 +74,15 @@
 	function handleDownload() {
 		if (!selectedCatalogo) return;
 		console.log("Descargar catálogo:", selectedCatalogo, downloadForm);
-		// Aquí iría la lógica de descarga
+		
+		// Crear enlace temporal para descargar el PDF
+		const link = document.createElement('a');
+		link.href = selectedCatalogo.pdf;
+		link.download = selectedCatalogo.name.replace(/\s+/g, '-').toLowerCase() + '.pdf';
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		
 		showDownloadModal = false;
 	}
 </script>
@@ -119,7 +136,7 @@
 						</Text>
 						<Button
 							intent="primary"
-							class="w-full"
+							class="w-full bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
 							onclick={() => openDownloadModal(catalogo)}
 						>
 							Descargar PDF
@@ -135,58 +152,23 @@
 <section class="py-12 sm:py-16 bg-surface-page" id="guia-tallas">
 	<div class="container mx-auto px-4 sm:px-6">
 		<Heading level="h2" class="text-center mb-8 sm:mb-12">Guía de Tallas</Heading>
-		<div class="max-w-4xl mx-auto">
-			<Text class="text-center text-text-muted mb-8">
+		<div class="max-w-4xl mx-auto text-center">
+			<Text class="text-text-muted mb-8">
 				Consulta nuestra guía de tallas para productos textiles y asegúrate de elegir la talla correcta
 			</Text>
-			<Card padding="lg" class="mb-8">
-				{#snippet children()}
-					<div class="overflow-x-auto">
-						<table class="w-full text-sm">
-							<thead>
-								<tr class="border-b border-border-default">
-									<th class="text-left py-3 px-4 font-semibold">Talla</th>
-									<th class="text-left py-3 px-4 font-semibold">Pecho (cm)</th>
-									<th class="text-left py-3 px-4 font-semibold">Cintura (cm)</th>
-									<th class="text-left py-3 px-4 font-semibold">Cadera (cm)</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="border-b border-border-default">
-									<td class="py-3 px-4 font-medium">S</td>
-									<td class="py-3 px-4">92-96</td>
-									<td class="py-3 px-4">76-80</td>
-									<td class="py-3 px-4">96-100</td>
-								</tr>
-								<tr class="border-b border-border-default">
-									<td class="py-3 px-4 font-medium">M</td>
-									<td class="py-3 px-4">100-104</td>
-									<td class="py-3 px-4">84-88</td>
-									<td class="py-3 px-4">104-108</td>
-								</tr>
-								<tr class="border-b border-border-default">
-									<td class="py-3 px-4 font-medium">L</td>
-									<td class="py-3 px-4">108-112</td>
-									<td class="py-3 px-4">92-96</td>
-									<td class="py-3 px-4">112-116</td>
-								</tr>
-								<tr>
-									<td class="py-3 px-4 font-medium">XL</td>
-									<td class="py-3 px-4">116-120</td>
-									<td class="py-3 px-4">100-104</td>
-									<td class="py-3 px-4">120-124</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<Text class="text-xs text-text-muted mt-4">
-						* Las medidas pueden variar según el modelo. Consulta con nuestro equipo para más información.
-					</Text>
-				{/snippet}
-			</Card>
+			<Button
+				intent="primary"
+				size="lg"
+				onclick={() => (showSizeGuide = true)}
+				class="min-h-[48px] px-8"
+			>
+				Ver Guía de Tallas
+			</Button>
 		</div>
 	</div>
 </section>
+
+<SizeGuideModal bind:open={showSizeGuide} />
 
 <!-- Carta de Colores -->
 <section class="py-12 sm:py-16 bg-surface-tertiary" id="carta-colores">
@@ -196,9 +178,29 @@
 			<Text class="text-center text-text-muted mb-8">
 				Colores disponibles para personalización de productos textiles y papelería
 			</Text>
+			
+			<!-- Cuadro de Muestra -->
+			<div class="mb-8 flex flex-col items-center">
+				<div
+					class="w-full max-w-md h-48 rounded-2xl border-4 border-border-default shadow-lg transition-all duration-300 mb-4"
+					style="background-color: {selectedColor?.code || '#FFFFFF'};"
+				>
+				</div>
+				{#if selectedColor}
+					<div class="text-center">
+						<Heading level="h3" class="text-xl font-bold mb-1">{selectedColor.name}</Heading>
+						<Text class="text-text-muted">#{selectedColor.hex}</Text>
+					</div>
+				{:else}
+					<Text class="text-text-muted text-center">Haz clic en un color para verlo aquí</Text>
+				{/if}
+			</div>
+			
+			<!-- Grid de Colores -->
 			<div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
 				{#each [
 					{ name: "Azul Marino", code: "#1E3A8A", hex: "1E3A8A" },
+					{ name: "Verde Publisol", code: "#2e7625", hex: "2e7625" },
 					{ name: "Verde", code: "#10B981", hex: "10B981" },
 					{ name: "Naranja", code: "#F59E0B", hex: "F59E0B" },
 					{ name: "Rojo", code: "#EF4444", hex: "EF4444" },
@@ -211,16 +213,22 @@
 					{ name: "Turquesa", code: "#14B8A6", hex: "14B8A6" },
 					{ name: "Beige", code: "#FAF8F5", hex: "FAF8F5" }
 				] as color}
-					<Card padding="md" class="text-center hover-shadow-primary transition-all cursor-pointer group">
-						{#snippet children()}
-							<div
-								class="w-full h-20 rounded-lg mb-3 border border-border-default group-hover:scale-105 transition-transform"
-								style="background-color: {color.code};"
-							></div>
-							<Text class="text-xs font-semibold mb-1">{color.name}</Text>
-							<Text class="text-xs text-text-muted">#{color.hex}</Text>
-						{/snippet}
-					</Card>
+					<button
+						type="button"
+						onclick={() => (selectedColor = color)}
+						class="text-center hover-shadow-primary transition-all cursor-pointer group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg p-2"
+					>
+						<div
+							class="w-full h-20 rounded-lg mb-3 border-2 {selectedColor?.hex === color.hex
+								? 'border-primary ring-2 ring-primary/50'
+								: 'border-border-default'} group-hover:scale-105 transition-transform"
+							style="background-color: {color.code};"
+						></div>
+						<Text class="text-xs font-semibold mb-1 {selectedColor?.hex === color.hex
+							? 'text-primary'
+							: ''}">{color.name}</Text>
+						<Text class="text-xs text-text-muted">#{color.hex}</Text>
+					</button>
 				{/each}
 			</div>
 			<Text class="text-center text-sm text-text-muted mt-8">

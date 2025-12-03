@@ -102,11 +102,12 @@
   /* ======================================================================== */
 
   /* --- Colores Semánticos de Interacción (Botones) --- */
-  --color-primary: var(--color-ref-primary-500);
-  --color-primary-hover: var(--color-ref-primary-600);
-  --color-primary-active: var(--color-ref-primary-700);
-  --color-primary-light: var(--color-ref-primary-100);
-  --color-primary-dark: var(--color-ref-primary-900);
+  /* Color primario: Publisol Green (Jade-600) */
+  --color-primary: #1b824c;
+  --color-primary-hover: #126339;
+  --color-primary-active: #094425;
+  --color-primary-light: #c4fed7;
+  --color-primary-dark: #032512;
 
   --color-secondary: var(--color-ref-secondary-500);
   --color-secondary-hover: var(--color-ref-secondary-600);
@@ -499,7 +500,23 @@
 /* ======================================================================== */
 
 @theme {
-  /* Paleta Salem integrada en Tailwind */
+  /* Paleta Jade (Publisol Green) - Color primario del proyecto */
+  --color-jade-50: #c4fed7;
+  --color-jade-100: #52fd9f;
+  --color-jade-200: #37e289;
+  --color-jade-300: #2fca79;
+  --color-jade-400: #29b36b;
+  --color-jade-500: #239e5e;
+  --color-jade-600: #1b824c;
+  --color-jade-700: #126339;
+  --color-jade-800: #094425;
+  --color-jade-900: #032512;
+  --color-jade-950: #011508;
+
+  /* Alias para publisol-green (jade-600) */
+  --color-publisol-green: #1b824c;
+
+  /* Paleta Salem (mantener para compatibilidad) */
   --color-salem-50: #c3ffd2;
   --color-salem-100: #1dfb81;
   --color-salem-200: #17d76d;

@@ -18,6 +18,7 @@
 	import AnimatedGridPattern from "$lib/components/magic-ui/AnimatedGridPattern.svelte";
 	import FormWizard from "$lib/components/magic-ui/FormWizard.svelte";
 	import Seo from "$lib/components/Seo.svelte";
+	import { siteConfig } from "$lib/siteConfig";
 	import {
 		MapPin,
 		Phone,
@@ -648,8 +649,7 @@
 									<Text class="font-semibold">Dirección:</Text>
 								</div>
 								<Text class="text-text-muted">
-									Carretera de Coin Nº 56 - 4º A<br />
-									2970 Cártama, Málaga, España
+									{siteConfig.contact.address.full}
 								</Text>
 							</div>
 
@@ -659,9 +659,13 @@
 									<Text class="font-semibold">Teléfono:</Text>
 								</div>
 								<Text class="text-text-muted">
-									<Link href="tel:+34653189599" class="hover:text-primary">+34 653 18 95 99</Link><br />
-									<Text class="text-sm">95-287-52-56 (Comercial)</Text><br />
-									<Text class="text-sm">95-287-50-13 (Atención Cliente)</Text>
+									<Link href="tel:{siteConfig.contact.phone.main.replace(/\s/g, '')}" class="hover:text-primary">{siteConfig.contact.phone.main}</Link><br />
+									{#if siteConfig.contact.phone.commercial}
+										<Text class="text-sm">{siteConfig.contact.phone.commercial} (Comercial)</Text><br />
+									{/if}
+									{#if siteConfig.contact.phone.customerService}
+										<Text class="text-sm">{siteConfig.contact.phone.customerService} (Atención Cliente)</Text>
+									{/if}
 								</Text>
 							</div>
 
@@ -671,7 +675,7 @@
 									<Text class="font-semibold">Email:</Text>
 								</div>
 								<Text class="text-text-muted">
-									<Link href="mailto:publisolronda@gmail.com" class="hover:text-primary">publisolronda@gmail.com</Link>
+									<Link href="mailto:{siteConfig.contact.email}" class="hover:text-primary">{siteConfig.contact.email}</Link>
 								</Text>
 							</div>
 
@@ -681,8 +685,10 @@
 									<Text class="font-semibold">Horario:</Text>
 								</div>
 								<Text class="text-text-muted">
-									Lunes a Viernes: 9:00 - 18:00<br />
-									Sábados: 10:00 - 14:00<br />
+									{siteConfig.contact.schedule.weekdays}<br />
+									{#if siteConfig.contact.schedule.saturday}
+										{siteConfig.contact.schedule.saturday}<br />
+									{/if}
 									Domingos: Cerrado
 								</Text>
 							</div>

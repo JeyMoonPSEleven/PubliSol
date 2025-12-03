@@ -31,10 +31,10 @@
 			"Entrega en 10-15 días",
 		],
 		images: [
-			"https://images.unsplash.com/photo-1503676260728-1c00e094b736?w=800&h=800&fit=crop&q=80",
-			"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&h=800&fit=crop&q=80",
-			"https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=800&fit=crop&q=80",
-			"https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=800&fit=crop&q=80",
+			"/images/products/agenda-premium.png",
+			"/images/products/libreta-ejecutiva.png",
+			"/images/products/agenda-sostenible.png",
+			"/images/products/kit-corporativo.png",
 		],
 		colors: [
 			{ name: "Negro", value: "#000000", available: true },
@@ -112,25 +112,25 @@
 	const relatedProducts = [
 		{
 			name: "Agenda Escolar Básica",
-			image: "https://images.unsplash.com/photo-1503676260728-1c00e094b736?w=400&h=400&fit=crop&q=80",
+			image: "/images/products/agenda-premium.png",
 			href: "/producto/agenda-escolar-basica",
 			price: "6.50€",
 		},
 		{
 			name: "Agenda Universitaria Premium",
-			image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=400&fit=crop&q=80",
+			image: "/images/products/agenda-sostenible.png",
 			href: "/producto/agenda-universitaria-premium",
 			price: "8.90€",
 		},
 		{
 			name: "Libreta Ejecutiva A5",
-			image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=400&fit=crop&q=80",
+			image: "/images/products/libreta-ejecutiva.png",
 			href: "/producto/libreta-ejecutiva",
 			price: "5.20€",
 		},
 		{
 			name: "Cuaderno Personalizado",
-			image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=400&fit=crop&q=80",
+			image: "/images/products/libreta-ejecutiva.png",
 			href: "/producto/cuaderno-personalizado",
 			price: "4.80€",
 		},
@@ -157,7 +157,7 @@
 	// SEO dinámico basado en el producto
 	const seoTitle = $derived(product ? `${product.name} - Publisol` : "Producto - Publisol");
 	const seoDescription = $derived(product ? product.description || `Descubre ${product.name} en Publisol. Personalización de calidad para tu proyecto.` : "Producto personalizado de Publisol");
-	const seoImage = $derived(product?.images?.[0] || "https://images.unsplash.com/photo-1503676260728-1c00e094b736?w=1200&h=630&fit=crop&q=80");
+	const seoImage = $derived(product?.images?.[0] || "/images/hero/main-hero-bg.jpg");
 	const seoUrl = $derived(product ? `/producto/${product.slug}` : "/productos");
 </script>
 

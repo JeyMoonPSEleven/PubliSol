@@ -43,17 +43,17 @@
 
 <!-- Bottom Navigation - Solo visible en móvil (Thumb Zone) -->
 <nav
-	class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-border-default shadow-lg lg:hidden pb-safe"
+	class="fixed bottom-0 left-0 right-0 z-50 bg-white backdrop-blur-md border-t border-border-default shadow-lg lg:hidden pb-safe"
 	aria-label="Navegación principal móvil"
 >
-	<div class="flex items-center justify-around px-2 py-2">
+	<div class="flex items-center justify-around px-1 sm:px-2 py-2.5 sm:py-3">
 		{#each navItems as item}
 			{@const active = isActive(item.href)}
 			<Link
 				href={item.href}
-				class="flex flex-col items-center justify-center gap-1 px-3 py-2 min-h-[56px] min-w-[56px] rounded-lg transition-all duration-200 touch-target {active
+				class="flex flex-col items-center justify-center gap-1 px-2 sm:px-3 py-2 min-h-[56px] min-w-[56px] rounded-lg transition-all duration-200 touch-target {active
 					? 'text-primary bg-primary/10'
-					: 'text-text-muted hover:text-primary hover:bg-surface-tertiary'}"
+					: 'text-text-default hover:text-primary hover:bg-surface-tertiary'}"
 				aria-label={item.ariaLabel}
 				aria-current={active ? "page" : undefined}
 			>
