@@ -112,170 +112,66 @@
 	</div>
 </section>
 
-<!-- Personalización Total -->
-<section class="py-16 bg-surface-page" id="personalizacion">
+<!-- Sección Combinada: Servicio Integral, Calidad Garantizada, Personalización Total -->
+<section class="py-16 bg-surface-page" id="servicios-combinados">
 	<div class="container mx-auto px-4">
-		<Heading level="h2" class="text-center mb-12">Personalización Total</Heading>
-		<div class="max-w-4xl mx-auto">
-			<Text class="text-center text-lg text-text-muted mb-8">
-				Cada proyecto es único. Ofrecemos personalización completa desde el diseño hasta la producción final.
-			</Text>
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all">
+		<Heading level="h2" class="text-center mb-12">Nuestros Servicios</Heading>
+		<div class="max-w-6xl mx-auto">
+			<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+				<!-- Personalización Total -->
+				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all h-full">
 					{#snippet header()}
 						<div class="text-4xl mb-4">🎨</div>
-						<Heading level="h3" class="mb-2">Diseño Exclusivo</Heading>
+						<Heading level="h3" class="mb-4">Personalización Total</Heading>
 					{/snippet}
 					{#snippet children()}
-						<Text class="text-text-muted">
-							Nuestro equipo de diseño crea soluciones únicas adaptadas a tu marca o centro educativo.
+						<Text class="text-text-muted mb-4">
+							Cada proyecto es único. Ofrecemos personalización completa desde el diseño hasta la producción final.
 						</Text>
+						<div class="space-y-2 text-sm text-text-muted">
+							<div>✓ Diseño exclusivo adaptado</div>
+							<div>✓ Mockups digitales gratuitos</div>
+							<div>✓ Formatos flexibles</div>
+							<div>✓ Técnicas avanzadas</div>
+						</div>
 					{/snippet}
 				</Card>
-				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all">
-					{#snippet header()}
-						<div class="text-4xl mb-4">🖼️</div>
-						<Heading level="h3" class="mb-2">Mockups Digitales</Heading>
-					{/snippet}
-					{#snippet children()}
-						<Text class="text-text-muted">
-							Visualiza tu producto antes de producir con muestras digitales gratuitas.
-						</Text>
-					{/snippet}
-				</Card>
-				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all">
-					{#snippet header()}
-						<div class="text-4xl mb-4">📐</div>
-						<Heading level="h3" class="mb-2">Formatos Flexibles</Heading>
-					{/snippet}
-					{#snippet children()}
-						<Text class="text-text-muted">
-							Adaptamos tamaños, colores y materiales a tus necesidades específicas.
-						</Text>
-					{/snippet}
-				</Card>
-				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all">
-					{#snippet header()}
-						<div class="text-4xl mb-4">✨</div>
-						<Heading level="h3" class="mb-2">Técnicas Avanzadas</Heading>
-					{/snippet}
-					{#snippet children()}
-						<Text class="text-text-muted">
-							Bordado, serigrafía, impresión digital y técnicas especiales para resultados únicos.
-						</Text>
-					{/snippet}
-				</Card>
-			</div>
-		</div>
-	</div>
-</section>
 
-<!-- Calidad Garantizada -->
-<section class="py-16 bg-gradient-to-br from-primary/5 via-white to-secondary/5" id="calidad">
-	<div class="container mx-auto px-4">
-		<Heading level="h2" class="text-center mb-12">Calidad Garantizada</Heading>
-		<div class="max-w-4xl mx-auto">
-			<Text class="text-center text-lg text-text-muted mb-8">
-				Materiales premium, procesos certificados y controles de calidad rigurosos en cada etapa.
-			</Text>
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-				<Card padding="lg" elevation={1} class="text-center hover-shadow-primary transition-all">
+				<!-- Calidad Garantizada -->
+				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all h-full">
 					{#snippet header()}
 						<div class="text-4xl mb-4">🏆</div>
-						<Heading level="h3" class="mb-2">Materiales Premium</Heading>
+						<Heading level="h3" class="mb-4">Calidad Garantizada</Heading>
 					{/snippet}
 					{#snippet children()}
-						<Text class="text-text-muted">
-							Trabajamos solo con proveedores certificados y materiales de primera calidad.
+						<Text class="text-text-muted mb-4">
+							Materiales premium, procesos certificados y controles de calidad rigurosos en cada etapa.
 						</Text>
+						<div class="space-y-2 text-sm text-text-muted">
+							<div>✓ Materiales premium certificados</div>
+							<div>✓ Controles rigurosos</div>
+							<div>✓ Garantía total</div>
+							<div>✓ Certificaciones FSC/Oeko-Tex</div>
+						</div>
 					{/snippet}
 				</Card>
-				<Card padding="lg" elevation={1} class="text-center hover-shadow-primary transition-all">
-					{#snippet header()}
-						<div class="text-4xl mb-4">✅</div>
-						<Heading level="h3" class="mb-2">Controles Rigurosos</Heading>
-					{/snippet}
-					{#snippet children()}
-						<Text class="text-text-muted">
-							Inspección en cada fase del proceso para garantizar la excelencia del resultado final.
-						</Text>
-					{/snippet}
-				</Card>
-				<Card padding="lg" elevation={1} class="text-center hover-shadow-primary transition-all">
-					{#snippet header()}
-						<div class="text-4xl mb-4">🛡️</div>
-						<Heading level="h3" class="mb-2">Garantía Total</Heading>
-					{/snippet}
-					{#snippet children()}
-						<Text class="text-text-muted">
-							Garantía de calidad en todos nuestros productos. Si hay defectos, reposición inmediata.
-						</Text>
-					{/snippet}
-				</Card>
-			</div>
-		</div>
-	</div>
-</section>
 
-<!-- Servicio Integral -->
-<section class="py-16 bg-surface-tertiary" id="servicio">
-	<div class="container mx-auto px-4">
-		<Heading level="h2" class="text-center mb-12">Servicio Integral</Heading>
-		<div class="max-w-4xl mx-auto">
-			<Text class="text-center text-lg text-text-muted mb-8">
-				Desde la primera consulta hasta la entrega final. Nos encargamos de todo para que tú solo tengas que disfrutar del resultado.
-			</Text>
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all">
+				<!-- Servicio Integral -->
+				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all h-full">
 					{#snippet header()}
-						<div class="flex items-center gap-4 mb-4">
-							<div class="text-4xl">📞</div>
-							<Heading level="h3">Asesoramiento Personalizado</Heading>
-						</div>
+						<div class="text-4xl mb-4">📋</div>
+						<Heading level="h3" class="mb-4">Servicio Integral</Heading>
 					{/snippet}
 					{#snippet children()}
-						<Text class="text-text-muted">
-							Un equipo comercial dedicado que te guía en cada paso y resuelve todas tus dudas.
+						<Text class="text-text-muted mb-4">
+							Desde la primera consulta hasta la entrega final. Nos encargamos de todo para que tú solo tengas que disfrutar del resultado.
 						</Text>
-					{/snippet}
-				</Card>
-				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all">
-					{#snippet header()}
-						<div class="flex items-center gap-4 mb-4">
-							<div class="text-4xl">📋</div>
-							<Heading level="h3">Gestión Completa</Heading>
+						<div class="space-y-2 text-sm text-text-muted">
+							<div>✓ Asesoramiento personalizado</div>
+							<div>✓ Gestión completa</div>
+							<div>✓ Logística optimizada</div>
+							<div>✓ Soporte continuo</div>
 						</div>
-					{/snippet}
-					{#snippet children()}
-						<Text class="text-text-muted">
-							Diseño, producción, empaquetado y logística. Todo gestionado por nuestro equipo.
-						</Text>
-					{/snippet}
-				</Card>
-				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all">
-					{#snippet header()}
-						<div class="flex items-center gap-4 mb-4">
-							<div class="text-4xl">🚚</div>
-							<Heading level="h3">Logística Optimizada</Heading>
-						</div>
-					{/snippet}
-					{#snippet children()}
-						<Text class="text-text-muted">
-							Envíos coordinados y seguimiento hasta la entrega final en tu ubicación.
-						</Text>
-					{/snippet}
-				</Card>
-				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all">
-					{#snippet header()}
-						<div class="flex items-center gap-4 mb-4">
-							<div class="text-4xl">💬</div>
-							<Heading level="h3">Soporte Continuo</Heading>
-						</div>
-					{/snippet}
-					{#snippet children()}
-						<Text class="text-text-muted">
-							Atención post-venta y soporte para cualquier consulta o necesidad adicional.
-						</Text>
 					{/snippet}
 				</Card>
 			</div>
@@ -319,57 +215,7 @@
 	</div>
 </section>
 
-<!-- Nuestros Valores -->
-<section class="py-16 bg-surface-page" id="valores">
-	<div class="container mx-auto px-4">
-		<Heading level="h2" class="text-center mb-12">Nuestros Valores</Heading>
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-			{#each valores as valor}
-				<Card padding="lg" elevation={1} class="hover-shadow-primary transition-all">
-					{#snippet header()}
-						<Heading level="h3" class="mb-4">{valor.title}</Heading>
-					{/snippet}
-					{#snippet children()}
-						<Text class="text-text-muted">{valor.description}</Text>
-					{/snippet}
-				</Card>
-			{/each}
-		</div>
-	</div>
-</section>
-
-<!-- Nuestro Equipo -->
-<section class="py-16 bg-surface-page" id="equipo">
-	<div class="container mx-auto px-4">
-		<Heading level="h2" class="text-center mb-12">Nuestro Equipo</Heading>
-		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-			{#each equipo as miembro}
-				<Card padding="lg" elevation={1} class="text-center hover-shadow-primary transition-all duration-300 hover:-translate-y-2 group relative overflow-hidden">
-					{#snippet header()}
-						<!-- Efecto Glassmorphism en hover -->
-						<div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm rounded-lg"></div>
-						<div class="relative z-10">
-							<div class="w-28 h-28 mx-auto mb-4 rounded-full overflow-hidden bg-surface-tertiary ring-4 ring-primary/10 group-hover:ring-primary/30 transition-all duration-300 shadow-lg group-hover:shadow-xl">
-								<img
-									src={miembro.image}
-									alt={miembro.name}
-									class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-								/>
-							</div>
-							<Heading level="h3" class="mb-2 text-lg group-hover:text-primary transition-colors">{miembro.name}</Heading>
-							<Text class="text-sm text-primary font-semibold mb-2">{miembro.role}</Text>
-						</div>
-					{/snippet}
-					{#snippet children()}
-						<div class="relative z-10">
-							<Text class="text-sm text-text-muted leading-relaxed">{miembro.description}</Text>
-						</div>
-					{/snippet}
-				</Card>
-			{/each}
-		</div>
-	</div>
-</section>
+<!-- Secciones movidas a _archived: Valores, Equipo, Certificaciones -->
 
 <!-- Sostenibilidad -->
 <section class="py-16 bg-gradient-to-br from-secondary/10 via-white to-primary/10" id="sostenibilidad">
@@ -418,40 +264,4 @@
 	</div>
 </section>
 
-<!-- Certificaciones -->
-<section class="py-16 bg-surface-page" id="certificaciones">
-	<div class="container mx-auto px-4">
-		<Heading level="h2" class="text-center mb-12">Certificaciones</Heading>
-		<div class="flex flex-wrap justify-center items-center gap-8">
-			<div class="text-center">
-				<div class="w-32 h-32 bg-surface-tertiary rounded-lg flex items-center justify-center mb-4 hover-shadow-primary transition-all">
-					<Text class="text-text-muted text-sm">FSC/PEFC</Text>
-				</div>
-				<Text class="text-sm font-semibold">FSC/PEFC</Text>
-				<Text class="text-xs text-text-muted mt-1">Gestión Forestal Responsable</Text>
-			</div>
-			<div class="text-center">
-				<div class="w-32 h-32 bg-surface-tertiary rounded-lg flex items-center justify-center mb-4 hover-shadow-secondary transition-all">
-					<Text class="text-text-muted text-sm">Oeko-Tex</Text>
-				</div>
-				<Text class="text-sm font-semibold">Oeko-Tex Standard 100</Text>
-				<Text class="text-xs text-text-muted mt-1">Textiles libres de sustancias nocivas</Text>
-			</div>
-			<div class="text-center">
-				<div class="w-32 h-32 bg-surface-tertiary rounded-lg flex items-center justify-center mb-4 hover-shadow-primary transition-all">
-					<Text class="text-text-muted text-sm">ISO 9001</Text>
-				</div>
-				<Text class="text-sm font-semibold">ISO 9001</Text>
-				<Text class="text-xs text-text-muted mt-1">Sistema de gestión de calidad</Text>
-			</div>
-			<div class="text-center">
-				<div class="w-32 h-32 bg-surface-tertiary rounded-lg flex items-center justify-center mb-4 hover-shadow-secondary transition-all">
-					<Text class="text-text-muted text-sm">UNE-EN 14682</Text>
-				</div>
-				<Text class="text-sm font-semibold">UNE-EN 14682</Text>
-				<Text class="text-xs text-text-muted mt-1">Seguridad en ropa infantil</Text>
-			</div>
-		</div>
-	</div>
-</section>
 

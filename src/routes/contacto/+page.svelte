@@ -17,8 +17,10 @@
 	import ShimmerButton from "$lib/components/magic-ui/ShimmerButton.svelte";
 	import AnimatedGridPattern from "$lib/components/magic-ui/AnimatedGridPattern.svelte";
 	import FormWizard from "$lib/components/magic-ui/FormWizard.svelte";
+	import Recaptcha from "$lib/components/atoms/Recaptcha.svelte";
 	import Seo from "$lib/components/Seo.svelte";
 	import { siteConfig } from "$lib/siteConfig";
+	import { sendContactEmail, type ContactFormData } from "$lib/utils/emailService";
 	import {
 		MapPin,
 		Phone,
@@ -54,6 +56,11 @@
 	let errors = $state<Record<string, string>>({});
 	let isSubmitting = $state(false);
 	let submitSuccess = $state(false);
+	let submitError = $state<string | null>(null);
+	let recaptchaComponent: Recaptcha | null = $state(null);
+	
+	// reCAPTCHA site key (debe estar en .env como VITE_RECAPTCHA_SITE_KEY)
+	const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
 	
 	// Pre-llenar formulario desde query param
 	let productoParam = $derived($page.url.searchParams.get('producto') || '');
@@ -172,32 +179,67 @@
 		}
 
 		isSubmitting = true;
+		submitError = null;
 
-		// Simular envío
-		await new Promise((resolve) => setTimeout(resolve, 1500));
+		try {
+			// Ejecutar reCAPTCHA si está configurado
+			let recaptchaToken: string | null = null;
+			if (recaptchaSiteKey && recaptchaComponent) {
+				recaptchaToken = await recaptchaComponent.execute();
+				if (!recaptchaToken) {
+					submitError = "Error en la verificación de seguridad. Por favor, inténtalo de nuevo.";
+					isSubmitting = false;
+					return;
+				}
+			}
 
-		console.log("Formulario enviado:", formData);
-		submitSuccess = true;
-		isSubmitting = false;
-
-		// Reset form after 3 seconds
-		setTimeout(() => {
-			formData = {
-				nombre: "",
-				apellidos: "",
-				email: "",
-				telefono: "",
-				empresa: "",
-				tipoProyecto: "",
-				cantidad: "",
-				fechaNecesaria: "",
-				mensaje: "",
-				privacidad: false,
-				newsletter: false,
+			// Preparar datos del formulario
+			const contactData: ContactFormData = {
+				nombre: formData.nombre,
+				apellidos: formData.apellidos || "",
+				email: formData.email,
+				telefono: formData.telefono,
+				empresa: formData.empresa || "",
+				tipoProyecto: formData.tipoProyecto,
+				cantidad: formData.cantidad || "",
+				fechaNecesaria: formData.fechaNecesaria || "",
+				mensaje: formData.mensaje,
+				privacidad: formData.privacidad,
+				newsletter: formData.newsletter || false,
 			};
-			currentStep = 0;
-			submitSuccess = false;
-		}, 3000);
+
+			// Enviar email usando el servicio
+			const result = await sendContactEmail(contactData);
+
+			if (result.success) {
+				submitSuccess = true;
+				// Reset form after 3 seconds
+				setTimeout(() => {
+					formData = {
+						nombre: "",
+						apellidos: "",
+						email: "",
+						telefono: "",
+						empresa: "",
+						tipoProyecto: "",
+						cantidad: "",
+						fechaNecesaria: "",
+						mensaje: "",
+						privacidad: false,
+						newsletter: false,
+					};
+					currentStep = 0;
+					submitSuccess = false;
+				}, 5000);
+			} else {
+				submitError = result.message || "Error al enviar el formulario. Por favor, inténtalo de nuevo.";
+			}
+		} catch (error) {
+			console.error("Error submitting form:", error);
+			submitError = "Error inesperado al enviar el formulario. Por favor, inténtalo de nuevo más tarde.";
+		} finally {
+			isSubmitting = false;
+		}
 	}
 
 	function handleStepChange(step: number) {
@@ -255,10 +297,12 @@
 				{#if submitSuccess}
 					<div
 						class="mb-6 p-4 bg-success/10 border border-success/20 rounded-lg"
+						role="alert"
+						aria-live="polite"
 					>
 						<div class="flex items-center gap-3">
 							<svg
-								class="w-6 h-6 text-success"
+								class="w-6 h-6 text-success flex-shrink-0"
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
@@ -272,8 +316,35 @@
 							</svg>
 							<Text class="text-success font-semibold"
 								>¡Mensaje enviado correctamente! Te
-								responderemos pronto.</Text
+								responderemos pronto con tu presupuesto personalizado.</Text
 							>
+						</div>
+					</div>
+				{/if}
+
+				{#if submitError}
+					<div
+						class="mb-6 p-4 bg-error/10 border border-error/20 rounded-lg"
+						role="alert"
+						aria-live="assertive"
+					>
+						<div class="flex items-center gap-3">
+							<svg
+								class="w-6 h-6 text-error flex-shrink-0"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+								/>
+							</svg>
+							<Text class="text-error font-semibold">
+								{submitError}
+							</Text>
 						</div>
 					</div>
 				{/if}
@@ -283,9 +354,9 @@
 						<div>
 							<label
 								for="tipoProyecto"
-								class="block text-sm font-medium mb-2"
+								class="block text-sm font-medium mb-2 text-text-default"
 							>
-								Tipo de proyecto *
+								Tipo de proyecto <span class="text-error">*</span>
 							</label>
 							<Select
 								id="tipoProyecto"
@@ -360,9 +431,9 @@
 						<div>
 							<label
 								for="mensaje"
-								class="block text-sm font-medium mb-2"
+								class="block text-sm font-medium mb-2 text-text-default"
 							>
-								Cuéntanos más sobre tu proyecto *
+								Cuéntanos más sobre tu proyecto <span class="text-error">*</span>
 							</label>
 							<Textarea
 								id="mensaje"
@@ -412,9 +483,9 @@
 							<div>
 								<label
 									for="nombre"
-									class="block text-sm font-medium mb-2"
+									class="block text-sm font-medium mb-2 text-text-default"
 								>
-									Nombre *
+									Nombre <span class="text-error">*</span>
 								</label>
 								<Input
 									id="nombre"
@@ -465,9 +536,9 @@
 						<div>
 							<label
 								for="email"
-								class="block text-sm font-medium mb-2"
+								class="block text-sm font-medium mb-2 text-text-default"
 							>
-								Email *
+								Email <span class="text-error">*</span>
 							</label>
 							<Input
 								id="email"
@@ -504,9 +575,9 @@
 						<div>
 							<label
 								for="telefono"
-								class="block text-sm font-medium mb-2"
+								class="block text-sm font-medium mb-2 text-text-default"
 							>
-								Teléfono *
+								Teléfono <span class="text-error">*</span>
 							</label>
 							<Input
 								id="telefono"
@@ -569,11 +640,12 @@
 										: ''}"
 								/>
 								<Text class="text-sm leading-relaxed">
-									He leído y acepto la <Link
+									Acepto el tratamiento de mis datos personales según la <Link
 										href="/privacidad"
+										target="_blank"
 										class="text-primary hover:underline"
 										>política de privacidad</Link
-									> *
+									> <span class="text-error">*</span>
 								</Text>
 							</label>
 							{#if errors.privacidad}
@@ -604,7 +676,7 @@
 									class="mt-1"
 								/>
 								<Text class="text-sm leading-relaxed">
-									Quiero recibir novedades y ofertas
+									Quiero recibir comunicaciones comerciales y novedades (puedo retirar mi consentimiento en cualquier momento)
 								</Text>
 							</label>
 						</div>
@@ -632,7 +704,19 @@
 					]}
 					onStepChange={handleStepChange}
 					onComplete={handleSubmit}
+					isSubmitting={isSubmitting}
 				/>
+
+				<!-- reCAPTCHA v3 (invisible) -->
+				{#if recaptchaSiteKey}
+					<Recaptcha
+						bind:this={recaptchaComponent}
+						siteKey={recaptchaSiteKey}
+						onVerify={(token) => {
+							console.log("reCAPTCHA token:", token);
+						}}
+					/>
+				{/if}
 			</div>
 
 			<!-- Columna Derecha: Información de Contacto -->

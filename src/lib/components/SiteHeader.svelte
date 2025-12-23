@@ -41,19 +41,19 @@
 			title: "Agendas Escolares",
 			items: [
 				{
-					label: "Agendas Educación Primaria",
+					label: "Agenda Clásica",
 					href: "/productos/agendas-escolares",
 					icon: BookOpen,
 				},
 				{
-					label: "Agendas Educación Secundaria",
+					label: "Agenda Día Página",
 					href: "/productos/agendas-escolares",
-					icon: BookOpen,
+					icon: Calendar,
 				},
 				{
-					label: "Agendas Universitarias",
+					label: "Agendas de Doble Página",
 					href: "/productos/agendas-escolares",
-					icon: GraduationCap,
+					icon: Notebook,
 				},
 				{
 					label: "Agendas Personalizadas",
@@ -62,21 +62,49 @@
 				},
 			],
 			featuredImage: "/images/products/agenda-premium.png",
-			featuredTitle: "Producto del Mes",
-			featuredDescription: "Mi primera agenda 2025",
+			featuredTitle: "Producto Principal",
+			featuredDescription: "Agendas para centros y AMPAs",
 		},
 		{
-			title: "Merchandising Empresarial",
+			title: "Textil y Uniformidad",
+			items: [
+				{
+					label: "Sublimación",
+					href: "/productos/textil",
+					icon: Shirt,
+				},
+				{
+					label: "DTF",
+					href: "/productos/textil",
+					icon: Shirt,
+				},
+				{
+					label: "Laser",
+					href: "/productos/textil",
+					icon: Shirt,
+				},
+				{
+					label: "Serigrafía",
+					href: "/productos/textil",
+					icon: Shirt,
+				},
+				{
+					label: "Digital Directa",
+					href: "/productos/textil",
+					icon: Shirt,
+				},
+			],
+			featuredImage: "/images/categories/categoria-textil-personalizado.jpg",
+			featuredTitle: "Producto Principal",
+			featuredDescription: "5 técnicas de impresión textil",
+		},
+		{
+			title: "Merchandising",
 			items: [
 				{
 					label: "Kits Corporativos",
 					href: "/productos/merchandising",
 					icon: Gift,
-				},
-				{
-					label: "Textil Corporativo",
-					href: "/productos/textil",
-					icon: Shirt,
 				},
 				{
 					label: "Material de Oficina",
@@ -95,36 +123,8 @@
 				},
 			],
 			featuredImage: "/images/products/kit-bienvenida.png",
-			featuredTitle: "Nuevo 2025",
-			featuredDescription: "Kits de Bienvenida Premium",
-		},
-		{
-			title: "Agendas & Papelería",
-			items: [
-				{
-					label: "Agendas Anuales",
-					href: "/productos/agendas-escolares",
-					icon: Calendar,
-				},
-				{
-					label: "Cuadernos y Libretas",
-					href: "/productos/papeleria",
-					icon: Notebook,
-				},
-				{
-					label: "Planificadores",
-					href: "/productos/papeleria",
-					icon: ClipboardList,
-				},
-				{
-					label: "Papelería Premium",
-					href: "/productos/papeleria",
-					icon: Palette,
-				},
-			],
-			featuredImage: "/images/products/libreta-ejecutiva.png",
-			featuredTitle: "Destacado",
-			featuredDescription: "Colección Premium 2025",
+			featuredTitle: "Secundario",
+			featuredDescription: "Kits y merchandising",
 		},
 	];
 

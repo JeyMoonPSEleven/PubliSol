@@ -1,6 +1,6 @@
 import type { RequestHandler } from './$types';
 
-const site = 'https://publisol.com';
+const site = 'https://publisolronda.com';
 
 // Rutas estáticas principales
 const staticRoutes = [

@@ -178,17 +178,39 @@
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}
 	
-	// Filtrar productos según búsqueda
+	// Filtrar productos según búsqueda y filtros
 	$effect(() => {
+		const selectedCategories = categories
+			.filter((c) => c.checked)
+			.map((c) => c.label);
+		const selectedMaterials = materials
+			.filter((m) => m.checked)
+			.map((m) => m.label);
+
+		let baseProducts = products;
+
+		// Aplicar búsqueda primero
 		if (searchQuery) {
-			filteredProducts = products.filter((product) =>
+			baseProducts = products.filter((product) =>
 				product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
 				product.category.toLowerCase().includes(searchQuery.toLowerCase())
 			);
-			currentPage = 1; // Reset a página 1 cuando hay búsqueda
-		} else {
-			filteredProducts = products;
 		}
+
+		// Aplicar filtros de categoría
+		if (selectedCategories.length > 0) {
+			baseProducts = baseProducts.filter((product) =>
+				selectedCategories.some((cat) =>
+					product.category.toLowerCase().includes(cat.toLowerCase())
+				)
+			);
+		}
+
+		// Aplicar filtros de material (si los productos tuvieran esta propiedad)
+		// Por ahora solo filtramos por categoría
+
+		filteredProducts = baseProducts;
+		currentPage = 1; // Reset a página 1 cuando cambian los filtros
 	});
 
 	// SEO

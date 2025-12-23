@@ -299,7 +299,7 @@
 			<div class="mt-12 p-6 bg-primary/5 rounded-lg">
 				<Text class="font-semibold mb-2">¿Tienes dudas sobre nuestras cookies?</Text>
 				<Text>
-					Puedes contactarnos en <Link href="mailto:privacidad@publisol.com" class="text-primary hover:underline">privacidad@publisol.com</Link> o consultar nuestra <Link href="/privacidad" class="text-primary hover:underline">Política de Privacidad</Link>.
+					Puedes contactarnos en <Link href="mailto:privacidad@publisol.es" class="text-primary hover:underline">privacidad@publisol.es</Link> o consultar nuestra <Link href="/privacidad" class="text-primary hover:underline">Política de Privacidad</Link>.
 				</Text>
 			</div>
 		</div>

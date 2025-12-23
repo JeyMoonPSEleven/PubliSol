@@ -6,6 +6,7 @@
 	import WhatsAppWidget from "$lib/components/WhatsAppWidget.svelte";
 	import ScrollProgress from "$lib/components/magic-ui/ScrollProgress.svelte";
 	import BottomNavigation from "$lib/components/organisms/BottomNavigation.svelte";
+	import CookieBanner from "$lib/components/CookieBanner.svelte";
 	import { onMount } from "svelte";
 	import { browser } from "$app/environment";
 
@@ -29,3 +30,4 @@
 <SiteFooter />
 <BottomNavigation />
 <WhatsAppWidget />
+<CookieBanner />

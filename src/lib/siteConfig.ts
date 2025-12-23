@@ -10,6 +10,7 @@ export interface ContactInfo {
 		customerService?: string;
 	};
 	email: string;
+	privacyEmail?: string;
 	address: {
 		street: string;
 		city: string;
@@ -92,6 +93,7 @@ export const siteConfig: SiteConfig = {
 			customerService: "95-287-50-13",
 		},
 		email: "publisolronda@gmail.com",
+		privacyEmail: "privacidad@publisol.es",
 		address: {
 			street: "Carretera de Coin Nº 56 - 4º A",
 			city: "Cártama",
@@ -115,7 +117,7 @@ export const siteConfig: SiteConfig = {
 		defaultTitle: "Publisol - Agendas y Merchandising Personalizado",
 		defaultDescription:
 			"Desde 1975 creando productos únicos para colegios, empresas y asociaciones. Calidad, compromiso y rapidez en la entrega.",
-		defaultImage: "/images/hero/main-hero-bg.jpg",
+		defaultImage: "/images/og-image.jpg",
 		siteUrl: "https://publisolronda.com",
 	},
 	products: {
@@ -124,6 +126,13 @@ export const siteConfig: SiteConfig = {
 				id: "agendas-escolares",
 				name: "Agendas Escolares",
 				href: "/productos/agendas-escolares",
+				description: "Producto principal: Agendas personalizadas para centros educativos y Asociaciones de Madres y Padres (AMPAs)",
+			},
+			{
+				id: "textil-corporativo",
+				name: "Textil Corporativo",
+				href: "/productos/textil",
+				description: "Producto principal: Textil personalizado con 5 técnicas de impresión profesionales (Sublimación, DTF, Laser, Serigrafía, Digital Directa)",
 			},
 			{
 				id: "agendas-personalizadas",
@@ -134,11 +143,6 @@ export const siteConfig: SiteConfig = {
 				id: "merchandising-empresarial",
 				name: "Merchandising Empresarial",
 				href: "/productos/merchandising",
-			},
-			{
-				id: "textil-corporativo",
-				name: "Textil Corporativo",
-				href: "/productos/textil",
 			},
 			{
 				id: "material-oficina",

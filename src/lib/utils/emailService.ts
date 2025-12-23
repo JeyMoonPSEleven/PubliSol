@@ -55,37 +55,56 @@ export interface CTAFormData {
 }
 
 /**
+ * Helper para importar EmailJS de forma opcional
+ * Evita errores de build si el paquete no está instalado
+ */
+async function tryImportEmailJS() {
+	try {
+		// Usar una ruta dinámica para evitar análisis estático de Vite
+		const modulePath = '@emailjs/browser';
+		const emailjs = await import(/* @vite-ignore */ modulePath);
+		return emailjs.default || emailjs;
+	} catch (error) {
+		return null;
+	}
+}
+
+/**
  * Enviar formulario de contacto
  */
 export async function sendContactEmail(data: ContactFormData): Promise<{ success: boolean; message?: string }> {
 	try {
 		// OPCIÓN 1: EmailJS
 		if (import.meta.env.VITE_EMAILJS_PUBLIC_KEY) {
-			try {
-				// @ts-ignore - EmailJS es opcional, se instala solo si se usa
-				const emailjs = await import('@emailjs/browser');
-				
-				const templateParams = {
-					from_name: `${data.nombre} ${data.apellidos || ''}`.trim(),
-					from_email: data.email,
-					telefono: data.telefono,
-					empresa: data.empresa || 'No especificada',
-					tipo_proyecto: data.tipoProyecto,
-					cantidad: data.cantidad || 'No especificada',
-					fecha_necesaria: data.fechaNecesaria || 'No especificada',
-					mensaje: data.mensaje,
-					newsletter: data.newsletter ? 'Sí' : 'No',
-				};
+			const emailjs = await tryImportEmailJS();
+			
+			if (emailjs) {
+				try {
+					const templateParams = {
+						from_name: `${data.nombre} ${data.apellidos || ''}`.trim(),
+						from_email: data.email,
+						telefono: data.telefono,
+						empresa: data.empresa || 'No especificada',
+						tipo_proyecto: data.tipoProyecto,
+						cantidad: data.cantidad || 'No especificada',
+						fecha_necesaria: data.fechaNecesaria || 'No especificada',
+						mensaje: data.mensaje,
+						newsletter: data.newsletter ? 'Sí' : 'No',
+					};
 
-				await emailjs.send(
-					import.meta.env.VITE_EMAILJS_SERVICE_ID,
-					import.meta.env.VITE_EMAILJS_TEMPLATE_ID_CONTACT,
-					templateParams,
-					import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-				);
+					await emailjs.send(
+						import.meta.env.VITE_EMAILJS_SERVICE_ID,
+						import.meta.env.VITE_EMAILJS_TEMPLATE_ID_CONTACT,
+						templateParams,
+						import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+					);
 
-				return { success: true, message: 'Mensaje enviado correctamente' };
-			} catch (importError) {
+					return { success: true, message: 'Mensaje enviado correctamente' };
+				} catch (error) {
+					console.warn('Error enviando con EmailJS:', error);
+					// Continuar con otras opciones
+				}
+			} else {
 				console.warn('EmailJS no está instalado. Ejecuta: pnpm add @emailjs/browser');
 				// Continuar con otras opciones
 			}
@@ -138,23 +157,27 @@ export async function subscribeNewsletter(data: NewsletterFormData): Promise<{ s
 	try {
 		// OPCIÓN 1: EmailJS
 		if (import.meta.env.VITE_EMAILJS_PUBLIC_KEY) {
-			try {
-				// @ts-ignore - EmailJS es opcional, se instala solo si se usa
-				const emailjs = await import('@emailjs/browser');
-				
-				const templateParams = {
-					email: data.email,
-				};
+			const emailjs = await tryImportEmailJS();
+			
+			if (emailjs) {
+				try {
+					const templateParams = {
+						email: data.email,
+					};
 
-				await emailjs.send(
-					import.meta.env.VITE_EMAILJS_SERVICE_ID,
-					import.meta.env.VITE_EMAILJS_TEMPLATE_ID_NEWSLETTER,
-					templateParams,
-					import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-				);
+					await emailjs.send(
+						import.meta.env.VITE_EMAILJS_SERVICE_ID,
+						import.meta.env.VITE_EMAILJS_TEMPLATE_ID_NEWSLETTER,
+						templateParams,
+						import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+					);
 
-				return { success: true, message: 'Suscripción realizada correctamente' };
-			} catch (importError) {
+					return { success: true, message: 'Suscripción realizada correctamente' };
+				} catch (error) {
+					console.warn('Error enviando con EmailJS:', error);
+					// Continuar con otras opciones
+				}
+			} else {
 				console.warn('EmailJS no está instalado. Ejecuta: pnpm add @emailjs/browser');
 				// Continuar con otras opciones
 			}

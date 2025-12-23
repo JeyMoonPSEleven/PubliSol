@@ -13,7 +13,9 @@
 	import { Link } from "atomic-design-svelte";
 	import { onMount } from "svelte";
 	import Lightbox from "$lib/components/magic-ui/Lightbox.svelte";
+	import Drawer from "$lib/components/magic-ui/Drawer.svelte";
 	import Seo from "$lib/components/Seo.svelte";
+	import { Checkbox, Input } from "atomic-design-svelte";
 
 	// Datos del producto (en producción vendría de una API)
 	const product = {
@@ -88,6 +90,87 @@
 	let selectedImageIndex = $state(0);
 	let lightboxOpen = $state(false);
 	let summarySticky = $state(false);
+	let discountModalOpen = $state(false);
+	let budgetFormOpen = $state(false);
+	let fechaEntrega = $state("");
+	let fechaError = $state<string | null>(null);
+	
+	// Opciones específicas para agendas
+	const isAgenda = $derived(product.category === "Agendas Escolares");
+	let opcionesAgenda = $state({
+		pegatina: false,
+		gomillas: false,
+	});
+
+	// Datos del formulario de presupuesto
+	let budgetFormData = $state({
+		nombre: "",
+		email: "",
+		telefono: "",
+		empresa: "",
+		observaciones: "",
+		privacidad: false,
+		newsletter: false,
+	});
+
+	let budgetFormErrors = $state<Record<string, string>>({});
+	let budgetFormSubmitting = $state(false);
+	let budgetFormSuccess = $state(false);
+
+	// Validar fecha de entrega
+	function validateFechaEntrega(fecha: string): boolean {
+		if (!fecha) {
+			fechaError = null;
+			return true; // No es obligatorio
+		}
+		const fechaObj = new Date(fecha);
+		const hoy = new Date();
+		hoy.setHours(0, 0, 0, 0);
+		
+		if (fechaObj < hoy) {
+			fechaError = "La fecha de entrega no puede ser anterior a hoy";
+			return false;
+		}
+		
+		// Mínimo 10 días laborables (aproximadamente 14 días naturales)
+		const diasMinimos = 14;
+		const fechaMinima = new Date(hoy);
+		fechaMinima.setDate(hoy.getDate() + diasMinimos);
+		
+		if (fechaObj < fechaMinima) {
+			fechaError = `La fecha de entrega debe ser al menos ${diasMinimos} días después de hoy (${fechaMinima.toLocaleDateString('es-ES')})`;
+			return false;
+		}
+		
+		fechaError = null;
+		return true;
+	}
+
+	// Calcular descuentos
+	const descuentos = $derived(() => {
+		const descuentosAplicables = [];
+		
+		// Descuento por volumen
+		if (quantity >= 500) {
+			descuentosAplicables.push({ tipo: "Volumen", porcentaje: 15, descripcion: "Pedido de 500+ unidades" });
+		} else if (quantity >= 250) {
+			descuentosAplicables.push({ tipo: "Volumen", porcentaje: 10, descripcion: "Pedido de 250+ unidades" });
+		} else if (quantity >= 100) {
+			descuentosAplicables.push({ tipo: "Volumen", porcentaje: 5, descripcion: "Pedido de 100+ unidades" });
+		}
+		
+		// Descuento por pronto pago (antes del 31 de marzo 2026)
+		const fechaLimite = new Date("2026-03-31");
+		const hoy = new Date();
+		if (hoy < fechaLimite && fechaEntrega) {
+			const fechaEntregaObj = new Date(fechaEntrega);
+			if (fechaEntregaObj <= fechaLimite) {
+				descuentosAplicables.push({ tipo: "Pronto pago", porcentaje: 8, descripcion: "Pedido antes del 31 de marzo 2026" });
+			}
+		}
+		
+		return descuentosAplicables;
+	});
 
 	const estimatedPrice = $derived(() => {
 		const basePrice = parseFloat(
@@ -106,7 +189,30 @@
 					),
 				0,
 			);
-		return ((basePrice + optionsPrice) * quantity).toFixed(2);
+		
+		// Añadir precio de opciones de agenda
+		let agendaOptionsPrice = 0;
+		if (isAgenda) {
+			if (opcionesAgenda.pegatina) agendaOptionsPrice += 0.30;
+			if (opcionesAgenda.gomillas) agendaOptionsPrice += 0.50;
+		}
+		
+		const precioUnitario = basePrice + optionsPrice + agendaOptionsPrice;
+		const subtotal = precioUnitario * quantity;
+		
+		// Aplicar descuentos
+		let descuentoTotal = 0;
+		descuentos().forEach(desc => {
+			descuentoTotal += (subtotal * desc.porcentaje) / 100;
+		});
+		
+		const precioFinal = subtotal - descuentoTotal;
+		return {
+			unitario: precioUnitario.toFixed(2),
+			subtotal: subtotal.toFixed(2),
+			descuento: descuentoTotal.toFixed(2),
+			final: precioFinal.toFixed(2),
+		};
 	});
 
 	const relatedProducts = [
@@ -460,13 +566,158 @@
 					{/snippet}
 				</Card>
 
+				<!-- Opciones específicas para agendas -->
+				{#if isAgenda}
+					<Card padding="md" class="mb-4 sm:mb-6">
+						{#snippet header()}
+							<Heading level="h3" class="mb-3 sm:mb-4 text-lg sm:text-xl">
+								Opciones adicionales para agendas
+							</Heading>
+						{/snippet}
+						{#snippet children()}
+							<div class="space-y-3">
+								<label class="flex items-center gap-3 cursor-pointer min-h-[48px] py-2">
+									<Checkbox
+										bind:checked={opcionesAgenda.pegatina}
+										class="mt-1"
+									/>
+									<div class="flex-1">
+										<Text class="font-medium">Pegatina personalizada</Text>
+										<Text class="text-sm text-text-muted">+0.30€/unidad</Text>
+									</div>
+								</label>
+								<label class="flex items-center gap-3 cursor-pointer min-h-[48px] py-2">
+									<Checkbox
+										bind:checked={opcionesAgenda.gomillas}
+										class="mt-1"
+									/>
+									<div class="flex-1">
+										<Text class="font-medium">Gomillas elásticas</Text>
+										<Text class="text-sm text-text-muted">+0.50€/unidad</Text>
+									</div>
+								</label>
+							</div>
+						{/snippet}
+					</Card>
+				{/if}
+
+				<!-- Fecha de entrega -->
+				<Card padding="md" class="mb-4 sm:mb-6">
+					{#snippet header()}
+						<Heading level="h3" class="mb-3 sm:mb-4 text-lg sm:text-xl">
+							Fecha de entrega
+						</Heading>
+					{/snippet}
+					{#snippet children()}
+						<div>
+							<label
+								for="fecha-entrega"
+								class="block text-sm font-medium mb-2"
+							>
+								Fecha necesaria (aproximada)
+							</label>
+							<Input
+								id="fecha-entrega"
+								type="date"
+								bindValue={fechaEntrega}
+								onchange={() => validateFechaEntrega(fechaEntrega)}
+								class="w-full min-h-[48px] text-base {fechaError
+									? 'border-error focus:border-error focus:ring-error'
+									: ''}"
+								min={(() => {
+									const minDate = new Date();
+									minDate.setDate(minDate.getDate() + 14);
+									return minDate.toISOString().split('T')[0];
+								})()}
+							/>
+							{#if fechaError}
+								<Text class="text-error text-xs mt-1">
+									{fechaError}
+								</Text>
+							{:else if fechaEntrega}
+								<Text class="text-success text-xs mt-1">
+									Fecha válida. Plazo mínimo: 14 días laborables.
+								</Text>
+							{/if}
+						</div>
+					{/snippet}
+				</Card>
+
+				<!-- Información de descuentos -->
+				{#if descuentos().length > 0}
+					<Card padding="md" class="mb-4 sm:mb-6 border-2 border-primary/20">
+						{#snippet header()}
+							<Heading level="h3" class="mb-3 sm:mb-4 text-lg sm:text-xl text-primary">
+								Descuentos aplicables
+							</Heading>
+						{/snippet}
+						{#snippet children()}
+							<div class="space-y-2">
+								{#each descuentos() as desc}
+									<div class="flex items-center justify-between p-3 bg-primary/5 rounded-lg">
+										<div>
+											<Text class="font-semibold text-primary">{desc.tipo}</Text>
+											<Text class="text-sm text-text-muted">{desc.descripcion}</Text>
+										</div>
+										<Text class="font-bold text-primary text-lg">
+											-{desc.porcentaje}%
+										</Text>
+									</div>
+								{/each}
+							</div>
+							<Button
+								intent="secondary"
+								size="sm"
+								class="mt-4 w-full"
+								onclick={() => (discountModalOpen = true)}
+							>
+								Ver más información sobre descuentos
+							</Button>
+						{/snippet}
+					</Card>
+				{/if}
+
+				<!-- Resumen de precio estimado -->
+				<Card padding="md" class="mb-4 sm:mb-6 bg-gradient-to-br from-primary/5 to-secondary/5">
+					{#snippet header()}
+						<Heading level="h3" class="mb-3 sm:mb-4 text-lg sm:text-xl">
+							Precio estimado
+						</Heading>
+					{/snippet}
+					{#snippet children()}
+						<div class="space-y-2">
+							<div class="flex justify-between">
+								<Text>Precio unitario:</Text>
+								<Text class="font-semibold">{estimatedPrice().unitario}€</Text>
+							</div>
+							<div class="flex justify-between">
+								<Text>Subtotal ({quantity} unidades):</Text>
+								<Text class="font-semibold">{estimatedPrice().subtotal}€</Text>
+							</div>
+							{#if parseFloat(estimatedPrice().descuento) > 0}
+								<div class="flex justify-between text-success">
+									<Text>Descuentos:</Text>
+									<Text class="font-semibold">-{estimatedPrice().descuento}€</Text>
+								</div>
+							{/if}
+							<div class="flex justify-between pt-2 border-t border-border-default">
+								<Text class="font-bold text-lg">Total estimado:</Text>
+								<Text class="font-bold text-lg text-primary">{estimatedPrice().final}€</Text>
+							</div>
+							<Text class="text-xs text-text-muted mt-2">
+								* Precio estimado. El presupuesto final puede variar según especificaciones.
+							</Text>
+						</div>
+					{/snippet}
+				</Card>
+
 				<!-- CTAs -->
 				<div class="space-y-3">
 					<Button
 						intent="primary"
 						size="lg"
 						class="w-full min-h-[48px] text-base"
-						href="/contacto"
+						onclick={() => (budgetFormOpen = true)}
 					>
 						Solicitar Presupuesto Personalizado
 					</Button>
@@ -867,3 +1118,316 @@
 	images={product.images}
 	onNavigate={(index) => selectedImageIndex = index}
 />
+
+<!-- Modal de Información de Descuentos -->
+{#if discountModalOpen}
+	<div
+		class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+		onclick={() => (discountModalOpen = false)}
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="discount-modal-title"
+	>
+		<div
+			class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+			onclick={(e) => e.stopPropagation()}
+		>
+			<div class="p-6">
+				<div class="flex items-center justify-between mb-4">
+					<Heading level="h2" id="discount-modal-title" class="text-2xl">
+						Información de Descuentos
+					</Heading>
+					<button
+						onclick={() => (discountModalOpen = false)}
+						class="p-2 hover:bg-surface-tertiary rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+						aria-label="Cerrar"
+					>
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
+				</div>
+				<div class="space-y-4">
+					<Card padding="md" class="border-2 border-primary/20">
+						<Heading level="h3" class="mb-2 text-lg">Descuento por Volumen</Heading>
+						<ul class="list-disc space-y-2 ml-6 text-sm text-text-muted">
+							<li>100-249 unidades: 5% de descuento</li>
+							<li>250-499 unidades: 10% de descuento</li>
+							<li>500+ unidades: 15% de descuento</li>
+						</ul>
+					</Card>
+					<Card padding="md" class="border-2 border-primary/20">
+						<Heading level="h3" class="mb-2 text-lg">Descuento por Pronto Pago</Heading>
+						<Text class="text-sm text-text-muted mb-2">
+							Pedidos confirmados antes del 31 de marzo de 2026: 8% de descuento adicional.
+						</Text>
+						<Text class="text-xs text-text-muted">
+							Los descuentos son acumulables. El descuento máximo aplicable es del 23% (15% volumen + 8% pronto pago).
+						</Text>
+					</Card>
+				</div>
+			</div>
+		</div>
+	</div>
+{/if}
+
+<!-- Modal de Formulario de Presupuesto -->
+{#if budgetFormOpen}
+	<div
+		class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+		onclick={() => (budgetFormOpen = false)}
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="budget-form-title"
+	>
+		<div
+			class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+			onclick={(e) => e.stopPropagation()}
+		>
+			<div class="p-6">
+				<div class="flex items-center justify-between mb-6">
+					<Heading level="h2" id="budget-form-title" class="text-2xl">
+						Solicitar Presupuesto
+					</Heading>
+					<button
+						onclick={() => (budgetFormOpen = false)}
+						class="p-2 hover:bg-surface-tertiary rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+						aria-label="Cerrar"
+					>
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
+				</div>
+
+				{#if budgetFormSuccess}
+					<div class="mb-6 p-4 bg-success/10 border border-success/20 rounded-lg">
+						<Text class="text-success font-semibold">
+							¡Solicitud enviada correctamente! Te responderemos en menos de 48 horas.
+						</Text>
+					</div>
+				{:else}
+					<form
+						onsubmit={async (e) => {
+							e.preventDefault();
+							budgetFormErrors = {};
+							
+							if (!budgetFormData.nombre.trim()) {
+								budgetFormErrors.nombre = "El nombre es obligatorio";
+							}
+							if (!budgetFormData.email.trim()) {
+								budgetFormErrors.email = "El email es obligatorio";
+							} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(budgetFormData.email)) {
+								budgetFormErrors.email = "El email no es válido";
+							}
+							if (!budgetFormData.telefono.trim()) {
+								budgetFormErrors.telefono = "El teléfono es obligatorio";
+							}
+							if (!budgetFormData.privacidad) {
+								budgetFormErrors.privacidad = "Debes aceptar la política de privacidad";
+							}
+							
+							if (Object.keys(budgetFormErrors).length > 0) {
+								return;
+							}
+							
+							budgetFormSubmitting = true;
+							
+							// Preparar datos del presupuesto
+							const budgetData = {
+								...budgetFormData,
+								producto: product.name,
+								categoria: product.category,
+								cantidad: quantity,
+								formato: selectedFormat.name,
+								color: selectedColor.name,
+								opciones: selectedOptions.filter(o => o.checked).map(o => o.name),
+								opcionesAgenda: isAgenda ? {
+									pegatina: opcionesAgenda.pegatina,
+									gomillas: opcionesAgenda.gomillas,
+								} : null,
+								fechaEntrega: fechaEntrega || "",
+								precioEstimado: estimatedPrice().final,
+								descuentos: descuentos(),
+							};
+							
+							// Simular envío (en producción usar sendContactEmail)
+							await new Promise(resolve => setTimeout(resolve, 1500));
+							
+							budgetFormSuccess = true;
+							budgetFormSubmitting = false;
+							
+							setTimeout(() => {
+								budgetFormOpen = false;
+								budgetFormSuccess = false;
+								budgetFormData = {
+									nombre: "",
+									email: "",
+									telefono: "",
+									empresa: "",
+									observaciones: "",
+									privacidad: false,
+									newsletter: false,
+								};
+							}, 3000);
+						}}
+						class="space-y-4"
+					>
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+							<div>
+								<label for="budget-nombre" class="block text-sm font-medium mb-2">
+									Nombre / Centro <span class="text-error">*</span>
+								</label>
+								<Input
+									id="budget-nombre"
+									type="text"
+									bindValue={budgetFormData.nombre}
+									required
+									class="w-full min-h-[48px] text-base {budgetFormErrors.nombre
+										? 'border-error focus:border-error focus:ring-error'
+										: ''}"
+								/>
+								{#if budgetFormErrors.nombre}
+									<Text class="text-error text-xs mt-1">{budgetFormErrors.nombre}</Text>
+								{/if}
+							</div>
+							<div>
+								<label for="budget-empresa" class="block text-sm font-medium mb-2">
+									Empresa / Centro educativo
+								</label>
+								<Input
+									id="budget-empresa"
+									type="text"
+									bindValue={budgetFormData.empresa}
+									class="w-full min-h-[48px] text-base"
+								/>
+							</div>
+						</div>
+
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+							<div>
+								<label for="budget-email" class="block text-sm font-medium mb-2">
+									Email <span class="text-error">*</span>
+								</label>
+								<Input
+									id="budget-email"
+									type="email"
+									bindValue={budgetFormData.email}
+									required
+									class="w-full min-h-[48px] text-base {budgetFormErrors.email
+										? 'border-error focus:border-error focus:ring-error'
+										: ''}"
+								/>
+								{#if budgetFormErrors.email}
+									<Text class="text-error text-xs mt-1">{budgetFormErrors.email}</Text>
+								{/if}
+							</div>
+							<div>
+								<label for="budget-telefono" class="block text-sm font-medium mb-2">
+									Teléfono <span class="text-error">*</span>
+								</label>
+								<Input
+									id="budget-telefono"
+									type="tel"
+									bindValue={budgetFormData.telefono}
+									required
+									class="w-full min-h-[48px] text-base {budgetFormErrors.telefono
+										? 'border-error focus:border-error focus:ring-error'
+										: ''}"
+								/>
+								{#if budgetFormErrors.telefono}
+									<Text class="text-error text-xs mt-1">{budgetFormErrors.telefono}</Text>
+								{/if}
+							</div>
+						</div>
+
+						<div>
+							<label for="budget-observaciones" class="block text-sm font-medium mb-2">
+								Observaciones técnicas
+							</label>
+							<Textarea
+								id="budget-observaciones"
+								bindValue={budgetFormData.observaciones}
+								rows="4"
+								class="w-full min-h-[120px] text-base resize-y"
+								placeholder="Especificaciones adicionales, requisitos especiales..."
+							/>
+						</div>
+
+						<div class="space-y-3">
+							<label class="flex items-start gap-3 cursor-pointer min-h-[48px] py-2 {budgetFormErrors.privacidad
+								? 'text-error'
+								: ''}">
+								<Checkbox
+									bind:checked={budgetFormData.privacidad}
+									required
+									class="mt-1 {budgetFormErrors.privacidad
+										? 'border-error'
+										: ''}"
+								/>
+								<Text class="text-sm leading-relaxed">
+									He leído y acepto la <a
+										href="/privacidad"
+										target="_blank"
+										class="text-primary hover:underline"
+									>política de privacidad</a> <span class="text-error">*</span>
+								</Text>
+							</label>
+							{#if budgetFormErrors.privacidad}
+								<Text class="text-error text-xs ml-8">{budgetFormErrors.privacidad}</Text>
+							{/if}
+							<label class="flex items-start gap-3 cursor-pointer min-h-[48px] py-2">
+								<Checkbox
+									bind:checked={budgetFormData.newsletter}
+									class="mt-1"
+								/>
+								<Text class="text-sm leading-relaxed">
+									Quiero recibir novedades y ofertas
+								</Text>
+							</label>
+						</div>
+
+						<div class="pt-4 border-t border-border-default">
+							<div class="bg-surface-tertiary p-4 rounded-lg mb-4">
+								<Text class="font-semibold mb-2">Resumen del presupuesto:</Text>
+								<div class="space-y-1 text-sm">
+									<Text>Producto: {product.name}</Text>
+									<Text>Cantidad: {quantity} unidades</Text>
+									<Text>Formato: {selectedFormat.name}</Text>
+									<Text>Color: {selectedColor.name}</Text>
+									{#if descuentos().length > 0}
+										<Text class="text-success">
+											Descuentos: {descuentos().map(d => `${d.porcentaje}% ${d.tipo}`).join(', ')}
+										</Text>
+									{/if}
+									<Text class="font-bold text-lg text-primary mt-2">
+										Precio estimado: {estimatedPrice().final}€
+									</Text>
+								</div>
+							</div>
+							<Button
+								type="submit"
+								intent="primary"
+								size="lg"
+								class="w-full min-h-[48px] text-base"
+								disabled={budgetFormSubmitting}
+							>
+								{#if budgetFormSubmitting}
+									<span class="flex items-center gap-2">
+										<svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+											<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+											<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+										</svg>
+										Enviando...
+									</span>
+								{:else}
+									Enviar Solicitud de Presupuesto
+								{/if}
+							</Button>
+						</div>
+					</form>
+				{/if}
+			</div>
+		</div>
+	</div>
+{/if}

@@ -465,12 +465,18 @@
   --badge-height-lg: 1.75rem;
   /* 28px */
 
-  --badge-padding-x-sm: 0.5rem;
-  /* 8px */
-  --badge-padding-x-md: 0.75rem;
-  /* 12px */
-  --badge-padding-x-lg: 1rem;
-  /* 16px */
+  --badge-padding-x-sm: 0.875rem;
+  /* 14px - aumentado de 8px */
+  --badge-padding-y-sm: 0.375rem;
+  /* 6px - padding vertical */
+  --badge-padding-x-md: 1.25rem;
+  /* 20px - aumentado de 12px */
+  --badge-padding-y-md: 0.5rem;
+  /* 8px - padding vertical */
+  --badge-padding-x-lg: 1.5rem;
+  /* 24px - aumentado de 16px */
+  --badge-padding-y-lg: 0.625rem;
+  /* 10px - padding vertical */
 
   --badge-font-size-sm: 0.625rem;
   /* 10px */
@@ -937,25 +943,38 @@
 
   .badge-sm {
     min-height: var(--badge-height-sm);
-    padding: 0 var(--badge-padding-x-sm);
+    padding: var(--badge-padding-y-sm) var(--badge-padding-x-sm);
     font-size: var(--badge-font-size-sm);
   }
 
   .badge-md {
     min-height: var(--badge-height-md);
-    padding: 0 var(--badge-padding-x-md);
+    padding: var(--badge-padding-y-md) var(--badge-padding-x-md);
     font-size: var(--badge-font-size-md);
   }
 
   .badge-lg {
     min-height: var(--badge-height-lg);
-    padding: 0 var(--badge-padding-x-lg);
+    padding: var(--badge-padding-y-lg) var(--badge-padding-x-lg);
     font-size: var(--badge-font-size-lg);
   }
 
   .badge-primary {
     background-color: var(--color-primary-light);
     color: var(--color-primary);
+  }
+
+  /* Sobrescribir padding del componente Badge de atomic-design-svelte */
+  /* El componente Badge renderiza como <span class="inline-flex items-center font-medium ..."> */
+  /* Aplicamos padding aumentado a todos los badges independientemente del size */
+  :global(span.inline-flex.items-center.font-medium[class*="px-"]) {
+    padding-left: var(--badge-padding-x-md) !important;
+    padding-right: var(--badge-padding-x-md) !important;
+  }
+  
+  :global(span.inline-flex.items-center.font-medium[class*="py-"]) {
+    padding-top: var(--badge-padding-y-md) !important;
+    padding-bottom: var(--badge-padding-y-md) !important;
   }
 
   .badge-secondary {

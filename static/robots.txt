@@ -1,5 +1,5 @@
 # robots.txt para Publisol
-# https://publisol.com/robots.txt
+# https://publisolronda.com/robots.txt
 
 User-agent: *
 Allow: /
@@ -8,7 +8,7 @@ Disallow: /_app/
 Disallow: /admin/
 
 # Sitemap
-Sitemap: https://publisol.com/sitemap.xml
+Sitemap: https://publisolronda.com/sitemap.xml
 
 # Crawl-delay (opcional, solo si es necesario)
 # Crawl-delay: 1

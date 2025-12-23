@@ -1,103 +1,14 @@
 <script lang="ts">
-	import { Footer, Link, Input, Button, Modal } from "atomic-design-svelte";
+	import { Footer, Link, Button } from "atomic-design-svelte";
 	import { Heading, Text } from "atomic-design-svelte";
 	import { siteConfig } from "$lib/siteConfig";
 	import { fade } from "svelte/transition";
 
-	let email = $state("");
-	let showThankYouModal = $state(false);
-
-	function subscribeNewsletter() {
-		if (!email.trim()) return;
-		
-		console.log("Subscribing email:", email);
-		
-		// Aquí iría la lógica de envío al backend
-		// Por ahora simulamos el éxito
-		showThankYouModal = true;
-		email = "";
-		
-		// Cerrar modal automáticamente después de 3 segundos
-		setTimeout(() => {
-			showThankYouModal = false;
-		}, 3000);
-	}
 </script>
 
 <Footer>
 	{#snippet children()}
 		<div class="space-y-8 sm:space-y-12">
-			<!-- Newsletter Section Mejorada -->
-			<div
-				class="bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 rounded-xl p-5 sm:p-6 md:p-8 text-center border border-primary/20 shadow-lg"
-			>
-				<div class="flex items-center justify-center gap-2 mb-4">
-					<svg
-						class="w-6 h-6 text-primary"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-						/>
-					</svg>
-					<Heading level="h3" class="text-2xl sm:text-3xl"
-						>Suscríbete a nuestra newsletter</Heading
-					>
-				</div>
-				<Text
-					class="mb-6 text-text-muted text-base sm:text-lg max-w-2xl mx-auto"
-				>
-					Recibe novedades, ofertas exclusivas y consejos para tus
-					proyectos de personalización
-				</Text>
-				<form
-					class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-					onsubmit={(e) => {
-						e.preventDefault();
-						subscribeNewsletter();
-					}}
-				>
-					<Input
-						type="email"
-						placeholder="tu@email.com"
-						bindValue={email}
-						class="flex-1 min-h-[48px] text-base"
-						inputmode="email"
-						required
-					/>
-					<Button
-						intent="primary"
-						class="min-h-[48px] text-base w-full sm:w-auto px-6"
-						type="submit"
-					>
-						Suscribirse
-					</Button>
-				</form>
-				<div class="flex items-center justify-center gap-2 mt-4">
-					<svg
-						class="w-4 h-4 text-success"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-						/>
-					</svg>
-					<Text class="text-sm text-text-muted">
-						No enviamos spam. Darse de baja en cualquier momento
-					</Text>
-				</div>
-			</div>
-
 			<!-- Main Footer Content -->
 			<div
 				class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8"
@@ -462,83 +373,3 @@
 	{/snippet}
 </Footer>
 
-<!-- Modal de Agradecimiento Newsletter -->
-{#if showThankYouModal}
-	<div
-		class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-		onclick={() => (showThankYouModal = false)}
-		onkeydown={(e) => {
-			if (e.key === 'Escape') {
-				showThankYouModal = false;
-			}
-		}}
-		transition:fade={{ duration: 200 }}
-		role="dialog"
-		aria-modal="true"
-		aria-label="Gracias por suscribirte"
-		tabindex="-1"
-	>
-		<div
-			class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center relative"
-			onclick={(e) => e.stopPropagation()}
-			role="presentation"
-			transition:fade={{ duration: 300, delay: 100 }}
-		>
-			<!-- Botón cerrar -->
-			<button
-				onclick={() => (showThankYouModal = false)}
-				class="absolute top-4 right-4 p-2 hover:bg-surface-tertiary rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-				aria-label="Cerrar"
-			>
-				<svg
-					class="w-5 h-5 text-text-muted"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M6 18L18 6M6 6l12 12"
-					/>
-				</svg>
-			</button>
-			
-			<!-- Icono de éxito -->
-			<div class="w-20 h-20 mx-auto mb-6 rounded-full bg-success/10 flex items-center justify-center">
-				<svg
-					class="w-12 h-12 text-success"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M5 13l4 4L19 7"
-					/>
-				</svg>
-			</div>
-			
-			<!-- Contenido -->
-			<Heading level="h3" class="text-2xl font-bold mb-3 text-text-default">
-				¡Gracias por suscribirte!
-			</Heading>
-			<Text class="text-text-muted mb-6 text-base leading-relaxed">
-				Te hemos enviado un email de confirmación. Revisa tu bandeja de entrada y no olvides revisar la carpeta de spam.
-			</Text>
-			<Text class="text-sm text-text-muted mb-6">
-				Pronto recibirás nuestras mejores ofertas y consejos exclusivos.
-			</Text>
-			<Button
-				intent="primary"
-				onclick={() => (showThankYouModal = false)}
-				class="w-full min-h-[48px]"
-			>
-				Entendido
-			</Button>
-		</div>
-	</div>
-{/if}

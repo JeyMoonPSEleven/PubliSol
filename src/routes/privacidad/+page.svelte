@@ -39,7 +39,7 @@
 					<li><Text><strong>NIF:</strong> B-XXXXXXXX</Text></li>
 					<li><Text><strong>Domicilio:</strong> Calle Ejemplo, 123, 28001 Madrid, España</Text></li>
 					<li><Text><strong>Teléfono:</strong> +34 XXX XXX XXX</Text></li>
-					<li><Text><strong>Correo electrónico:</strong> privacidad@publisol.com</Text></li>
+					<li><Text><strong>Correo electrónico:</strong> privacidad@publisol.es</Text></li>
 				</ul>
 			</Card>
 			
@@ -125,7 +125,7 @@
 			<Card padding="md" class="mb-8 bg-primary/5">
 				<Text class="font-semibold mb-2">¿Cómo ejercer tus derechos?</Text>
 				<Text>
-					Puedes ejercer tus derechos mediante correo electrónico dirigido a <strong>privacidad@publisol.com</strong>, indicando en el asunto "Ejercicio de Derechos RGPD" y acompañando copia de tu DNI o documento identificativo válido.
+					Puedes ejercer tus derechos mediante correo electrónico dirigido a <strong>privacidad@publisol.es</strong>, indicando en el asunto "Ejercicio de Derechos RGPD" y acompañando copia de tu DNI o documento identificativo válido.
 				</Text>
 				<Text class="mt-4">
 					En caso de discrepancia, tienes derecho a presentar una reclamación ante la <Link href="https://www.aepd.es" target="_blank" class="text-primary hover:underline">Agencia Española de Protección de Datos (AEPD)</Link>.

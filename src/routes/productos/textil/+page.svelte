@@ -88,13 +88,13 @@
 				Textil Personalizado
 			</Heading>
 			<Text class="text-lg text-text-muted mb-6">
-				Ropa corporativa personalizada con bordado o serigrafía. 
-				Camisetas, polos, sudaderas y chaquetas de alta calidad para tu equipo.
+				Textil personalizado para centros educativos y AMPAs. 
+				Uniformes escolares, equipaciones deportivas y ropa laboral con 5 técnicas de impresión profesionales.
 			</Text>
 			<div class="flex flex-wrap gap-4">
-				<Badge intent="primary">35+ Modelos</Badge>
-				<Badge intent="secondary">Bordado y Serigrafía</Badge>
-				<Badge intent="success">Algodón Orgánico</Badge>
+				<Badge intent="primary">5 Técnicas de Impresión</Badge>
+				<Badge intent="secondary">Certificación Oeko-Tex</Badge>
+				<Badge intent="success">Cumplimiento UNE-EN 14682</Badge>
 			</div>
 		</div>
 	</div>
@@ -134,15 +134,27 @@
 								</div>
 							</div>
 							<div>
-								<Text class="font-semibold mb-3">Personalización</Text>
+								<Text class="font-semibold mb-3">Técnicas de Impresión</Text>
 								<div class="space-y-2">
 									<label class="flex items-center gap-2 cursor-pointer">
 										<input type="checkbox" class="rounded" />
-										<Text class="text-sm">Bordado</Text>
+										<Text class="text-sm">Sublimación</Text>
+									</label>
+									<label class="flex items-center gap-2 cursor-pointer">
+										<input type="checkbox" class="rounded" />
+										<Text class="text-sm">DTF</Text>
+									</label>
+									<label class="flex items-center gap-2 cursor-pointer">
+										<input type="checkbox" class="rounded" />
+										<Text class="text-sm">Laser</Text>
 									</label>
 									<label class="flex items-center gap-2 cursor-pointer">
 										<input type="checkbox" class="rounded" />
 										<Text class="text-sm">Serigrafía</Text>
+									</label>
+									<label class="flex items-center gap-2 cursor-pointer">
+										<input type="checkbox" class="rounded" />
+										<Text class="text-sm">Digital Directa</Text>
 									</label>
 								</div>
 							</div>
@@ -239,6 +251,67 @@
 					{/each}
 				</div>
 			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Sección Técnicas de Impresión -->
+<section class="py-12 sm:py-16 bg-surface-tertiary">
+	<div class="container mx-auto px-4 sm:px-6">
+		<Heading level="h2" class="text-center mb-8 sm:mb-12 text-2xl sm:text-3xl">
+			Técnicas de Impresión Textil
+		</Heading>
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+			<Card padding="lg" class="text-center hover-shadow-primary transition-all">
+				{#snippet header()}
+					<Heading level="h3" class="mb-2 text-lg">Sublimación</Heading>
+				{/snippet}
+				{#snippet children()}
+					<Text class="text-sm text-text-muted">
+						Impresión de alta calidad con tintas que se integran en la fibra del tejido. Ideal para poliéster y materiales sintéticos.
+					</Text>
+				{/snippet}
+			</Card>
+			<Card padding="lg" class="text-center hover-shadow-primary transition-all">
+				{#snippet header()}
+					<Heading level="h3" class="mb-2 text-lg">DTF</Heading>
+				{/snippet}
+				{#snippet children()}
+					<Text class="text-sm text-text-muted">
+						Direct to Film: transferencia directa con excelente adherencia y durabilidad. Perfecta para diseños complejos y multicolor.
+					</Text>
+				{/snippet}
+			</Card>
+			<Card padding="lg" class="text-center hover-shadow-primary transition-all">
+				{#snippet header()}
+					<Heading level="h3" class="mb-2 text-lg">Laser</Heading>
+				{/snippet}
+				{#snippet children()}
+					<Text class="text-sm text-text-muted">
+						Corte y grabado láser de precisión para personalización de alta calidad en textiles técnicos y uniformes.
+					</Text>
+				{/snippet}
+			</Card>
+			<Card padding="lg" class="text-center hover-shadow-primary transition-all">
+				{#snippet header()}
+					<Heading level="h3" class="mb-2 text-lg">Serigrafía</Heading>
+				{/snippet}
+				{#snippet children()}
+					<Text class="text-sm text-text-muted">
+						Técnica tradicional de impresión con tintas especiales. Ideal para grandes tiradas y diseños corporativos duraderos.
+					</Text>
+				{/snippet}
+			</Card>
+			<Card padding="lg" class="text-center hover-shadow-primary transition-all md:col-span-2 lg:col-span-1">
+				{#snippet header()}
+					<Heading level="h3" class="mb-2 text-lg">Digital Directa</Heading>
+				{/snippet}
+				{#snippet children()}
+					<Text class="text-sm text-text-muted">
+						Impresión digital directa sobre el tejido. Perfecta para diseños personalizados y tiradas pequeñas con máxima calidad.
+					</Text>
+				{/snippet}
+			</Card>
 		</div>
 	</div>
 </section>

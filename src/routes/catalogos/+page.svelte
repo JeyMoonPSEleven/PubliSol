@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { Heading, Text, Card, Button, Modal } from "atomic-design-svelte";
+	import { Heading, Text, Card, Button } from "atomic-design-svelte";
 	import { Breadcrumb } from "atomic-design-svelte";
 	import Seo from "$lib/components/Seo.svelte";
 	import SizeGuideModal from "$lib/components/molecules/SizeGuideModal.svelte";
+	import { fade, fly } from "svelte/transition";
 
 	const breadcrumbItems = [
 		{ label: "Inicio", href: "/" },
@@ -61,6 +62,7 @@
 
 	function openDownloadModal(catalogo: (typeof catalogos)[0]) {
 		selectedCatalogo = catalogo;
+		downloadForm.empresa = catalogo.name; // Pre-llenar con el nombre del catálogo
 		showDownloadModal = true;
 	}
 
@@ -240,12 +242,35 @@
 
 <!-- Modal de Descarga -->
 {#if showDownloadModal && selectedCatalogo}
-	<Modal open={showDownloadModal} onclose={() => (showDownloadModal = false)}>
-		{#snippet children()}
+	<!-- Backdrop gris -->
+	<div 
+		class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4" 
+		onclick={() => (showDownloadModal = false)} 
+		role="dialog" 
+		aria-modal="true"
+		transition:fade={{ duration: 200 }}
+	>
+		<!-- Contenido del modal -->
+		<div 
+			class="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto" 
+			onclick={(e) => e.stopPropagation()}
+			transition:fly={{ y: 20, duration: 300 }}
+		>
 			<div class="p-6">
-				<Heading level="h3" class="mb-4">
-					Descargar: {selectedCatalogo?.name}
-				</Heading>
+				<div class="flex items-center justify-between mb-4">
+					<Heading level="h3" class="mb-0">
+						Descargar: {selectedCatalogo?.name}
+					</Heading>
+					<button
+						onclick={() => (showDownloadModal = false)}
+						class="p-2 hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+						aria-label="Cerrar"
+					>
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
+				</div>
 				<Text class="mb-6 text-text-muted">
 					Para descargar el catálogo, déjanos tu email:
 				</Text>
@@ -295,9 +320,16 @@
 						<input
 							id="empresa"
 							type="text"
-							bind:value={downloadForm.empresa}
-							class="w-full px-4 py-2 rounded-lg border border-border-default"
+							value={selectedCatalogo?.name || ""}
+							readonly
+							class="w-full px-4 py-2 rounded-lg border border-border-default bg-gray-50 text-gray-700 cursor-not-allowed"
 						/>
+					</div>
+					<div class="flex items-center gap-2 text-sm text-text-muted">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+						</svg>
+						<span>{selectedCatalogo?.pages} páginas</span>
 					</div>
 
 					<label class="flex items-center gap-2">
@@ -324,6 +356,6 @@
 					</div>
 				</form>
 			</div>
-		{/snippet}
-	</Modal>
+		</div>
+	</div>
 {/if}
