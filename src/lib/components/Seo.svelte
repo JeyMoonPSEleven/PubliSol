@@ -22,6 +22,11 @@
 		siteName?: string;
 		schemaType?: SchemaType;
 		schemaData?: Record<string, unknown>;
+		robots?: string;
+		noindex?: boolean;
+		nofollow?: boolean;
+		author?: string;
+		keywords?: string;
 	};
 
 	import { siteConfig } from "$lib/siteConfig";
@@ -35,7 +40,23 @@
 		siteName = siteConfig.seo.companyName,
 		schemaType = "Organization",
 		schemaData = {},
+		robots,
+		noindex = false,
+		nofollow = false,
+		author = "Publisol",
+		keywords,
 	}: Props = $props();
+
+	// Construir meta robots
+	const robotsContent = $derived(() => {
+		if (robots) return robots;
+		const directives: string[] = [];
+		if (noindex) directives.push("noindex");
+		else directives.push("index");
+		if (nofollow) directives.push("nofollow");
+		else directives.push("follow");
+		return directives.join(", ");
+	});
 
 	// Construir URL completa
 	const fullUrl = $derived(
@@ -151,7 +172,16 @@
 	<!-- Additional Meta Tags -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="theme-color" content="#1E3A8A" />
+	<meta name="robots" content={robotsContent()} />
+	<meta name="author" content={author} />
+	{#if keywords}
+		<meta name="keywords" content={keywords} />
+	{/if}
 	<link rel="canonical" href={fullUrl} />
+
+	<!-- Language and Locale -->
+	<meta property="og:locale" content="es_ES" />
+	{@html `<meta http-equiv="content-language" content="es-ES" />`}
 
 	<!-- Schema Markup (JSON-LD) -->
 	{@html `<script type="application/ld+json">${schemaJson}</script>`}

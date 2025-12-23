@@ -53,6 +53,17 @@
 		newsletter: false,
 	});
 
+	// Opciones predefinidas de unidades
+	const unidadesOpciones = [
+		{ value: "10", label: "10 unidades" },
+		{ value: "50", label: "50 unidades" },
+		{ value: "100", label: "100 unidades" },
+		{ value: "200", label: "200 unidades" },
+		{ value: "personalizada", label: "Personalizada" },
+	];
+	let unidadSeleccionada = $state("");
+	let cantidadPersonalizada = $state("");
+
 	let errors = $state<Record<string, string>>({});
 	let isSubmitting = $state(false);
 	let submitSuccess = $state(false);
@@ -69,6 +80,17 @@
 		if (productoParam) {
 			formData.tipoProyecto = productoParam;
 			formData.mensaje = `Hola, estoy interesado en ${productoParam}. Me gustaría recibir más información y un presupuesto personalizado.`;
+		}
+	});
+
+	// Sincronizar cantidad con la selección
+	$effect(() => {
+		if (unidadSeleccionada === "personalizada") {
+			formData.cantidad = cantidadPersonalizada;
+		} else if (unidadSeleccionada) {
+			formData.cantidad = unidadSeleccionada;
+		} else {
+			formData.cantidad = "";
 		}
 	});
 
@@ -215,6 +237,8 @@
 				submitSuccess = true;
 				// Reset form after 3 seconds
 				setTimeout(() => {
+					unidadSeleccionada = "";
+					cantidadPersonalizada = "";
 					formData = {
 						nombre: "",
 						apellidos: "",
@@ -401,12 +425,43 @@
 								>
 									Cantidad estimada
 								</label>
-								<Input
-									id="cantidad"
-									type="number"
-									bindValue={formData.cantidad}
-									class="w-full min-h-[48px] text-base"
-								/>
+								<div class="space-y-3">
+									<div class="relative">
+										<Package
+											class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted z-10"
+											aria-hidden="true"
+										/>
+										<Select
+											id="cantidad"
+											bindValue={unidadSeleccionada}
+											class="w-full pl-10 min-h-[48px] text-base"
+											aria-label="Selecciona cantidad de unidades estimadas"
+										>
+											<option value="">Selecciona una cantidad...</option>
+											{#each unidadesOpciones as opcion}
+												<option value={opcion.value}>{opcion.label}</option>
+											{/each}
+										</Select>
+									</div>
+									{#if unidadSeleccionada === "personalizada"}
+										<div class="relative">
+											<Package
+												class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted"
+												aria-hidden="true"
+											/>
+											<Input
+												id="cantidad-personalizada"
+												type="number"
+												bindValue={cantidadPersonalizada}
+												min="1"
+												class="w-full pl-10 min-h-[48px] text-base"
+												placeholder="Ej: 350"
+												inputmode="numeric"
+												aria-label="Cantidad personalizada de unidades"
+											/>
+										</div>
+									{/if}
+								</div>
 							</div>
 							<div>
 								<label

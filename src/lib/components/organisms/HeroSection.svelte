@@ -6,9 +6,9 @@
 
 	// Función para smooth scroll al formulario
 	function scrollToForm() {
-		const formElement = document.getElementById('lead-capture');
+		const formElement = document.getElementById("lead-capture");
 		if (formElement) {
-			formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			formElement.scrollIntoView({ behavior: "smooth", block: "start" });
 		}
 	}
 
@@ -16,18 +16,19 @@
 	const heroData = {
 		h1: "Calendarios escolares personalizados para tu centro – con descuentos por pedido anticipado",
 		description:
-			"Calidad premium certificada FSC y personalización total para tu centro educativo. Reserva anticipada con descuentos especiales. Ideal para directores y AMPAs que buscan organización académica y soluciones de financiación.",
+			"Impresos en alta calidad, personalizados a tu gusto y entregados a tiempo. Reserva tu pedido ya y evita prisas de última hora",
 		features: [
 			{ text: "Personalización total: logo, festivos y actividades" },
 			{ text: "Descuentos por pedido anticipado" },
-			{ text: "Calidad certificada FSC" },
 		],
 		cta: {
-			primary: { text: "Solicitar Presupuesto", action: scrollToForm },
+			primary: {
+				text: "Solicitar Presupuesto rápido",
+				action: scrollToForm,
+			},
 			secondary: { text: "Ver Productos", href: "/productos" },
 		},
 	};
-
 </script>
 
 <section

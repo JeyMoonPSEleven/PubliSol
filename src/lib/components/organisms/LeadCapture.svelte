@@ -28,6 +28,17 @@
 		pegatinas: false,
 	});
 
+	// Opciones predefinidas de unidades
+	const unidadesOpciones = [
+		{ value: "10", label: "10 unidades" },
+		{ value: "50", label: "50 unidades" },
+		{ value: "100", label: "100 unidades" },
+		{ value: "200", label: "200 unidades" },
+		{ value: "personalizada", label: "Personalizada" },
+	];
+	let unidadSeleccionada = $state("");
+	let cantidadPersonalizada = $state("");
+
 	let formData = $state<ContactFormData>({
 		nombre: "",
 		email: "",
@@ -77,10 +88,19 @@
 			errors.tipoProducto = "Debes seleccionar un tipo de producto";
 		}
 
-		if (!formData.cantidad.trim()) {
-			errors.cantidad = "Las unidades estimadas son obligatorias";
-		} else if (isNaN(Number(formData.cantidad)) || Number(formData.cantidad) < 1) {
-			errors.cantidad = "Debe ser un número válido mayor a 0";
+		// Validar unidades: debe haber seleccionado una opción o tener cantidad personalizada
+		if (!unidadSeleccionada) {
+			errors.cantidad = "Debes seleccionar una cantidad";
+		} else if (unidadSeleccionada === "personalizada") {
+			if (!cantidadPersonalizada.trim()) {
+				errors.cantidad = "Debes ingresar una cantidad personalizada";
+			} else if (isNaN(Number(cantidadPersonalizada)) || Number(cantidadPersonalizada) < 1) {
+				errors.cantidad = "Debe ser un número válido mayor a 0";
+			} else {
+				formData.cantidad = cantidadPersonalizada;
+			}
+		} else {
+			formData.cantidad = unidadSeleccionada;
 		}
 
 		if (!formData.privacidad) {
@@ -107,6 +127,8 @@
 				categoriaProducto = "";
 				tipoProducto = "";
 				opcionesAgenda = { gomillas: false, pegatinas: false };
+				unidadSeleccionada = "";
+				cantidadPersonalizada = "";
 				formData = {
 					nombre: "",
 					email: "",
@@ -421,24 +443,48 @@
 					>
 						Unidades estimadas <span class="text-error">*</span>
 					</label>
-					<div class="relative">
-						<Package
-							class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted"
-							aria-hidden="true"
-						/>
-						<Input
-							id="lead-cantidad"
-							type="number"
-							bindValue={formData.cantidad}
-							required
-							min="1"
-							class="w-full pl-10 min-h-[48px] text-base {errors.cantidad
-								? 'border-error focus:border-error focus:ring-error'
-								: ''}"
-							placeholder="Ej: 200"
-							inputmode="numeric"
-							aria-label="Número de unidades estimadas"
-						/>
+					<div class="space-y-3">
+						<div class="relative">
+							<Package
+								class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted z-10"
+								aria-hidden="true"
+							/>
+							<Select
+								id="lead-cantidad"
+								bindValue={unidadSeleccionada}
+								required
+								class="w-full pl-10 min-h-[48px] text-base {errors.cantidad
+									? 'border-error focus:border-error focus:ring-error'
+									: ''}"
+								aria-label="Selecciona cantidad de unidades estimadas"
+							>
+								<option value="">Selecciona una cantidad...</option>
+								{#each unidadesOpciones as opcion}
+									<option value={opcion.value}>{opcion.label}</option>
+								{/each}
+							</Select>
+						</div>
+						{#if unidadSeleccionada === "personalizada"}
+							<div class="relative">
+								<Package
+									class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted"
+									aria-hidden="true"
+								/>
+								<Input
+									id="lead-cantidad-personalizada"
+									type="number"
+									bindValue={cantidadPersonalizada}
+									required
+									min="1"
+									class="w-full pl-10 min-h-[48px] text-base {errors.cantidad
+										? 'border-error focus:border-error focus:ring-error'
+										: ''}"
+									placeholder="Ej: 350"
+									inputmode="numeric"
+									aria-label="Cantidad personalizada de unidades"
+								/>
+							</div>
+						{/if}
 					</div>
 					{#if errors.cantidad}
 						<Text

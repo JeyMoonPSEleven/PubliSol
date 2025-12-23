@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Heading, Text, Card } from "atomic-design-svelte";
 	import ScrollReveal from "$lib/components/atoms/ScrollReveal.svelte";
-	import { MessageCircle, Pencil, Factory } from "lucide-svelte";
+	import { FileText, FileCheck, Printer } from "lucide-svelte";
 	import { fly } from "svelte/transition";
 
 	type Step = {
@@ -15,23 +15,23 @@
 	const steps: Step[] = [
 		{
 			number: "1",
-			icon: MessageCircle,
-			title: "Input",
-			description: "Recepción de requerimientos. Nos cuentas tu proyecto y necesidades específicas.",
+			icon: FileText,
+			title: "Rellena el formulario",
+			description: "Rellena el formulario con tus necesidades (unidades, contacto, observaciones).",
 			time: "Inmediato",
 		},
 		{
 			number: "2",
-			icon: Pencil,
-			title: "Feedback",
-			description: "Presupuesto personalizado adaptado a tu centro educativo y AMPA.",
-			time: "< 48h",
+			icon: FileCheck,
+			title: "Presupuesto personalizado",
+			description: "Te enviamos un presupuesto personalizado en 24-48h.",
+			time: "24-48h",
 		},
 		{
 			number: "3",
-			icon: Factory,
-			title: "Production",
-			description: "Confirmación de arte final e impresión con los mejores materiales certificados.",
+			icon: Printer,
+			title: "Confirmación e impresión",
+			description: "Confirmas el diseño y ¡nos ponemos a imprimir!",
 			time: "10-15 días",
 		},
 	];
