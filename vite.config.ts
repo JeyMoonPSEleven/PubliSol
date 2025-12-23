@@ -34,8 +34,8 @@ export default defineConfig({
 				const normalizedDesignSystemPath = path.normalize(designSystemPath);
 
 				// Verificar si el import viene del design-system
-				const isFromDesignSystem = 
-					normalizedImporter.includes('design-system') || 
+				const isFromDesignSystem =
+					normalizedImporter.includes('design-system') ||
 					normalizedImporter.includes('atomic-design-svelte') ||
 					normalizedImporter.includes(path.sep + 'design-system' + path.sep) ||
 					normalizedImporter.startsWith(normalizedDesignSystemPath);
@@ -79,11 +79,11 @@ export default defineConfig({
 				// Esto es un fallback si resolveId no funciona
 				const normalizedId = path.normalize(id);
 				const normalizedDesignSystemPathForTransform = path.normalize(designSystemPath);
-				
+
 				if (normalizedId.startsWith(normalizedDesignSystemPathForTransform)) {
 					// Calcular el path relativo desde el archivo actual al design-system/src/lib
 					const fileDir = path.dirname(normalizedId);
-					
+
 					// Reemplazar imports de $lib con paths relativos
 					const updatedCode = code.replace(
 						/from\s+['"]\$lib\/([^'"]+)['"]/g,
