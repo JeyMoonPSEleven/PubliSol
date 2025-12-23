@@ -163,6 +163,12 @@ export default defineConfig({
 			},
 			workbox: {
 				globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,avif,woff2}'],
+				globIgnores: [
+					'**/favicon.png',
+					'**/logo-publisol-green.png',
+					'**/node_modules/**/*'
+				],
+				maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
 				runtimeCaching: [
 					{
 						urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
