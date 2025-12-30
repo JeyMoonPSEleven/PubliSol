@@ -3,7 +3,6 @@
 		Heading,
 		Text,
 		Card,
-		Button,
 		Breadcrumb,
 		Badge,
 	} from "atomic-design-svelte";
@@ -11,6 +10,7 @@
 	import Drawer from "$lib/components/magic-ui/Drawer.svelte";
 	import QuickView from "$lib/components/magic-ui/QuickView.svelte";
 	import Seo from "$lib/components/Seo.svelte";
+	import PublisolButton from "$lib/components/atoms/PublisolButton.svelte";
 
 	let filtersDrawerOpen = $state(false);
 	let quickViewOpen = $state(false);
@@ -181,14 +181,13 @@
 					<Text class="text-text-muted">
 						Mostrando {filteredProducts.length} productos
 					</Text>
-					<Button
-						intent="secondary"
+					<PublisolButton
+						text="Filtros"
+						variant="secondary"
 						size="sm"
-						class="lg:hidden"
 						onclick={() => (filtersDrawerOpen = true)}
-					>
-						Filtros
-					</Button>
+						class="lg:hidden"
+					/>
 				</div>
 
 				<div
@@ -236,23 +235,21 @@
 											Mínimo: {product.minQuantity}
 										</Text>
 										<div class="flex gap-2">
-											<Button
-												intent="secondary"
+											<PublisolButton
+												text="Ver Productos"
+												variant="secondary"
 												size="sm"
-												class="flex-1"
 												href={product.href}
-											>
-												Ver Detalles
-											</Button>
-											<Button
-												intent="primary"
-												size="sm"
 												class="flex-1"
+											/>
+											<PublisolButton
+												text="Consulta sin compromiso"
+												variant="primary"
+												size="sm"
 												onclick={() =>
 													openQuickView(product)}
-											>
-												Vista Rápida
-											</Button>
+												class="flex-1"
+											/>
 										</div>
 									</div>
 								{/snippet}

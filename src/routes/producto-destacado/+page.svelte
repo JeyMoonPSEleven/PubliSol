@@ -2,7 +2,6 @@
 	import {
 		Heading,
 		Text,
-		Button,
 		Badge,
 	} from "atomic-design-svelte";
 	import { Link } from "atomic-design-svelte";
@@ -10,6 +9,7 @@
 	import ScrollReveal from "$lib/components/atoms/ScrollReveal.svelte";
 	import Seo from "$lib/components/Seo.svelte";
 	import { CheckCircle2, Sparkles, Award, Leaf } from "lucide-svelte";
+	import PublisolButton from "$lib/components/atoms/PublisolButton.svelte";
 
 	// Producto destacado del mes (puede venir de API)
 	const featuredProduct = {
@@ -120,22 +120,18 @@
 						</Text>
 
 						<div class="flex flex-wrap gap-4 pt-4">
-							<Button
-								intent="primary"
+							<PublisolButton
+								text={featuredProduct.cta.primary.text}
+								variant="primary"
 								size="lg"
 								href={featuredProduct.cta.primary.href}
-								class="min-h-[56px] px-8"
-							>
-								{featuredProduct.cta.primary.text}
-							</Button>
-							<Button
-								intent="secondary"
+							/>
+							<PublisolButton
+								text={featuredProduct.cta.secondary.text}
+								variant="secondary"
 								size="lg"
 								href={featuredProduct.cta.secondary.href}
-								class="min-h-[56px] px-8"
-							>
-								{featuredProduct.cta.secondary.text}
-							</Button>
+							/>
 						</div>
 					</div>
 				{/snippet}

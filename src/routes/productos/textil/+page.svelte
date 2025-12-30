@@ -3,7 +3,6 @@
 		Heading,
 		Text,
 		Card,
-		Button,
 		Breadcrumb,
 		Badge,
 	} from "atomic-design-svelte";
@@ -11,6 +10,7 @@
 	import Drawer from "$lib/components/magic-ui/Drawer.svelte";
 	import QuickView from "$lib/components/magic-ui/QuickView.svelte";
 	import Seo from "$lib/components/Seo.svelte";
+	import PublisolButton from "$lib/components/atoms/PublisolButton.svelte";
 
 	let filtersDrawerOpen = $state(false);
 	let quickViewOpen = $state(false);
@@ -33,6 +33,15 @@
 		},
 		{
 			id: 2,
+			name: "Camiseta Polo",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Clásica",
+			minQuantity: "12 unidades",
+			href: "/producto/camiseta-polo",
+		},
+		{
+			id: 3,
 			name: "Polo Empresarial",
 			category: "Textil",
 			image: "/images/products/camiseta-corporativa.png",
@@ -41,7 +50,43 @@
 			href: "/producto/polo-empresarial",
 		},
 		{
-			id: 3,
+			id: 4,
+			name: "Polo Manga Larga",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Profesional",
+			minQuantity: "15 unidades",
+			href: "/producto/polo-manga-larga",
+		},
+		{
+			id: 5,
+			name: "Camiseta Manga Larga",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Uniforme",
+			minQuantity: "10 unidades",
+			href: "/producto/camiseta-manga-larga",
+		},
+		{
+			id: 6,
+			name: "Camiseta Manga Corta",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Básica",
+			minQuantity: "10 unidades",
+			href: "/producto/camiseta-manga-corta",
+		},
+		{
+			id: 7,
+			name: "Camiseta Tank Top",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Deportiva",
+			minQuantity: "12 unidades",
+			href: "/producto/camiseta-tank-top",
+		},
+		{
+			id: 8,
 			name: "Sudadera con Capucha",
 			category: "Textil",
 			image: "/images/products/camiseta-corporativa.png",
@@ -50,13 +95,121 @@
 			href: "/producto/sudadera-capucha",
 		},
 		{
-			id: 4,
+			id: 9,
+			name: "Sudadera sin Capucha",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Clásica",
+			minQuantity: "12 unidades",
+			href: "/producto/sudadera-sin-capucha",
+		},
+		{
+			id: 10,
 			name: "Chaqueta Técnica",
 			category: "Textil",
 			image: "/images/products/camiseta-corporativa.png",
 			badge: "Técnica",
 			minQuantity: "8 unidades",
 			href: "/producto/chaqueta-tecnica",
+		},
+		{
+			id: 11,
+			name: "Chaqueta Softshell",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Impermeable",
+			minQuantity: "8 unidades",
+			href: "/producto/chaqueta-softshell",
+		},
+		{
+			id: 12,
+			name: "Pantalón Deportivo",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Equipación",
+			minQuantity: "10 unidades",
+			href: "/producto/pantalon-deportivo",
+		},
+		{
+			id: 13,
+			name: "Pantalón Laboral",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Resistente",
+			minQuantity: "10 unidades",
+			href: "/producto/pantalon-laboral",
+		},
+		{
+			id: 14,
+			name: "Uniformes Escolares",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Escolar",
+			minQuantity: "20 unidades",
+			href: "/producto/uniformes-escolares",
+		},
+		{
+			id: 15,
+			name: "Babero y Delantal",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Guardería",
+			minQuantity: "15 unidades",
+			href: "/producto/babero-delantal",
+		},
+		{
+			id: 16,
+			name: "Gorra Personalizada",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Bordado",
+			minQuantity: "20 unidades",
+			href: "/producto/gorra-personalizada",
+		},
+		{
+			id: 17,
+			name: "Gorra Plana (Snapback)",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Ajustable",
+			minQuantity: "20 unidades",
+			href: "/producto/gorra-plana",
+		},
+		{
+			id: 18,
+			name: "Mochila Textil Personalizada",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Personalizada",
+			minQuantity: "15 unidades",
+			href: "/producto/mochila-textil",
+		},
+		{
+			id: 19,
+			name: "Bolsa Deportiva",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Grande",
+			minQuantity: "12 unidades",
+			href: "/producto/bolsa-deportiva",
+		},
+		{
+			id: 20,
+			name: "Chaleco Reflectante",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Seguridad",
+			minQuantity: "15 unidades",
+			href: "/producto/chaleco-reflectante",
+		},
+		{
+			id: 21,
+			name: "Bata Laboral",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Profesional",
+			minQuantity: "10 unidades",
+			href: "/producto/bata-laboral",
 		},
 	];
 
@@ -171,14 +324,13 @@
 					<Text class="text-text-muted">
 						Mostrando {filteredProducts.length} productos
 					</Text>
-					<Button
-						intent="secondary"
+					<PublisolButton
+						text="Filtros"
+						variant="secondary"
 						size="sm"
-						class="lg:hidden"
 						onclick={() => (filtersDrawerOpen = true)}
-					>
-						Filtros
-					</Button>
+						class="lg:hidden"
+					/>
 				</div>
 
 				<div
@@ -226,23 +378,21 @@
 											Mínimo: {product.minQuantity}
 										</Text>
 										<div class="flex gap-2">
-											<Button
-												intent="secondary"
+											<PublisolButton
+												text="Ver Productos"
+												variant="secondary"
 												size="sm"
-												class="flex-1"
 												href={product.href}
-											>
-												Ver Detalles
-											</Button>
-											<Button
-												intent="primary"
-												size="sm"
 												class="flex-1"
+											/>
+											<PublisolButton
+												text="Consulta sin compromiso"
+												variant="primary"
+												size="sm"
 												onclick={() =>
 													openQuickView(product)}
-											>
-												Vista Rápida
-											</Button>
+												class="flex-1"
+											/>
 										</div>
 									</div>
 								{/snippet}

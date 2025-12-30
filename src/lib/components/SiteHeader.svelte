@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { Button, Heading, Text } from "atomic-design-svelte";
+	import { Heading, Text } from "atomic-design-svelte";
 	import { Link } from "atomic-design-svelte";
+	import PublisolButton from "$lib/components/atoms/PublisolButton.svelte";
 	import { onMount } from "svelte";
 	import { fly, fade } from "svelte/transition";
 	import {
@@ -94,7 +95,8 @@
 					icon: Shirt,
 				},
 			],
-			featuredImage: "/images/categories/categoria-textil-personalizado.jpg",
+			featuredImage:
+				"/images/categories/categoria-textil-personalizado.jpg",
 			featuredTitle: "Producto Principal",
 			featuredDescription: "5 técnicas de impresión textil",
 		},
@@ -163,7 +165,7 @@
 		productsMenuTimeout = setTimeout(() => {
 			isProductsMenuOpen = false;
 			productsMenuTimeout = null;
-		}, 200);
+		}, 400);
 	}
 
 	function toggleProductsMenu() {
@@ -221,7 +223,7 @@
 		: 'bg-white/95 backdrop-blur-md text-primary shadow-md'}"
 >
 	<nav class="container mx-auto px-4 sm:px-6 lg:px-8">
-		<div class="flex items-center justify-between h-16 lg:h-20">
+		<div class="flex items-center justify-between h-16 lg:h-24">
 			<!-- Izquierda: Logo -->
 			<div class="flex-shrink-0 flex items-center">
 				<Link href="/" class="flex items-center">
@@ -229,7 +231,7 @@
 					<img
 						src="/images/logo-publisol-green.png"
 						alt={siteConfig.company.name}
-						class="h-8 sm:h-10 lg:h-12 w-auto"
+						class="h-8 sm:h-10 lg:h-16 xl:h-20 w-auto"
 						onerror={(e) => {
 							// Fallback a SVG si no existe el PNG
 							const target = e.currentTarget as HTMLImageElement;
@@ -292,14 +294,14 @@
 				<div class="hidden lg:flex items-center gap-4 xl:gap-6">
 					<!-- Dropdown de Productos -->
 					<div
-						class="relative h-full flex items-center"
+						class="relative h-full flex items-center py-2"
 						role="menu"
 						tabindex="0"
 						onmouseenter={openProductsMenu}
 						onmouseleave={closeProductsMenu}
 					>
 						<button
-							class="text-sm xl:text-base h-full flex items-center text-gray-900 hover:text-primary font-medium transition-colors gap-1 whitespace-nowrap px-2"
+							class="text-sm xl:text-base h-full flex items-center text-gray-900 hover:text-primary font-medium transition-colors gap-1 whitespace-nowrap px-4 py-2"
 							onclick={toggleProductsMenu}
 							onkeydown={(e) => {
 								if (e.key === "Enter" || e.key === " ") {
@@ -469,15 +471,15 @@
 				</button>
 
 				<!-- CTA Button -->
-				<Link href="/contacto" class="hidden sm:block">
-					<Button
-						intent="primary"
+				<div class="hidden sm:block">
+					<PublisolButton
+						text="Contáctanos"
+						variant="primary"
 						size="sm"
-						class="whitespace-nowrap text-sm xl:text-base bg-[#2e7625] hover:bg-[#256020] text-white border-[#2e7625] hover:border-[#256020]"
-					>
-						Solicitar Presupuesto
-					</Button>
-				</Link>
+						href="/contacto"
+						class="whitespace-nowrap"
+					/>
+				</div>
 			</div>
 		</div>
 	</nav>
@@ -629,40 +631,24 @@
 				<div
 					class="pt-4 border-t border-border-default space-y-3 sticky bottom-0 bg-white pb-2"
 				>
-					<Link
+					<PublisolButton
+						text="Solicita Presupuesto"
+						variant="primary"
+						size="lg"
 						href="/contacto"
 						onclick={() => (isMobileMenuOpen = false)}
-					>
-						<Button
-							intent="primary"
-							size="lg"
-							class="w-full min-h-[48px] text-base"
-						>
-							Solicitar Presupuesto
-						</Button>
-					</Link>
-					<button
+						class="w-full"
+					/>
+					<PublisolButton
+						text="Ver Productos"
+						variant="secondary"
+						size="lg"
 						onclick={() => {
 							isSearchOpen = !isSearchOpen;
 							isMobileMenuOpen = false;
 						}}
-						class="w-full py-3 px-4 border-2 border-border-default rounded-lg text-text-default hover:bg-surface-tertiary hover:border-primary flex items-center justify-center gap-2 min-h-[48px] transition-colors text-base font-medium"
-					>
-						<svg
-							class="w-5 h-5"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-							/>
-						</svg>
-						<span>Buscar productos</span>
-					</button>
+						class="w-full"
+					/>
 				</div>
 			</div>
 		</div>
@@ -719,13 +705,12 @@
 					placeholder="Buscar productos..."
 					class="flex-1 px-4 py-3 border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-base min-h-[48px]"
 				/>
-				<Button
-					intent="primary"
+				<PublisolButton
+					text="Buscar"
+					variant="primary"
+					size="md"
 					onclick={handleSearchSubmit}
-					class="px-6 min-h-[48px]"
-				>
-					Buscar
-				</Button>
+				/>
 			</div>
 
 			<!-- Sugerencias de productos -->

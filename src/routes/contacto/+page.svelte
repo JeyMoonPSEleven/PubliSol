@@ -1,296 +1,15 @@
 <script lang="ts">
-	import {
-		Heading,
-		Text,
-		Card,
-		Button,
-		Form,
-		Input,
-		Select,
-		Textarea,
-		Checkbox,
-		Link,
-	} from "atomic-design-svelte";
+	import { Heading, Text, Card, Link } from "atomic-design-svelte";
 	import { Breadcrumb } from "atomic-design-svelte";
-	import { page } from "$app/stores";
-	import { onMount } from "svelte";
-	import ShimmerButton from "$lib/components/magic-ui/ShimmerButton.svelte";
-	import AnimatedGridPattern from "$lib/components/magic-ui/AnimatedGridPattern.svelte";
-	import FormWizard from "$lib/components/magic-ui/FormWizard.svelte";
-	import Recaptcha from "$lib/components/atoms/Recaptcha.svelte";
 	import Seo from "$lib/components/Seo.svelte";
 	import { siteConfig } from "$lib/siteConfig";
-	import { sendContactEmail, type ContactFormData } from "$lib/utils/emailService";
-	import {
-		MapPin,
-		Phone,
-		Mail,
-		Clock,
-		Truck,
-		Globe,
-		Package,
-		Zap,
-	} from "lucide-svelte";
-
-	let currentStep = $state(0);
+	import StandardContactForm from "$lib/components/organisms/StandardContactForm.svelte";
+	import { MapPin, Phone, Mail, Clock, Truck } from "lucide-svelte";
 
 	const breadcrumbItems = [
 		{ label: "Inicio", href: "/" },
 		{ label: "Contacto", href: "/contacto" },
 	];
-
-	let formData = $state({
-		nombre: "",
-		apellidos: "",
-		email: "",
-		telefono: "",
-		empresa: "",
-		tipoProyecto: "",
-		cantidad: "",
-		fechaNecesaria: "",
-		mensaje: "",
-		privacidad: false,
-		newsletter: false,
-	});
-
-	// Opciones predefinidas de unidades
-	const unidadesOpciones = [
-		{ value: "10", label: "10 unidades" },
-		{ value: "50", label: "50 unidades" },
-		{ value: "100", label: "100 unidades" },
-		{ value: "200", label: "200 unidades" },
-		{ value: "personalizada", label: "Personalizada" },
-	];
-	let unidadSeleccionada = $state("");
-	let cantidadPersonalizada = $state("");
-
-	let errors = $state<Record<string, string>>({});
-	let isSubmitting = $state(false);
-	let submitSuccess = $state(false);
-	let submitError = $state<string | null>(null);
-	let recaptchaComponent: Recaptcha | null = $state(null);
-	
-	// reCAPTCHA site key (debe estar en .env como VITE_RECAPTCHA_SITE_KEY)
-	const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
-	
-	// Pre-llenar formulario desde query param
-	let productoParam = $derived($page.url.searchParams.get('producto') || '');
-	
-	$effect(() => {
-		if (productoParam) {
-			formData.tipoProyecto = productoParam;
-			formData.mensaje = `Hola, estoy interesado en ${productoParam}. Me gustaría recibir más información y un presupuesto personalizado.`;
-		}
-	});
-
-	// Sincronizar cantidad con la selección
-	$effect(() => {
-		if (unidadSeleccionada === "personalizada") {
-			formData.cantidad = cantidadPersonalizada;
-		} else if (unidadSeleccionada) {
-			formData.cantidad = unidadSeleccionada;
-		} else {
-			formData.cantidad = "";
-		}
-	});
-
-	const tiposProyecto = [
-		"Agendas escolares",
-		"Merchandising empresarial",
-		"Textil corporativo",
-		"Papelería",
-		"Otro",
-	];
-
-	function validateEmail(email: string): boolean {
-		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-	}
-
-	function validatePhone(phone: string): boolean {
-		return /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/.test(
-			phone,
-		);
-	}
-
-	function validateForm(): boolean {
-		errors = {};
-
-		if (!formData.nombre.trim()) {
-			errors.nombre = "El nombre es obligatorio";
-		}
-
-		if (!formData.email.trim()) {
-			errors.email = "El email es obligatorio";
-		} else if (!validateEmail(formData.email)) {
-			errors.email = "El email no es válido";
-		}
-
-		if (!formData.telefono.trim()) {
-			errors.telefono = "El teléfono es obligatorio";
-		} else if (!validatePhone(formData.telefono)) {
-			errors.telefono = "El teléfono no es válido";
-		}
-
-		if (!formData.tipoProyecto) {
-			errors.tipoProyecto = "Debes seleccionar un tipo de proyecto";
-		}
-
-		if (!formData.mensaje.trim()) {
-			errors.mensaje = "El mensaje es obligatorio";
-		} else if (formData.mensaje.trim().length < 50) {
-			errors.mensaje = "El mensaje debe tener al menos 50 caracteres";
-		}
-
-		if (!formData.privacidad) {
-			errors.privacidad = "Debes aceptar la política de privacidad";
-		}
-
-		return Object.keys(errors).length === 0;
-	}
-
-	function validateStep(step: number): boolean {
-		errors = {};
-
-		if (step === 0) {
-			// Validar paso 1: Datos del Proyecto
-			if (!formData.tipoProyecto) {
-				errors.tipoProyecto = "Debes seleccionar un tipo de proyecto";
-				return false;
-			}
-		} else if (step === 1) {
-			// Validar paso 2: Detalles
-			if (!formData.mensaje.trim()) {
-				errors.mensaje = "El mensaje es obligatorio";
-				return false;
-			} else if (formData.mensaje.trim().length < 50) {
-				errors.mensaje = "El mensaje debe tener al menos 50 caracteres";
-				return false;
-			}
-		} else if (step === 2) {
-			// Validar paso 3: Tus Datos
-			if (!formData.nombre.trim()) {
-				errors.nombre = "El nombre es obligatorio";
-				return false;
-			}
-			if (!formData.email.trim()) {
-				errors.email = "El email es obligatorio";
-				return false;
-			} else if (!validateEmail(formData.email)) {
-				errors.email = "El email no es válido";
-				return false;
-			}
-			if (!formData.telefono.trim()) {
-				errors.telefono = "El teléfono es obligatorio";
-				return false;
-			} else if (!validatePhone(formData.telefono)) {
-				errors.telefono = "El teléfono no es válido";
-				return false;
-			}
-			if (!formData.privacidad) {
-				errors.privacidad = "Debes aceptar la política de privacidad";
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	async function handleSubmit() {
-		if (!validateStep(2)) {
-			return;
-		}
-
-		isSubmitting = true;
-		submitError = null;
-
-		try {
-			// Ejecutar reCAPTCHA si está configurado
-			let recaptchaToken: string | null = null;
-			if (recaptchaSiteKey && recaptchaComponent) {
-				recaptchaToken = await recaptchaComponent.execute();
-				if (!recaptchaToken) {
-					submitError = "Error en la verificación de seguridad. Por favor, inténtalo de nuevo.";
-					isSubmitting = false;
-					return;
-				}
-			}
-
-			// Preparar datos del formulario
-			const contactData: ContactFormData = {
-				nombre: formData.nombre,
-				apellidos: formData.apellidos || "",
-				email: formData.email,
-				telefono: formData.telefono,
-				empresa: formData.empresa || "",
-				tipoProyecto: formData.tipoProyecto,
-				cantidad: formData.cantidad || "",
-				fechaNecesaria: formData.fechaNecesaria || "",
-				mensaje: formData.mensaje,
-				privacidad: formData.privacidad,
-				newsletter: formData.newsletter || false,
-			};
-
-			// Enviar email usando el servicio
-			const result = await sendContactEmail(contactData);
-
-			if (result.success) {
-				submitSuccess = true;
-				// Reset form after 3 seconds
-				setTimeout(() => {
-					unidadSeleccionada = "";
-					cantidadPersonalizada = "";
-					formData = {
-						nombre: "",
-						apellidos: "",
-						email: "",
-						telefono: "",
-						empresa: "",
-						tipoProyecto: "",
-						cantidad: "",
-						fechaNecesaria: "",
-						mensaje: "",
-						privacidad: false,
-						newsletter: false,
-					};
-					currentStep = 0;
-					submitSuccess = false;
-				}, 5000);
-			} else {
-				submitError = result.message || "Error al enviar el formulario. Por favor, inténtalo de nuevo.";
-			}
-		} catch (error) {
-			console.error("Error submitting form:", error);
-			submitError = "Error inesperado al enviar el formulario. Por favor, inténtalo de nuevo más tarde.";
-		} finally {
-			isSubmitting = false;
-		}
-	}
-
-	function handleStepChange(step: number) {
-		// Validar antes de avanzar
-		if (step > currentStep && !validateStep(currentStep)) {
-			return;
-		}
-		currentStep = step;
-	}
-
-	$effect(() => {
-		// Clear errors when field is corrected
-		if (formData.nombre && errors.nombre) delete errors.nombre;
-		if (formData.email && validateEmail(formData.email) && errors.email)
-			delete errors.email;
-		if (
-			formData.telefono &&
-			validatePhone(formData.telefono) &&
-			errors.telefono
-		)
-			delete errors.telefono;
-		if (formData.tipoProyecto && errors.tipoProyecto)
-			delete errors.tipoProyecto;
-		if (formData.mensaje && formData.mensaje.length >= 50 && errors.mensaje)
-			delete errors.mensaje;
-		if (formData.privacidad && errors.privacidad) delete errors.privacidad;
-	});
 </script>
 
 <Seo
@@ -311,467 +30,20 @@
 </section>
 
 <!-- Layout Dos Columnas -->
-<section class="py-8 sm:py-12 md:py-16 relative overflow-hidden bg-surface-page">
+<section
+	class="py-8 sm:py-12 md:py-16 relative overflow-hidden bg-surface-page"
+>
 	<div class="container mx-auto px-4 sm:px-6 relative z-10">
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 			<!-- Columna Izquierda: Formulario -->
 			<div>
 				<Heading level="h2" class="mb-6">Cuéntanos tu proyecto</Heading>
-
-				{#if submitSuccess}
-					<div
-						class="mb-6 p-4 bg-success/10 border border-success/20 rounded-lg"
-						role="alert"
-						aria-live="polite"
-					>
-						<div class="flex items-center gap-3">
-							<svg
-								class="w-6 h-6 text-success flex-shrink-0"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-								/>
-							</svg>
-							<Text class="text-success font-semibold"
-								>¡Mensaje enviado correctamente! Te
-								responderemos pronto con tu presupuesto personalizado.</Text
-							>
-						</div>
-					</div>
-				{/if}
-
-				{#if submitError}
-					<div
-						class="mb-6 p-4 bg-error/10 border border-error/20 rounded-lg"
-						role="alert"
-						aria-live="assertive"
-					>
-						<div class="flex items-center gap-3">
-							<svg
-								class="w-6 h-6 text-error flex-shrink-0"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-								/>
-							</svg>
-							<Text class="text-error font-semibold">
-								{submitError}
-							</Text>
-						</div>
-					</div>
-				{/if}
-
-				{#snippet step1Content()}
-					<div class="space-y-4 sm:space-y-6">
-						<div>
-							<label
-								for="tipoProyecto"
-								class="block text-sm font-medium mb-2 text-text-default"
-							>
-								Tipo de proyecto <span class="text-error">*</span>
-							</label>
-							<Select
-								id="tipoProyecto"
-								bindValue={formData.tipoProyecto}
-								required
-								class="w-full min-h-[48px] text-base {errors.tipoProyecto
-									? 'border-error focus:border-error focus:ring-error'
-									: ''}"
-							>
-								<option value="">Selecciona...</option>
-								{#each tiposProyecto as tipo}
-									<option value={tipo}>{tipo}</option>
-								{/each}
-							</Select>
-							{#if errors.tipoProyecto}
-								<Text
-									class="text-error text-xs mt-1 flex items-center gap-1"
-								>
-									<svg
-										class="w-4 h-4"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-										/>
-									</svg>
-									{errors.tipoProyecto}
-								</Text>
-							{/if}
-						</div>
-
-						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-							<div>
-								<label
-									for="cantidad"
-									class="block text-sm font-medium mb-2"
-								>
-									Cantidad estimada
-								</label>
-								<div class="space-y-3">
-									<div class="relative">
-										<Package
-											class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted z-10"
-											aria-hidden="true"
-										/>
-										<Select
-											id="cantidad"
-											bindValue={unidadSeleccionada}
-											class="w-full pl-10 min-h-[48px] text-base"
-											aria-label="Selecciona cantidad de unidades estimadas"
-										>
-											<option value="">Selecciona una cantidad...</option>
-											{#each unidadesOpciones as opcion}
-												<option value={opcion.value}>{opcion.label}</option>
-											{/each}
-										</Select>
-									</div>
-									{#if unidadSeleccionada === "personalizada"}
-										<div class="relative">
-											<Package
-												class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted"
-												aria-hidden="true"
-											/>
-											<Input
-												id="cantidad-personalizada"
-												type="number"
-												bindValue={cantidadPersonalizada}
-												min="1"
-												class="w-full pl-10 min-h-[48px] text-base"
-												placeholder="Ej: 350"
-												inputmode="numeric"
-												aria-label="Cantidad personalizada de unidades"
-											/>
-										</div>
-									{/if}
-								</div>
-							</div>
-							<div>
-								<label
-									for="fechaNecesaria"
-									class="block text-sm font-medium mb-2"
-								>
-									Fecha necesaria (aproximada)
-								</label>
-								<Input
-									id="fechaNecesaria"
-									type="date"
-									bindValue={formData.fechaNecesaria}
-									class="w-full min-h-[48px] text-base"
-								/>
-							</div>
-						</div>
-					</div>
-				{/snippet}
-
-				{#snippet step2Content()}
-					<div class="space-y-4 sm:space-y-6">
-						<div>
-							<label
-								for="mensaje"
-								class="block text-sm font-medium mb-2 text-text-default"
-							>
-								Cuéntanos más sobre tu proyecto <span class="text-error">*</span>
-							</label>
-							<Textarea
-								id="mensaje"
-								bindValue={formData.mensaje}
-								required
-								rows="6"
-								class="w-full min-h-[120px] text-base resize-y {errors.mensaje
-									? 'border-error focus:border-error focus:ring-error'
-									: ''}"
-								placeholder="Mínimo 50 caracteres"
-							/>
-							<div class="flex items-center justify-between mt-1">
-								{#if errors.mensaje}
-									<Text
-										class="text-error text-xs flex items-center gap-1"
-									>
-										<svg
-											class="w-4 h-4"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-											/>
-										</svg>
-										{errors.mensaje}
-									</Text>
-								{:else}
-									<span></span>
-								{/if}
-								<Text class="text-xs text-text-muted">
-									{formData.mensaje.length}/50 caracteres
-									mínimos
-								</Text>
-							</div>
-						</div>
-					</div>
-				{/snippet}
-
-				{#snippet step3Content()}
-					<div class="space-y-4 sm:space-y-6">
-						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-							<div>
-								<label
-									for="nombre"
-									class="block text-sm font-medium mb-2 text-text-default"
-								>
-									Nombre <span class="text-error">*</span>
-								</label>
-								<Input
-									id="nombre"
-									type="text"
-									bindValue={formData.nombre}
-									required
-									class="w-full min-h-[48px] text-base {errors.nombre
-										? 'border-error focus:border-error focus:ring-error'
-										: ''}"
-								/>
-								{#if errors.nombre}
-									<Text
-										class="text-error text-xs mt-1 flex items-center gap-1"
-									>
-										<svg
-											class="w-4 h-4"
-											fill="none"
-											stroke="currentColor"
-											viewBox="0 0 24 24"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
-												d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-											/>
-										</svg>
-										{errors.nombre}
-									</Text>
-								{/if}
-							</div>
-							<div>
-								<label
-									for="apellidos"
-									class="block text-sm font-medium mb-2"
-								>
-									Apellidos
-								</label>
-								<Input
-									id="apellidos"
-									type="text"
-									bindValue={formData.apellidos}
-									class="w-full min-h-[48px] text-base"
-								/>
-							</div>
-						</div>
-
-						<div>
-							<label
-								for="email"
-								class="block text-sm font-medium mb-2 text-text-default"
-							>
-								Email <span class="text-error">*</span>
-							</label>
-							<Input
-								id="email"
-								type="email"
-								bindValue={formData.email}
-								required
-								class="w-full min-h-[48px] text-base {errors.email
-									? 'border-error focus:border-error focus:ring-error'
-									: ''}"
-								inputmode="email"
-							/>
-							{#if errors.email}
-								<Text
-									class="text-error text-xs mt-1 flex items-center gap-1"
-								>
-									<svg
-										class="w-4 h-4"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-										/>
-									</svg>
-									{errors.email}
-								</Text>
-							{/if}
-						</div>
-
-						<div>
-							<label
-								for="telefono"
-								class="block text-sm font-medium mb-2 text-text-default"
-							>
-								Teléfono <span class="text-error">*</span>
-							</label>
-							<Input
-								id="telefono"
-								type="tel"
-								bindValue={formData.telefono}
-								required
-								class="w-full min-h-[48px] text-base {errors.telefono
-									? 'border-error focus:border-error focus:ring-error'
-									: ''}"
-								inputmode="tel"
-							/>
-							{#if errors.telefono}
-								<Text
-									class="text-error text-xs mt-1 flex items-center gap-1"
-								>
-									<svg
-										class="w-4 h-4"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-										/>
-									</svg>
-									{errors.telefono}
-								</Text>
-							{/if}
-						</div>
-
-						<div>
-							<label
-								for="empresa"
-								class="block text-sm font-medium mb-2"
-							>
-								Empresa / Centro educativo
-							</label>
-							<Input
-								id="empresa"
-								type="text"
-								bindValue={formData.empresa}
-								class="w-full min-h-[48px] text-base"
-							/>
-						</div>
-
-						<div class="space-y-3">
-							<label
-								class="flex items-start gap-3 cursor-pointer min-h-[48px] py-2 {errors.privacidad
-									? 'text-error'
-									: ''}"
-							>
-								<Checkbox
-									bind:checked={formData.privacidad}
-									required
-									class="mt-1 {errors.privacidad
-										? 'border-error'
-										: ''}"
-								/>
-								<Text class="text-sm leading-relaxed">
-									Acepto el tratamiento de mis datos personales según la <Link
-										href="/privacidad"
-										target="_blank"
-										class="text-primary hover:underline"
-										>política de privacidad</Link
-									> <span class="text-error">*</span>
-								</Text>
-							</label>
-							{#if errors.privacidad}
-								<Text
-									class="text-error text-xs ml-8 flex items-center gap-1"
-								>
-									<svg
-										class="w-4 h-4"
-										fill="none"
-										stroke="currentColor"
-										viewBox="0 0 24 24"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-										/>
-									</svg>
-									{errors.privacidad}
-								</Text>
-							{/if}
-							<label
-								class="flex items-start gap-3 cursor-pointer min-h-[48px] py-2"
-							>
-								<Checkbox
-									bind:checked={formData.newsletter}
-									class="mt-1"
-								/>
-								<Text class="text-sm leading-relaxed">
-									Quiero recibir comunicaciones comerciales y novedades (puedo retirar mi consentimiento en cualquier momento)
-								</Text>
-							</label>
-						</div>
-					</div>
-				{/snippet}
-
-				<FormWizard
-					bind:currentStep
-					steps={[
-						{
-							title: "Datos del Proyecto",
-							description: "Cuéntanos qué necesitas",
-							content: step1Content,
-						},
-						{
-							title: "Detalles",
-							description: "Proporciona más información",
-							content: step2Content,
-						},
-						{
-							title: "Tus Datos",
-							description: "Cómo podemos contactarte",
-							content: step3Content,
-						},
-					]}
-					onStepChange={handleStepChange}
-					onComplete={handleSubmit}
-					isSubmitting={isSubmitting}
+				<StandardContactForm
+					formId="contacto-form"
+					heading=""
+					description=""
+					class="!py-0"
 				/>
-
-				<!-- reCAPTCHA v3 (invisible) -->
-				{#if recaptchaSiteKey}
-					<Recaptcha
-						bind:this={recaptchaComponent}
-						siteKey={recaptchaSiteKey}
-						onVerify={(token) => {
-							console.log("reCAPTCHA token:", token);
-						}}
-					/>
-				{/if}
 			</div>
 
 			<!-- Columna Derecha: Información de Contacto -->
@@ -785,7 +57,8 @@
 							<div>
 								<div class="flex items-center gap-2 mb-2">
 									<MapPin class="w-5 h-5 text-primary" />
-									<Text class="font-semibold">Dirección:</Text>
+									<Text class="font-semibold">Dirección:</Text
+									>
 								</div>
 								<Text class="text-text-muted">
 									{siteConfig.contact.address.full}
@@ -798,12 +71,25 @@
 									<Text class="font-semibold">Teléfono:</Text>
 								</div>
 								<Text class="text-text-muted">
-									<Link href="tel:{siteConfig.contact.phone.main.replace(/\s/g, '')}" class="hover:text-primary">{siteConfig.contact.phone.main}</Link><br />
+									<Link
+										href="tel:{siteConfig.contact.phone.main.replace(
+											/\s/g,
+											'',
+										)}"
+										class="hover:text-primary"
+										>{siteConfig.contact.phone.main}</Link
+									><br />
 									{#if siteConfig.contact.phone.commercial}
-										<Text class="text-sm">{siteConfig.contact.phone.commercial} (Comercial)</Text><br />
+										<Text class="text-sm"
+											>{siteConfig.contact.phone
+												.commercial} (Comercial)</Text
+										><br />
 									{/if}
 									{#if siteConfig.contact.phone.customerService}
-										<Text class="text-sm">{siteConfig.contact.phone.customerService} (Atención Cliente)</Text>
+										<Text class="text-sm"
+											>{siteConfig.contact.phone
+												.customerService} (Atención Cliente)</Text
+										>
 									{/if}
 								</Text>
 							</div>
@@ -814,7 +100,11 @@
 									<Text class="font-semibold">Email:</Text>
 								</div>
 								<Text class="text-text-muted">
-									<Link href="mailto:{siteConfig.contact.email}" class="hover:text-primary">{siteConfig.contact.email}</Link>
+									<Link
+										href="mailto:{siteConfig.contact.email}"
+										class="hover:text-primary"
+										>{siteConfig.contact.email}</Link
+									>
 								</Text>
 							</div>
 
@@ -826,7 +116,8 @@
 								<Text class="text-text-muted">
 									{siteConfig.contact.schedule.weekdays}<br />
 									{#if siteConfig.contact.schedule.saturday}
-										{siteConfig.contact.schedule.saturday}<br />
+										{siteConfig.contact.schedule
+											.saturday}<br />
 									{/if}
 									Domingos: Cerrado
 								</Text>
@@ -876,7 +167,7 @@
 									viewBox="0 0 24 24"
 								>
 									<path
-										d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+										d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.762 2.239 5 5 5h14c2.762 0 5-2.238 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
 									/>
 								</svg>
 							</a>
@@ -961,6 +252,7 @@
 						</div>
 					{/snippet}
 				</Card>
+
 				<Card
 					padding="lg"
 					elevation={1}
@@ -968,10 +260,8 @@
 				>
 					{#snippet header()}
 						<div class="flex items-center gap-4 mb-4">
-							<Globe class="w-10 h-10 text-primary" />
-							<Heading level="h3"
-								>Islas Baleares y Canarias</Heading
-							>
+							<Truck class="w-10 h-10 text-primary" />
+							<Heading level="h3">Islas y Ceuta/Melilla</Heading>
 						</div>
 					{/snippet}
 					{#snippet children()}
@@ -980,77 +270,14 @@
 								<strong>Plazo:</strong> 3-5 días laborables
 							</Text>
 							<Text class="text-text-muted">
-								<strong>Coste:</strong> Según volumen y destino
+								<strong>Coste:</strong> Consultar según destino
 							</Text>
 							<Text class="text-text-muted">
-								<strong>Método:</strong> Transporte marítimo
+								<strong>Método:</strong> Correos o mensajería
 							</Text>
 						</div>
 					{/snippet}
 				</Card>
-				<Card
-					padding="lg"
-					elevation={1}
-					class="hover-shadow-primary transition-all"
-				>
-					{#snippet header()}
-						<div class="flex items-center gap-4 mb-4">
-							<Package class="w-10 h-10 text-primary" />
-							<Heading level="h3"
-								>Producción Personalizada</Heading
-							>
-						</div>
-					{/snippet}
-					{#snippet children()}
-						<div class="space-y-3">
-							<Text class="text-text-muted">
-								<strong>Plazo:</strong> 10-15 días laborables
-							</Text>
-							<Text class="text-text-muted">
-								<strong>Incluye:</strong> Diseño, producción y envío
-							</Text>
-							<Text class="text-text-muted">
-								<strong>Seguimiento:</strong> Actualizaciones en
-								cada fase
-							</Text>
-						</div>
-					{/snippet}
-				</Card>
-				<Card
-					padding="lg"
-					elevation={1}
-					class="hover-shadow-primary transition-all"
-				>
-					{#snippet header()}
-						<div class="flex items-center gap-4 mb-4">
-							<Zap class="w-10 h-10 text-primary" />
-							<Heading level="h3">Pedidos Urgentes</Heading>
-						</div>
-					{/snippet}
-					{#snippet children()}
-						<div class="space-y-3">
-							<Text class="text-text-muted">
-								<strong>Disponibilidad:</strong> Consultar con comercial
-							</Text>
-							<Text class="text-text-muted">
-								<strong>Plazo:</strong> Según disponibilidad de stock
-							</Text>
-							<Text class="text-text-muted">
-								<strong>Coste adicional:</strong> Aplicable según
-								urgencia
-							</Text>
-						</div>
-					{/snippet}
-				</Card>
-			</div>
-			<div class="mt-8 text-center">
-				<Text class="text-text-muted mb-4">
-					¿Necesitas más información sobre envíos? Contacta con
-					nuestro equipo comercial.
-				</Text>
-				<Button intent="primary" href="/contacto">
-					Contactar sobre Envíos
-				</Button>
 			</div>
 		</div>
 	</div>

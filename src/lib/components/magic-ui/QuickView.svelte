@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { fade, fly } from "svelte/transition";
-	import { Modal, Button, Heading, Text, Badge } from "atomic-design-svelte";
+	import { Modal, Heading, Text, Badge } from "atomic-design-svelte";
 	import { Link } from "atomic-design-svelte";
+	import PublisolButton from "$lib/components/atoms/PublisolButton.svelte";
 
 	interface Product {
 		id?: number;
@@ -106,24 +107,22 @@
 
 				<!-- CTAs -->
 				<div class="flex gap-3">
-					<Button
-						intent="secondary"
+					<PublisolButton
+						text="Ver Productos"
+						variant="secondary"
 						size="lg"
-						class="flex-1"
 						href={product.href}
 						onclick={close}
-					>
-						Ver Detalles Completos
-					</Button>
-					<Button
-						intent="primary"
-						size="lg"
 						class="flex-1"
+					/>
+					<PublisolButton
+						text="Consulta sin compromiso"
+						variant="primary"
+						size="lg"
 						href="/contacto"
 						onclick={close}
-					>
-						Solicitar Presupuesto
-					</Button>
+						class="flex-1"
+					/>
 				</div>
 			</div>
 		</div>

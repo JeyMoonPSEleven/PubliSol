@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { Footer, Link, Button } from "atomic-design-svelte";
+	import { Footer, Link } from "atomic-design-svelte";
 	import { Heading, Text } from "atomic-design-svelte";
 	import { siteConfig } from "$lib/siteConfig";
 	import { fade } from "svelte/transition";
+	import PublisolButton from "$lib/components/atoms/PublisolButton.svelte";
 
 </script>
 
@@ -259,14 +260,15 @@
 								</Text>
 							</div>
 						</div>
-						<Link href="/contacto">
-							<Button
-								intent="primary"
-								class="w-full mt-4 min-h-[48px]"
-							>
-								Solicitar Presupuesto
-							</Button>
-						</Link>
+						<div class="mt-4">
+							<PublisolButton
+								text="Consulta sin compromiso"
+								variant="primary"
+								size="md"
+								href="/contacto"
+								class="w-full"
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

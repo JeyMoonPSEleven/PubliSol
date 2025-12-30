@@ -3,7 +3,6 @@
 		Heading,
 		Text,
 		Card,
-		Button,
 		Breadcrumb,
 		Badge,
 	} from "atomic-design-svelte";
@@ -11,6 +10,7 @@
 	import Drawer from "$lib/components/magic-ui/Drawer.svelte";
 	import QuickView from "$lib/components/magic-ui/QuickView.svelte";
 	import Seo from "$lib/components/Seo.svelte";
+	import PublisolButton from "$lib/components/atoms/PublisolButton.svelte";
 
 	let filtersDrawerOpen = $state(false);
 	let quickViewOpen = $state(false);
@@ -87,8 +87,10 @@
 	}
 
 	// SEO
-	const seoTitle = "Agendas Escolares - Publisol | Personalización para Colegios";
-	const seoDescription = "Agendas escolares personalizadas para primaria, secundaria y universidad. Diseño exclusivo, calidad premium y personalización total.";
+	const seoTitle =
+		"Agendas Escolares - Publisol | Personalización para Colegios";
+	const seoDescription =
+		"Agendas escolares personalizadas para primaria, secundaria y universidad. Diseño exclusivo, calidad premium y personalización total.";
 </script>
 
 <Seo
@@ -106,8 +108,9 @@
 				Agendas Escolares
 			</Heading>
 			<Text class="text-lg text-text-muted mb-6">
-				Agendas personalizadas para colegios, institutos y universidades. 
-				Diseño exclusivo, calidad premium y personalización total para cada centro educativo.
+				Agendas personalizadas para colegios, institutos y
+				universidades. Diseño exclusivo, calidad premium y
+				personalización total para cada centro educativo.
 			</Text>
 			<div class="flex flex-wrap gap-4">
 				<Badge intent="primary">45+ Modelos</Badge>
@@ -131,18 +134,35 @@
 					{#snippet children()}
 						<div class="space-y-6">
 							<div>
-								<Text class="font-semibold mb-3">Nivel Educativo</Text>
+								<Text class="font-semibold mb-3"
+									>Nivel Educativo</Text
+								>
 								<div class="space-y-2">
-									<label class="flex items-center gap-2 cursor-pointer">
-										<input type="checkbox" class="rounded" />
+									<label
+										class="flex items-center gap-2 cursor-pointer"
+									>
+										<input
+											type="checkbox"
+											class="rounded"
+										/>
 										<Text class="text-sm">Primaria</Text>
 									</label>
-									<label class="flex items-center gap-2 cursor-pointer">
-										<input type="checkbox" class="rounded" />
+									<label
+										class="flex items-center gap-2 cursor-pointer"
+									>
+										<input
+											type="checkbox"
+											class="rounded"
+										/>
 										<Text class="text-sm">Secundaria</Text>
 									</label>
-									<label class="flex items-center gap-2 cursor-pointer">
-										<input type="checkbox" class="rounded" />
+									<label
+										class="flex items-center gap-2 cursor-pointer"
+									>
+										<input
+											type="checkbox"
+											class="rounded"
+										/>
 										<Text class="text-sm">Universidad</Text>
 									</label>
 								</div>
@@ -150,16 +170,31 @@
 							<div>
 								<Text class="font-semibold mb-3">Formato</Text>
 								<div class="space-y-2">
-									<label class="flex items-center gap-2 cursor-pointer">
-										<input type="checkbox" class="rounded" />
+									<label
+										class="flex items-center gap-2 cursor-pointer"
+									>
+										<input
+											type="checkbox"
+											class="rounded"
+										/>
 										<Text class="text-sm">A4</Text>
 									</label>
-									<label class="flex items-center gap-2 cursor-pointer">
-										<input type="checkbox" class="rounded" />
+									<label
+										class="flex items-center gap-2 cursor-pointer"
+									>
+										<input
+											type="checkbox"
+											class="rounded"
+										/>
 										<Text class="text-sm">A5</Text>
 									</label>
-									<label class="flex items-center gap-2 cursor-pointer">
-										<input type="checkbox" class="rounded" />
+									<label
+										class="flex items-center gap-2 cursor-pointer"
+									>
+										<input
+											type="checkbox"
+											class="rounded"
+										/>
 										<Text class="text-sm">Compacto</Text>
 									</label>
 								</div>
@@ -179,14 +214,13 @@
 						Mostrando {filteredProducts.length} productos
 					</Text>
 					<div class="flex items-center gap-4">
-						<Button
-							intent="secondary"
+						<PublisolButton
+							text="Filtros"
+							variant="secondary"
 							size="sm"
-							class="lg:hidden"
 							onclick={() => (filtersDrawerOpen = true)}
-						>
-							Filtros
-						</Button>
+							class="lg:hidden"
+						/>
 					</div>
 				</div>
 
@@ -210,9 +244,7 @@
 											class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
 										/>
 										{#if product.badge}
-											<div
-												class="absolute top-2 left-2"
-											>
+											<div class="absolute top-2 left-2">
 												<Badge intent="primary"
 													>{product.badge}</Badge
 												>
@@ -230,30 +262,32 @@
 								{/snippet}
 								{#snippet children()}
 									<div class="p-4">
-										<Heading level="h4" class="mb-2 text-base"
+										<Heading
+											level="h4"
+											class="mb-2 text-base"
 											>{product.name}</Heading
 										>
-										<Text class="text-sm text-text-muted mb-4">
+										<Text
+											class="text-sm text-text-muted mb-4"
+										>
 											Mínimo: {product.minQuantity}
 										</Text>
 										<div class="flex gap-2">
-											<Button
-												intent="secondary"
+											<PublisolButton
+												text="Ver Productos"
+												variant="secondary"
 												size="sm"
-												class="flex-1"
 												href={product.href}
-											>
-												Ver Detalles
-											</Button>
-											<Button
-												intent="primary"
-												size="sm"
 												class="flex-1"
+											/>
+											<PublisolButton
+												text="Contáctanos"
+												variant="primary"
+												size="sm"
 												onclick={() =>
 													openQuickView(product)}
-											>
-												Vista Rápida
-											</Button>
+												class="flex-1"
+											/>
 										</div>
 									</div>
 								{/snippet}
@@ -322,4 +356,3 @@
 		}}
 	/>
 {/if}
-

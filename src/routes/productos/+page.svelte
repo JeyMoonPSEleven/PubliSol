@@ -3,7 +3,6 @@
 		Heading,
 		Text,
 		Card,
-		Button,
 		Breadcrumb,
 		Badge,
 		Pagination,
@@ -13,6 +12,7 @@
 	import Drawer from "$lib/components/magic-ui/Drawer.svelte";
 	import QuickView from "$lib/components/magic-ui/QuickView.svelte";
 	import Seo from "$lib/components/Seo.svelte";
+	import PublisolButton from "$lib/components/atoms/PublisolButton.svelte";
 
 	let filtersDrawerOpen = $state(false);
 	let quickViewOpen = $state(false);
@@ -24,7 +24,6 @@
 
 	let categories = $state([
 		{ label: "Agendas Escolares", checked: false },
-		{ label: "Agendas Personalizadas", checked: false },
 		{ label: "Merchandising", checked: false },
 		{ label: "Textil", checked: false },
 		{ label: "Papelería", checked: false },
@@ -98,8 +97,9 @@
 		currentPage = 1;
 	}
 
-	// Ejemplo de productos
+	// Catálogo completo de productos
 	const products = [
+		// Agendas Escolares
 		{
 			id: 1,
 			name: "Agenda Escolar Premium A4",
@@ -111,6 +111,34 @@
 		},
 		{
 			id: 2,
+			name: "Agenda Clásica",
+			category: "Agendas Escolares",
+			image: "/images/products/agenda-premium.png",
+			badge: "Clásica",
+			minQuantity: "50 unidades",
+			href: "/producto/agenda-clasica",
+		},
+		{
+			id: 3,
+			name: "Agenda Día Página",
+			category: "Agendas Escolares",
+			image: "/images/products/agenda-premium.png",
+			badge: "Detallada",
+			minQuantity: "50 unidades",
+			href: "/producto/agenda-dia-pagina",
+		},
+		{
+			id: 4,
+			name: "Agendas de Doble Página",
+			category: "Agendas Escolares",
+			image: "/images/products/agenda-premium.png",
+			badge: "Semanal",
+			minQuantity: "50 unidades",
+			href: "/producto/agenda-doble-pagina",
+		},
+		// Merchandising
+		{
+			id: 5,
 			name: "Kit Corporativo Bienvenida",
 			category: "Merchandising",
 			image: "/images/products/kit-bienvenida.png",
@@ -119,7 +147,62 @@
 			href: "/producto/kit-corporativo-bienvenida",
 		},
 		{
-			id: 3,
+			id: 6,
+			name: "Kit Corporativo Premium",
+			category: "Merchandising",
+			image: "/images/products/kit-corporativo.png",
+			badge: "Premium",
+			minQuantity: "25 unidades",
+			href: "/producto/kit-corporativo",
+		},
+		{
+			id: 7,
+			name: "Botella Térmica Personalizada",
+			category: "Merchandising",
+			image: "/images/products/botella-termica.png",
+			badge: "Stock",
+			minQuantity: "20 unidades",
+			href: "/producto/botella-termica",
+		},
+		{
+			id: 8,
+			name: "Bolsa Tote Personalizada",
+			category: "Merchandising",
+			image: "/images/products/kit-corporativo.png",
+			badge: "Eco",
+			minQuantity: "30 unidades",
+			href: "/producto/bolsa-tote",
+		},
+		{
+			id: 9,
+			name: "Pack Regalo Empresarial",
+			category: "Merchandising",
+			image: "/images/products/kit-bienvenida.png",
+			badge: "Premium",
+			minQuantity: "15 unidades",
+			href: "/producto/pack-regalo",
+		},
+		{
+			id: 10,
+			name: "USB Personalizado",
+			category: "Merchandising",
+			image: "/images/products/kit-corporativo.png",
+			badge: "Tecnológico",
+			minQuantity: "50 unidades",
+			href: "/producto/usb-personalizado",
+		},
+		{
+			id: 11,
+			name: "Power Bank Corporativo",
+			category: "Merchandising",
+			image: "/images/products/botella-termica.png",
+			badge: "Nuevo",
+			minQuantity: "30 unidades",
+			href: "/producto/power-bank",
+		},
+		// Textil
+		{
+			id: 12,
 			name: "Camiseta Corporativa Premium",
 			category: "Textil",
 			image: "/images/products/camiseta-corporativa.png",
@@ -128,7 +211,71 @@
 			href: "/producto/camiseta-corporativa",
 		},
 		{
-			id: 4,
+			id: 13,
+			name: "Polo Empresarial",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Premium",
+			minQuantity: "15 unidades",
+			href: "/producto/polo-empresarial",
+		},
+		{
+			id: 14,
+			name: "Sudadera con Capucha",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Nuevo",
+			minQuantity: "12 unidades",
+			href: "/producto/sudadera-capucha",
+		},
+		{
+			id: 15,
+			name: "Chaqueta Técnica",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Técnica",
+			minQuantity: "8 unidades",
+			href: "/producto/chaqueta-tecnica",
+		},
+		{
+			id: 16,
+			name: "Uniformes Escolares",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Escolar",
+			minQuantity: "20 unidades",
+			href: "/producto/uniformes-escolares",
+		},
+		{
+			id: 17,
+			name: "Gorra Personalizada",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Bordado",
+			minQuantity: "20 unidades",
+			href: "/producto/gorra-personalizada",
+		},
+		{
+			id: 18,
+			name: "Mochila Textil Personalizada",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Personalizada",
+			minQuantity: "15 unidades",
+			href: "/producto/mochila-textil",
+		},
+		{
+			id: 19,
+			name: "Pantalón Deportivo",
+			category: "Textil",
+			image: "/images/products/camiseta-corporativa.png",
+			badge: "Equipación",
+			minQuantity: "10 unidades",
+			href: "/producto/pantalon-deportivo",
+		},
+		// Papelería
+		{
+			id: 20,
 			name: "Libreta Ejecutiva A5",
 			category: "Papelería",
 			image: "/images/products/libreta-ejecutiva.png",
@@ -137,7 +284,35 @@
 			href: "/producto/libreta-ejecutiva",
 		},
 		{
-			id: 5,
+			id: 21,
+			name: "Cuaderno Tapa Dura",
+			category: "Papelería",
+			image: "/images/products/libreta-ejecutiva.png",
+			badge: "Clásico",
+			minQuantity: "25 unidades",
+			href: "/producto/cuaderno-tapa-dura",
+		},
+		{
+			id: 22,
+			name: "Block de Notas Personalizado",
+			category: "Papelería",
+			image: "/images/products/libreta-ejecutiva.png",
+			badge: "Nuevo",
+			minQuantity: "40 unidades",
+			href: "/producto/block-notas",
+		},
+		{
+			id: 23,
+			name: "Agenda Ejecutiva",
+			category: "Papelería",
+			image: "/images/products/libreta-ejecutiva.png",
+			badge: "Ejecutiva",
+			minQuantity: "20 unidades",
+			href: "/producto/agenda-ejecutiva",
+		},
+		// Sostenibles
+		{
+			id: 24,
 			name: "Agenda Sostenible Reciclada",
 			category: "Sostenibles",
 			image: "/images/products/agenda-sostenible.png",
@@ -146,13 +321,49 @@
 			href: "/producto/agenda-sostenible",
 		},
 		{
-			id: 6,
-			name: "Botella Térmica Personalizada",
-			category: "Merchandising",
-			image: "/images/products/botella-termica.png",
-			badge: "Stock",
+			id: 25,
+			name: "Botella de Acero Inoxidable",
+			category: "Sostenibles",
+			image: "/images/products/agenda-sostenible.png",
+			badge: "Reutilizable",
 			minQuantity: "20 unidades",
-			href: "/producto/botella-termica",
+			href: "/producto/botella-acero",
+		},
+		{
+			id: 26,
+			name: "Bolsa de Algodón Orgánico",
+			category: "Sostenibles",
+			image: "/images/products/agenda-sostenible.png",
+			badge: "GOTS",
+			minQuantity: "30 unidades",
+			href: "/producto/bolsa-algodon",
+		},
+		{
+			id: 27,
+			name: "Libreta de Papel Piedra",
+			category: "Sostenibles",
+			image: "/images/products/agenda-sostenible.png",
+			badge: "Innovación",
+			minQuantity: "25 unidades",
+			href: "/producto/libreta-papel-piedra",
+		},
+		{
+			id: 28,
+			name: "Bolígrafo de Bambú",
+			category: "Sostenibles",
+			image: "/images/products/agenda-sostenible.png",
+			badge: "Biodegradable",
+			minQuantity: "100 unidades",
+			href: "/producto/boligrafo-bambu",
+		},
+		{
+			id: 29,
+			name: "Pack Sostenible Corporativo",
+			category: "Sostenibles",
+			image: "/images/products/agenda-sostenible.png",
+			badge: "Completo",
+			minQuantity: "15 unidades",
+			href: "/producto/pack-sostenible",
 		},
 	];
 
@@ -239,27 +450,13 @@
 	<div class="container mx-auto px-4 sm:px-6">
 		<!-- Botón Filtros Móvil -->
 		<div class="lg:hidden mb-4">
-			<Button
-				intent="secondary"
+			<PublisolButton
+				text="Filtrar Productos"
+				variant="secondary"
 				size="md"
-				class="w-full"
 				onclick={() => (filtersDrawerOpen = true)}
-			>
-				<svg
-					class="w-5 h-5 mr-2"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-					/>
-				</svg>
-				Filtrar Productos
-			</Button>
+				class="w-full"
+			/>
 		</div>
 
 		<div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
@@ -372,13 +569,13 @@
 									</div>
 								</div>
 
-								<Button
-									intent="ghost"
-									class="w-full text-sm"
+								<PublisolButton
+									text="Limpiar filtros"
+									variant="secondary"
+									size="sm"
 									onclick={clearFilters}
-								>
-									Limpiar filtros
-								</Button>
+									class="w-full"
+								/>
 							</div>
 						{/snippet}
 					</Card>
@@ -432,9 +629,12 @@
 						<Text class="text-text-muted mb-6">
 							Intenta ajustar los filtros para ver más resultados
 						</Text>
-						<Button intent="primary" onclick={clearFilters}>
-							Limpiar Filtros
-						</Button>
+						<PublisolButton
+							text="Limpiar Filtros"
+							variant="primary"
+							size="md"
+							onclick={clearFilters}
+						/>
 					</div>
 				{:else}
 					<div
@@ -444,7 +644,7 @@
 							<div class="group relative">
 								<Card
 									padding="none"
-									class="overflow-hidden hover:elevation-2 transition-all hover-shadow-primary hover:-translate-y-1"
+									class="overflow-hidden hover:elevation-2 transition-all hover-shadow-primary hover:-translate-y-1 min-h-[400px] flex flex-col"
 								>
 									{#snippet header()}
 										<div
@@ -475,7 +675,7 @@
 										</div>
 									{/snippet}
 									{#snippet children()}
-										<div class="p-4">
+										<div class="p-4 flex flex-col flex-1">
 											<Text
 												class="text-xs text-text-muted mb-1"
 												>{product.category}</Text
@@ -486,29 +686,27 @@
 												>{product.name}</Heading
 											>
 											<Text
-												class="text-sm text-text-muted mb-4"
+												class="text-sm text-text-muted mb-4 flex-1"
 											>
 												Desde {product.minQuantity}
 											</Text>
-											<div class="flex gap-2">
-												<Button
-													intent="secondary"
-													size="sm"
-													class="flex-1"
-													href={product.href}
-												>
-													Ver Detalles
-												</Button>
-												<Button
-													intent="primary"
-													size="sm"
-													class="flex-1"
-													onclick={() =>
-														openQuickView(product)}
-												>
-													Vista Rápida
-												</Button>
-											</div>
+										<div class="flex gap-2">
+											<PublisolButton
+												text="Ver Productos"
+												variant="secondary"
+												size="sm"
+												href={product.href}
+												class="flex-1"
+											/>
+											<PublisolButton
+												text="Solicita Presupuesto"
+												variant="primary"
+												size="sm"
+												onclick={() =>
+													openQuickView(product)}
+												class="flex-1"
+											/>
+										</div>
 										</div>
 									{/snippet}
 								</Card>
@@ -577,13 +775,13 @@
 					</div>
 				</div>
 
-				<Button
-					intent="ghost"
-					class="w-full text-sm"
+				<PublisolButton
+					text="Limpiar filtros"
+					variant="secondary"
+					size="sm"
 					onclick={clearFilters}
-				>
-					Limpiar filtros
-				</Button>
+					class="w-full"
+				/>
 			</div>
 		{/snippet}
 	</Card>

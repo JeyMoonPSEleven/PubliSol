@@ -202,7 +202,7 @@
 			<div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
 				{#each [
 					{ name: "Azul Marino", code: "#1E3A8A", hex: "1E3A8A" },
-					{ name: "Verde Publisol", code: "#2e7625", hex: "2e7625" },
+					{ name: "Verde Publisol", code: "#a3bf62", hex: "a3bf62" },
 					{ name: "Verde", code: "#10B981", hex: "10B981" },
 					{ name: "Naranja", code: "#F59E0B", hex: "F59E0B" },
 					{ name: "Rojo", code: "#EF4444", hex: "EF4444" },

@@ -10,6 +10,10 @@ coverage
 build
 dist
 .svelte-kit
+build-publisol.tar.gz
+build-publisol.zip
+*.tar.gz
+*.zip
 
 # Misc
 .DS_Store

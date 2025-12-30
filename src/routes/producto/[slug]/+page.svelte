@@ -3,7 +3,6 @@
 		Heading,
 		Text,
 		Card,
-		Button,
 		Breadcrumb,
 		Gallery,
 		Tabs,
@@ -16,6 +15,7 @@
 	import Drawer from "$lib/components/magic-ui/Drawer.svelte";
 	import Seo from "$lib/components/Seo.svelte";
 	import { Checkbox, Input } from "atomic-design-svelte";
+	import PublisolButton from "$lib/components/atoms/PublisolButton.svelte";
 
 	// Datos del producto (en producción vendría de una API)
 	const product = {
@@ -713,21 +713,19 @@
 
 				<!-- CTAs -->
 				<div class="space-y-3">
-					<Button
-						intent="primary"
+					<PublisolButton
+						text="Solicita Presupuesto"
+						variant="primary"
 						size="lg"
-						class="w-full min-h-[48px] text-base"
 						onclick={() => (budgetFormOpen = true)}
-					>
-						Solicitar Presupuesto Personalizado
-					</Button>
-					<Button
-						intent="secondary"
+						class="w-full"
+					/>
+					<PublisolButton
+						text="Ver Productos"
+						variant="secondary"
 						size="lg"
-						class="w-full min-h-[48px] text-base"
-					>
-						Descargar Ficha Técnica PDF
-					</Button>
+						class="w-full"
+					/>
 					<Link
 						href="/contacto"
 						class="block text-center text-primary hover:underline text-sm py-2 min-h-[44px] flex items-center justify-center"
@@ -1083,26 +1081,24 @@
 					{/snippet}
 					{#snippet children()}
 						<div class="flex gap-2">
-							<Button
-								intent="secondary"
+							<PublisolButton
+								text="Ver Productos"
+								variant="secondary"
 								size="sm"
-								class="flex-1"
 								href={related.href}
-							>
-								Ver Detalles
-							</Button>
-							<Button
-								intent="primary"
-								size="sm"
 								class="flex-1"
+							/>
+							<PublisolButton
+								text="Contáctanos"
+								variant="primary"
+								size="sm"
 								onclick={() => {
 									// Simular añadir al presupuesto
 									console.log("Añadido al presupuesto:", related.name);
 									// Aquí se podría abrir un modal o actualizar un estado global
 								}}
-							>
-								+ Presupuesto
-							</Button>
+								class="flex-1"
+							/>
 						</div>
 					{/snippet}
 				</Card>

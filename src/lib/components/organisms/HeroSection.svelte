@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { fade } from "svelte/transition";
+	import { onMount } from "svelte";
 	import ChristmasBanner from "$lib/components/atoms/ChristmasBanner.svelte";
 	import FeatureList from "$lib/components/molecules/FeatureList.svelte";
 	import CTAButtons from "$lib/components/molecules/CTAButtons.svelte";
@@ -23,30 +24,129 @@
 		],
 		cta: {
 			primary: {
-				text: "Solicitar Presupuesto rápido",
+				text: "Solicita Presupuesto",
 				action: scrollToForm,
 			},
 			secondary: { text: "Ver Productos", href: "/productos" },
 		},
 	};
+
+	// Carrusel de imágenes
+	const heroImages = [
+		"/images/hero/main-hero-bg.jpg",
+		"/images/hero/hero-background-2.jpg",
+		"/images/hero/hero-background-alt.jpg",
+		"/images/hero/ll.jpg",
+	];
+
+	let currentImageIndex = $state(0);
+	let isPaused = $state(false);
+	let carouselInterval: ReturnType<typeof setInterval> | null = null;
+
+	// Efecto typewriter
+	let displayedText = $state("");
+	let isTyping = $state(true);
+	const fullText = heroData.h1;
+	let charIndex = $state(0);
+
+	onMount(() => {
+		// Iniciar typewriter
+		function typeWriter() {
+			if (charIndex < fullText.length) {
+				displayedText += fullText.charAt(charIndex);
+				charIndex++;
+				setTimeout(typeWriter, 50);
+			} else {
+				isTyping = false;
+			}
+		}
+		typeWriter();
+
+		// Iniciar carrusel
+		function startCarousel() {
+			if (!isPaused) {
+				carouselInterval = setInterval(() => {
+					currentImageIndex =
+						(currentImageIndex + 1) % heroImages.length;
+				}, 6000);
+			}
+		}
+
+		startCarousel();
+
+		return () => {
+			if (carouselInterval) {
+				clearInterval(carouselInterval);
+			}
+		};
+	});
+
+	function pauseCarousel() {
+		isPaused = true;
+		if (carouselInterval) {
+			clearInterval(carouselInterval);
+		}
+	}
+
+	function resumeCarousel() {
+		isPaused = false;
+		if (carouselInterval) {
+			clearInterval(carouselInterval);
+		}
+		carouselInterval = setInterval(() => {
+			currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+		}, 6000);
+	}
+
+	function goToSlide(index: number) {
+		currentImageIndex = index;
+		if (carouselInterval) {
+			clearInterval(carouselInterval);
+		}
+		carouselInterval = setInterval(() => {
+			currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+		}, 6000);
+	}
 </script>
 
 <section
 	class="relative overflow-hidden min-h-[85vh] sm:min-h-[90vh] flex items-center px-4 sm:px-6 pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-12 sm:pb-16 md:pb-20 lg:pb-24"
+	onmouseenter={pauseCarousel}
+	onmouseleave={resumeCarousel}
 >
-	<!-- Imagen de fondo impactante -->
+	<!-- Carrusel de imágenes de fondo -->
 	<div class="absolute inset-0 z-0">
-		<img
-			src="/images/hero/main-hero-bg.jpg"
-			alt=""
-			class="w-full h-full object-cover"
-			aria-hidden="true"
-			loading="eager"
-		/>
+		{#each heroImages as image, index}
+			<img
+				src={image}
+				alt=""
+				class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 {index ===
+				currentImageIndex
+					? 'opacity-100'
+					: 'opacity-0'}"
+				aria-hidden="true"
+				loading={index === 0 ? "eager" : "lazy"}
+			/>
+		{/each}
 		<!-- Overlay para legibilidad -->
 		<div
 			class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/90 to-white/70 backdrop-blur-sm"
 		></div>
+	</div>
+
+	<!-- Indicadores del carrusel -->
+	<div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+		{#each heroImages as _, index}
+			<button
+				type="button"
+				onclick={() => goToSlide(index)}
+				class="w-2 h-2 rounded-full transition-all duration-300 {index ===
+				currentImageIndex
+					? 'bg-primary w-8'
+					: 'bg-gray-300 hover:bg-gray-400'}"
+				aria-label="Ir a slide {index + 1}"
+			></button>
+		{/each}
 	</div>
 
 	<div class="relative z-10 mx-auto max-w-[1400px] w-full">
@@ -60,12 +160,18 @@
 					<ChristmasBanner />
 				</div>
 
-				<!-- Título Principal - H1 SEO -->
+				<!-- Título Principal - H1 SEO con efecto typewriter -->
 				<h1
-					class="text-fluid-3xl sm:text-fluid-4xl lg:text-fluid-5xl font-bold leading-tight text-gray-900"
+					class="text-fluid-3xl sm:text-fluid-4xl lg:text-fluid-5xl font-bold leading-tight text-gray-900 min-h-[1.2em]"
 					in:fade={{ duration: 600, delay: 200 }}
 				>
-					{heroData.h1}
+					{displayedText}
+					{#if isTyping}
+						<span
+							class="inline-block w-0.5 h-[1em] bg-primary ml-1 animate-pulse"
+							aria-hidden="true">|</span
+						>
+					{/if}
 				</h1>
 
 				<!-- Descripción - Copy persuasivo -->
